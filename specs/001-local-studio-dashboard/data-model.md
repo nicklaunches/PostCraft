@@ -256,7 +256,7 @@ export type NewTemplateVariable = typeof templateVariables.$inferInsert
 
 ### Development Phase (Current)
 - Use `drizzle-kit push` for instant schema updates without migration files
-- Fast iteration: edit schema → run `npm run db:push` → schema synced to NeonDB
+- Fast iteration: edit schema → run `npm run db:push` → schema synced to PostgreSQL
 - No migration history tracking (acceptable for prototyping)
 
 ### Production Transition (Future)

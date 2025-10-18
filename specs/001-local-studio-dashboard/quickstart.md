@@ -9,7 +9,7 @@ Get started with PostCraft Local Studio in 5 minutes. This guide covers installa
 ## Prerequisites
 
 - Node.js 18+ installed
-- NeonDB account with PostgreSQL database
+- PostgreSQL account with PostgreSQL database
 - Basic understanding of email templates and merge tags
 
 ---
@@ -38,7 +38,7 @@ POSTCRAFT_PORT=3579
 ```
 
 **Environment Variables**:
-- `POSTCRAFT_DATABASE_URL` (required): NeonDB PostgreSQL connection string
+- `POSTCRAFT_DATABASE_URL` (required): PostgreSQL PostgreSQL connection string
 - `POSTCRAFT_PORT` (optional): Preferred server port (default: 3579)
 
 ### 2. Run Database Migrations
@@ -51,7 +51,7 @@ npm run db:migrate
 yarn db:migrate
 ```
 
-This creates the `templates` and `template_variables` tables in your NeonDB database.
+This creates the `templates` and `template_variables` tables in your PostgreSQL database.
 
 ---
 

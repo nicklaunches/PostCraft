@@ -203,7 +203,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 3. **Given** I render a template with missing variables, **When** variables have fallback values defined, **Then** the fallback values are used for missing variables
 4. **Given** I render a template with missing required variables, **When** no fallback is defined, **Then** I receive a clear error indicating which variables are missing
 5. **Given** I render a template that doesn't exist, **When** I call render with an invalid template name, **Then** I receive a clear error that the template was not found
-6. **Given** templates are stored in NeonDB, **When** the SDK renders a template, **Then** it connects to the database to retrieve the template content
+6. **Given** templates are stored in PostgreSQL, **When** the SDK renders a template, **Then** it connects to the database to retrieve the template content
 7. **Given** the database connection fails, **When** I try to render a template, **Then** I receive a clear error about the connection failure
 8. **Given** I render a template with a variable of wrong type, **When** I provide a string for a number-type variable, **Then** I receive a descriptive error specifying the variable name, expected type (number), and provided type (string)
 9. **Given** I render a template with correct variable types, **When** all provided values match their defined types, **Then** the template renders successfully without type errors
@@ -221,13 +221,13 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - What happens when the react-email-editor fails to load due to network issues? Display an error state with retry option and fallback to raw HTML editing.
 - What happens when a user has hundreds of templates? Use offset-based pagination with page numbers, displaying 20 templates per page to maintain performance.
 - What happens when a template's JSON structure is corrupted in the database? Detect corruption during load and offer recovery options or safe defaults.
-- What happens when the NeonDB connection fails or times out? Display clear error message with connection troubleshooting steps and retry option.
+- What happens when the PostgreSQL connection fails or times out? Display clear error message with connection troubleshooting steps and retry option.
 - What happens when database migrations are pending or schema is outdated? Detect schema version mismatch and provide migration guidance.
 - What happens when the user closes the browser while editing? Display browser-native "unsaved changes" warning via beforeunload event; unsaved work is lost if user confirms exit.
 - What happens when the same template is opened in multiple browser tabs? Enforce single-editor lock - first tab gets edit mode, others show read-only with notification.
 - What happens when exported React components contain invalid variable names? Sanitize variable names to be valid JavaScript identifiers.
 - What happens when a template uses deprecated react-email-editor features? Display migration warnings and provide update guidance.
-- What happens when the SDK cannot connect to NeonDB? Throw clear error with database connection troubleshooting guidance.
+- What happens when the SDK cannot connect to PostgreSQL? Throw clear error with database connection troubleshooting guidance.
 - What happens when SDK and studio point to different databases? Not supported - both must use the same DATABASE_URL environment variable.
 - What happens when a template is deleted while SDK is rendering it? SDK render should fail gracefully with "template not found" error.
 
@@ -249,7 +249,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-006a**: System MUST initialize react-email-editor with all features and tools enabled (full unlocked mode with no restrictions)
 - **FR-007**: System MUST allow users to edit existing email templates
 - **FR-008**: System MUST allow users to delete email templates with confirmation
-- **FR-009**: System MUST persist templates in NeonDB (PostgreSQL) database between server restarts
+- **FR-009**: System MUST persist templates in PostgreSQL database between server restarts
 - **FR-010**: System MUST export templates as HTML with inline styles ready for email clients
 - **FR-011**: System MUST preserve merge tag variables in exported HTML in SDK-compatible format
 - **FR-012**: System MUST provide copy-to-clipboard functionality for HTML exports
@@ -257,7 +257,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-014**: System MUST provide a PostCraft SDK importable as `import { PostCraft } from 'postcraft'`
 - **FR-014a**: SDK MUST support instantiation via `new PostCraft()` constructor
 - **FR-014b**: SDK MUST provide `templates.render(name, variables)` method for rendering templates with variable substitution
-- **FR-014c**: SDK MUST retrieve templates from NeonDB when rendering using the same DATABASE_URL environment variable as the studio
+- **FR-014c**: SDK MUST retrieve templates from PostgreSQL when rendering using the same DATABASE_URL environment variable as the studio
 - **FR-014d**: SDK MUST replace merge tag variables with provided values during rendering
 - **FR-014e**: SDK MUST use fallback values for missing variables when fallback is defined
 - **FR-014f**: SDK MUST throw clear errors when required variables are missing and no fallback exists
@@ -271,7 +271,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-018**: System MUST validate template names and prevent duplicates
 - **FR-019**: System MUST sanitize template names to prevent SQL injection and ensure database compatibility
 - **FR-029**: System MUST read all environment variables with POSTCRAFT_ prefix for configuration
-- **FR-029a**: System MUST use POSTCRAFT_DATABASE_URL environment variable for NeonDB connection string
+- **FR-029a**: System MUST use POSTCRAFT_DATABASE_URL environment variable for PostgreSQL connection string
 - **FR-029b**: System MUST use POSTCRAFT_PORT environment variable for preferred server port (default: 3579 if not set)
 - **FR-029c**: System MUST support optional POSTCRAFT_SDK_* prefixed variables for SDK-specific configuration
 - **FR-029d**: System MUST provide a .env.sample file documenting all supported POSTCRAFT_ environment variables with example values
@@ -353,7 +353,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - Developers run `npm run studio` or `yarn studio` to launch the local studio server
 - The server prefers port 3579 but can auto-detect and use alternative ports (3580, 3581, etc.) if occupied
 - The server binds exclusively to 127.0.0.1 (localhost) for security, refusing external network connections
-- Templates are stored in NeonDB (PostgreSQL) database with connection string provided via POSTCRAFT_DATABASE_URL environment variable
+- Templates are stored in PostgreSQL database with connection string provided via POSTCRAFT_DATABASE_URL environment variable
 - All environment variables use POSTCRAFT_ prefix for clear namespacing (POSTCRAFT_DATABASE_URL, POSTCRAFT_PORT, POSTCRAFT_SDK_*)
 - A .env.sample file is provided documenting all supported environment variables with example values
 - Drizzle ORM is used for all database operations providing type-safe queries and schema management
@@ -377,7 +377,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - JSON and plain text exports are deferred to future versions
 - Template variables use react-email-editor's native merge tag feature for insertion and management
 - SDK template rendering is the primary programmatic integration path for production use
-- SDK retrieves templates from the same NeonDB database used by the local studio
+- SDK retrieves templates from the same PostgreSQL database used by the local studio
 - Both the local studio and SDK use the same DATABASE_URL environment variable for database connection
 - Templates created in the studio are immediately available to the SDK without synchronization
 - Authentication is not required for local studio access (runs on localhost for single developer)
@@ -394,7 +394,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - Q: Concurrent Editing Handling - What happens if same template edited in multiple tabs? → A: Single edit lock - Only one tab can edit at a time, others show read-only
 - Q: shadcn/ui Component Usage - How strictly should shadcn/ui components be enforced? → A: Strict enforcement - Mandate shadcn/ui for ALL UI elements; if component not found, notify user to provide solution
 - Q: Port Conflict Handling Strategy - What happens if port 3579 is already in use? → A: Auto-detect available port - Automatically use next available port (3580, 3581, etc.) and notify user
-- Q: Template Directory Location - Where should templates be stored? → A: NeonDB - Use NeonDB (PostgreSQL) for template storage (supersedes file system approach)
+- Q: Template Directory Location - Where should templates be stored? → A: PostgreSQL - Use PostgreSQL for template storage (supersedes file system approach)
 - Q: Database ORM Strategy - Should the system use an ORM or raw SQL for database operations? → A: Drizzle ORM - Use Drizzle ORM for type-safe database operations with auto-migrations
 - Q: Network Access Security - Should the server accept connections from external machines or localhost only? → A: Localhost only - Bind to 127.0.0.1, refuse all external network connections for security
 - Q: Template List Pagination Strategy - How should template lists be paginated for large datasets? → A: Offset pagination - Traditional page numbers with LIMIT/OFFSET (page 1, 2, 3...)
@@ -410,7 +410,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - Q: Error Recovery Strategy for Failed Template Saves - How should the system handle failed save operations? → A: Preserve editor state in memory and show retry button with error details
 - Q: SDK Type Validation for Template Variables - Should the SDK validate variable types at runtime? → A: Validate types at runtime and throw descriptive errors for mismatches
 - Q: Dashboard UI Template - Which shadcn/ui template should be used for the local studio dashboard? → A: sidebar-07 template - Use `npx shadcn@latest add sidebar-07` (collapsible sidebar with icons)
-- Q: How does the PostCraft SDK connect to the database? → A: Shared config - SDK uses same NeonDB connection string from environment (POSTCRAFT_DATABASE_URL) as studio
+- Q: How does the PostCraft SDK connect to the database? → A: Shared config - SDK uses same PostgreSQL connection string from environment (POSTCRAFT_DATABASE_URL) as studio
 
 ## Success Criteria *(mandatory)*
 

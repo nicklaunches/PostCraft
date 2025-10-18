@@ -78,14 +78,14 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
 
 ---
 
-## 3. Drizzle ORM with NeonDB (PostgreSQL) Best Practices
+## 3. Drizzle ORM with PostgreSQL Best Practices
 
 **Decision**: Use Drizzle ORM with push-based migrations for rapid iteration, transition to versioned migrations for production
 
 **Rationale**:
 - Drizzle provides type-safe queries with compile-time checking (Principle I)
 - `drizzle-kit push` enables fast schema iteration without migration file management
-- NeonDB (serverless Postgres) supports connection pooling for better performance
+- PostgreSQL (serverless Postgres) supports connection pooling for better performance
 - Two-table normalized schema (templates, template_variables) prevents data duplication
 
 **Implementation Approach**:
@@ -135,7 +135,7 @@ export const templateVariablesIndex = uniqueIndex('template_variables_template_i
 
 **References**:
 - Drizzle ORM docs: https://orm.drizzle.team/docs/overview
-- NeonDB with Drizzle: https://neon.tech/docs/guides/drizzle
+- PostgreSQL with Drizzle: https://neon.tech/docs/guides/drizzle
 - Drizzle Kit push: https://orm.drizzle.team/kit-docs/overview#prototyping-with-db-push
 
 ---
@@ -282,7 +282,7 @@ export async function GET(request: Request) {
 # .env.sample
 # PostCraft Local Studio Configuration
 
-# Database connection string for NeonDB (PostgreSQL)
+# Database connection string for PostgreSQL
 # Required for both studio and SDK
 POSTCRAFT_DATABASE_URL=postgresql://user:password@host/database?sslmode=require
 
