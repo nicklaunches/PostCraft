@@ -213,3 +213,51 @@ tsconfig.json              # TypeScript strict mode configuration
 - ⚠️ TDD still deferred per user request (acceptable for prototyping)
 - **Action**: Ready to proceed to Phase 2 (task generation via `/speckit.tasks`)
 
+## Implementation Workflow
+
+  ### Phase A: Foundation (Sequential - Must Complete in Order)
+
+  **Task A1: Environment and Database Setup**
+  - Reference: `quickstart.md` lines 18-55, `research.md` section 6
+  - Install dependencies, configure .env, run migrations
+  - Deliverable: Working PostgreSQL connection with schema
+
+  **Task A2: Drizzle ORM Schema**
+  - Reference: `data-model.md` lines 199-250
+  - Implement schema in `lib/db/schema.ts`
+  - Deliverable: Type-safe database schema
+
+  ### Phase B: Core Backend (Can Partially Parallelize)
+
+  **Task B1: Database Client Setup**
+  - Reference: `research.md` section 3 (connection pooling)
+  - Implement `lib/db/client.ts`
+
+  **Task B2: API Route Implementation**
+  - Reference: `contracts/api-templates.ts`
+  - Implement routes in order:
+    1. GET /api/templates (list) → contracts lines 45-92
+    2. POST /api/templates (create) → contracts lines 95-168
+    3. GET /api/templates/[id] → contracts lines 171-205
+    4. PUT /api/templates/[id] → contracts lines 208-267
+    5. DELETE /api/templates/[id] → contracts lines 270-297
+
+  ### Phase C: UI Components (Can Parallelize with Phase B)
+
+  **Task C1: shadcn/ui Setup**
+  - Reference: `research.md` section 2
+  - Install sidebar-07 and base components
+
+  **Task C2: Page Components**
+  - Reference: `plan.md` lines 98-114 for route structure
+  - Build in order: layout → list → create → edit
+
+  ### Phase D: SDK and Integration
+
+  **Task D1: SDK Implementation**
+  - Reference: `contracts/sdk-postcraft.ts`, `research.md` section 7
+  - Implement `lib/sdk/postcraft.ts`
+
+  **Task D2: Merge Tag Utilities**
+  - Reference: `research.md` lines 162-195
+  - Implement `lib/utils/merge-tags.ts`
