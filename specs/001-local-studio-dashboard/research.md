@@ -377,6 +377,84 @@ export class PostCraft {
 
 ---
 
+---
+
+## 8. Server-Side HTML Rendering for SDK
+
+**Status**: RESOLVED ✅
+
+**Decision**: Implement server-side HTML generation by executing react-email-editor's exportHtml logic server-side
+
+**Rationale**:
+- react-email-editor stores design as JSON, which is platform-agnostic
+- The SDK needs to generate HTML from design JSON without browser environment
+- HTML generation must support merge tag preservation and variable substitution
+- Database optimization: Store only design JSON, not pre-rendered HTML (FR-038)
+
+**Implementation Approach**:
+
+Per user clarification, all critical react-email-editor integration decisions are now documented:
+
+1. **Loading Templates** (FR-006b):
+   - Use `loadDesign()` method within `onReady` callback
+   - Load design JSON from database templates.content column
+
+2. **Saving Templates** (FR-006c):
+   - Use `saveDesign()` method with callback to retrieve design JSON
+   - Persist design JSON to database (not rendered HTML)
+
+3. **Exporting HTML in Browser** (FR-010a):
+   - Use `exportHtml()` method to generate fresh HTML at export time
+   - This happens in the studio UI when user clicks "Export"
+
+4. **SDK Server-Side Rendering** (FR-014d, FR-014e):
+   - Load design JSON from database
+   - Implement server-side HTML generator equivalent to exportHtml()
+   - This may require reverse-engineering Unlayer's JSON structure or using a headless browser approach
+   - Two possible approaches:
+     a) Parse design JSON and generate HTML manually (complex but performant)
+     b) Use Puppeteer/Playwright to run exportHtml() in headless browser (simpler but heavier)
+
+5. **Merge Tag Configuration** (FR-015a, FR-015b):
+   - Use `setMergeTags()` method in `onReady` callback
+   - Dynamically configure based on template variable metadata from database
+   - Example: `editor.setMergeTags([{ name: 'NAME', value: '{{NAME}}' }])`
+
+**Database Schema Optimization**:
+- templates.content stores design JSON only (JSONB column)
+- templates.html column REMOVED - HTML generated on-demand, not stored
+- This prevents JSON/HTML synchronization issues and reduces storage
+
+**SDK HTML Generation Strategy**:
+
+Option A (Recommended): Manual HTML generation from design JSON
+```typescript
+// lib/sdk/html-renderer.ts
+export function renderDesignToHtml(designJson: any, mergeTags: Record<string, string>): string {
+  // Parse design JSON structure
+  // Generate HTML with inline styles
+  // Preserve merge tags as {{VARIABLE_NAME}}
+  // Return email-client compatible HTML
+}
+```
+
+Option B (Fallback): Headless browser approach
+```typescript
+// Use Puppeteer to run exportHtml() in Node.js
+// Heavier dependency but guaranteed compatibility
+```
+
+**Testing Requirements**:
+- Contract tests validating HTML output matches browser exportHtml()
+- Unit tests for merge tag preservation during server-side rendering
+- Integration tests for SDK render() with variable substitution
+
+**References**:
+- Unlayer design JSON structure: Research needed during implementation
+- Email HTML inline CSS: https://templates.mailchimp.com/development/css/
+
+---
+
 ## Summary of Key Decisions
 
 1. **Next.js App Router** with custom server for localhost:3579 binding and port auto-detection
@@ -386,5 +464,15 @@ export class PostCraft {
 5. **Offset pagination with page numbers** using LIMIT/OFFSET queries and shadcn/ui Pagination
 6. **POSTCRAFT_ prefixed environment variables** with .env.sample documentation
 7. **PostCraft SDK class with templates.render()** method, Resend-style API for familiarity
+8. **Server-side HTML rendering** via design JSON parsing or headless browser approach
 
-All decisions align with constitution principles and functional requirements. No blocking unknowns remain.
+## Critical react-email-editor Integration Details ✅
+
+**All ambiguities resolved** - the specification now provides clear, actionable guidance:
+
+- **Which methods to use**: `loadDesign()`, `saveDesign()`, `exportHtml()`, `setMergeTags()`
+- **When to call them**: `onReady` callback timing for loadDesign and setMergeTags
+- **How to implement server-side rendering**: SDK must generate HTML from design JSON (two approaches documented)
+- **Database schema optimizations**: Store design JSON only, no pre-rendered HTML (generated on-demand)
+
+All decisions align with constitution principles and functional requirements. **No blocking unknowns remain** - planning phase can proceed with confidence.

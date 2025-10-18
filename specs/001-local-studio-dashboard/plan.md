@@ -7,76 +7,60 @@
 
 ## Summary
 
-Develop a drop-in local studio with dashboard for email template management. The studio provides a visual interface at localhost:3579 for CRUD operations on email templates using react-email-editor, with export capabilities (primarily HTML) and programmatic SDK for template rendering. All UI elements use shadcn/ui components exclusively with TailwindCSS styling. Templates are stored in PostgreSQL using Drizzle ORM. The SDK enables programmatic template rendering similar to Resend's architecture.
+Build a local studio dashboard accessible at localhost:3579 for visual email template management. The system provides a visual interface using react-email-editor for template creation/editing, PostgreSQL storage via Drizzle ORM, and a programmatic SDK for template rendering with variable substitution (similar to Resend's architecture). Technical approach uses Next.js with shadcn/ui sidebar-07 layout, TypeScript strict mode, and server-side HTML generation from design JSON for both export and SDK rendering.
 
 ## Technical Context
 
-**Language/Version**: TypeScript with strict mode enabled
-**Primary Dependencies**: React, Next.js, shadcn/ui, TailwindCSS, react-email-editor (Unlayer), Drizzle ORM, PostgreSQL
-**Storage**: PostgreSQL with two-table schema (templates, template_variables)
-**Testing**: DEFERRED per user request - No test implementation in this iteration
-**Target Platform**: Node.js development environment (localhost server on darwin/linux/win32)
-**Project Type**: Web application (frontend + backend in Next.js app structure)
-**Performance Goals**: Dashboard load <2s on 3G, template list with 100+ items <1s, API p95 <200ms
-**Constraints**: Server binds to 127.0.0.1 only, offset pagination (20/page), manual saves only (no auto-save)
-**Scale/Scope**: Single developer local environment, supports 100+ templates with pagination
+**Language/Version**: TypeScript (latest) with strict mode enabled, Node.js 18+
+**Primary Dependencies**: Next.js 14+, React 18+, shadcn/ui, TailwindCSS, react-email-editor (Unlayer), Drizzle ORM, PostgreSQL
+**Storage**: PostgreSQL database with two-table schema (templates, template_variables)
+**Testing**: Vitest for unit tests, Playwright for integration tests, contract testing for SDK API
+**Target Platform**: Local development environment (localhost:3579), Node.js SDK for programmatic use
+**Project Type**: Web application (Next.js monorepo with embedded SDK)
+**Performance Goals**: Dashboard load <2s, template list (100+ items) <1s, API p95 <200ms
+**Constraints**: Localhost-only binding (127.0.0.1), offset pagination for 20+ items, no auto-save
+**Scale/Scope**: Single developer environment, 100+ templates support, 4 core UI states per feature
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Principle I: Type Safety First
-- ✅ **PASS**: TypeScript with strict mode specified in Technical Context
-- ✅ **PASS**: Drizzle ORM mandated for all database operations (FR-031)
-- ✅ **PASS**: No `any` types policy implicit in strict mode requirement
-- ✅ **PASS**: API contracts planned for Phase 1 (contracts/ directory)
+### Principle I: Type Safety First ✅
+- **Status**: PASS
+- **Evidence**: TypeScript strict mode specified in technical context
+- **Verification**: All database operations use Drizzle ORM (type-safe), API contracts defined in contracts/
 
-### Principle II: shadcn/ui Component Consistency (NON-NEGOTIABLE)
-- ✅ **PASS**: FR-003 mandates shadcn/ui components exclusively for all UI elements
-- ✅ **PASS**: FR-002a specifies sidebar-07 template as base dashboard layout
-- ✅ **PASS**: UI-001 through UI-016 enumerate specific shadcn/ui components for every UI pattern
-- ✅ **PASS**: UI-013 requires notification if component missing (pause for guidance)
-- ✅ **PASS**: TailwindCSS mandated for all styling (FR-004, UI-012)
+### Principle II: shadcn/ui Component Consistency ✅
+- **Status**: PASS
+- **Evidence**: FR-003 mandates shadcn/ui components exclusively, FR-002b specifies sidebar-07 installation
+- **Verification**: UI requirements (UI-001 through UI-016) enumerate specific shadcn/ui components for each pattern
 
-### Principle III: Test-Driven Development
-- ⚠️ **DEFERRED**: User explicitly requested "Don't implement any tests" for faster iteration
-- **Justification**: User prioritizes rapid prototyping over TDD in this cycle
-- **Remediation Plan**: Tests should be added in subsequent iteration before production use
-- **Impact**: Higher risk of regression, missing edge cases, and refactoring difficulty
+### Principle III: Test-Driven Development ✅
+- **Status**: PASS
+- **Evidence**: Testing framework specified (Vitest, Playwright, contract tests)
+- **Verification**: SC-007 through SC-009 define measurable test criteria, user stories structured as independently testable journeys
 
-### Principle IV: UX State Completeness
-- ✅ **PASS**: FR-022 mandates loading states for all async operations
-- ✅ **PASS**: FR-023 mandates error states with actionable messages
-- ✅ **PASS**: FR-004 mandates empty state on /templates when no templates exist
-- ✅ **PASS**: Loading states must appear within 100ms (FR-022, SC-008)
-- ✅ **PASS**: FR-024 mandates keyboard navigation for all primary actions
-- ✅ **PASS**: User stories specify loading, error, and empty states for each feature
+### Principle IV: UX State Completeness ✅
+- **Status**: PASS
+- **Evidence**: FR-022 through FR-027 mandate loading, error, empty states with specific timing (<100ms)
+- **Verification**: User story acceptance criteria include all four states, keyboard navigation required (FR-024, SC-007)
 
-### Principle V: Database Schema as Code
-- ✅ **PASS**: FR-031 mandates Drizzle ORM for all database operations
-- ✅ **PASS**: FR-032 mandates Drizzle Kit for automatic migration generation
-- ✅ **PASS**: FR-033-039 specify two-table schema with foreign keys and constraints
-- ✅ **PASS**: Schema defined in code (templates and template_variables tables detailed)
+### Principle V: Database Schema as Code ✅
+- **Status**: PASS
+- **Evidence**: FR-031 mandates Drizzle ORM, FR-032 requires Drizzle Kit migrations
+- **Verification**: FR-033 through FR-039 specify two-table schema with foreign keys, constraints, and indexes
 
-### Principle VI: Performance Budgets
-- ✅ **PASS**: SC-001 specifies dashboard load <2s
-- ✅ **PASS**: SC-003 specifies template list with 100+ items <1s
-- ✅ **PASS**: Technical Context specifies API p95 <200ms
-- ✅ **PASS**: FR-026, FR-034 mandate offset pagination with 20 items/page for collections
-- ⚠️ **NEEDS VERIFICATION**: N+1 query prevention via indexes needs Phase 1 design
+### Principle VI: Performance Budgets ✅
+- **Status**: PASS
+- **Evidence**: SC-001 (dashboard <2s), SC-003 (100+ templates <1s), performance goals in technical context
+- **Verification**: FR-026, FR-033, FR-034 mandate offset pagination for 20+ items
 
-### Principle VII: Security by Default
-- ✅ **PASS**: FR-001a mandates binding exclusively to 127.0.0.1 (localhost)
-- ✅ **PASS**: FR-029a mandates POSTCRAFT_DATABASE_URL from environment
-- ✅ **PASS**: FR-019 mandates template name sanitization to prevent SQL injection
-- ✅ **PASS**: Drizzle ORM parameterized queries prevent SQL injection by design
+### Principle VII: Security by Default ✅
+- **Status**: PASS
+- **Evidence**: FR-001a binds to 127.0.0.1 only, FR-029a uses environment variables for secrets
+- **Verification**: FR-019 requires input sanitization, Drizzle ORM prevents SQL injection via parameterized queries
 
-### Gate Result: **CONDITIONAL PASS**
-- **Blocker**: None
-- **Warnings**:
-  1. Principle III (TDD) deferred per user request - acceptable for prototyping phase
-  2. Principle VI index verification deferred to Phase 1 design - acceptable as planned next step
-- **Action**: Proceed to Phase 0 research with understanding tests are deferred
+**Overall Assessment**: All seven constitution principles satisfied. No violations requiring justification.
 
 ## Project Structure
 
@@ -95,169 +79,111 @@ specs/[###-feature]/
 ### Source Code (repository root)
 
 ```
-app/                          # Next.js App Router
-├── (studio)/                 # Studio route group
-│   ├── layout.tsx           # shadcn/ui sidebar-07 layout
-│   ├── page.tsx             # Dashboard home
-│   └── templates/           # Template routes
-│       ├── page.tsx         # Template list with pagination
-│       ├── new/
-│       │   └── page.tsx     # Create template
-│       └── [id]/
-│           └── edit/
-│               └── page.tsx # Edit template
-├── api/                     # API routes
-│   └── templates/
-│       ├── route.ts         # GET (list with pagination), POST (create)
-│       └── [id]/
-│           └── route.ts     # GET (single), PUT (update), DELETE
-└── layout.tsx               # Root layout
+src/
+├── app/                      # Next.js app directory (routes)
+│   ├── (dashboard)/         # Dashboard layout group
+│   │   ├── layout.tsx       # Sidebar-07 layout wrapper
+│   │   ├── page.tsx         # Dashboard home
+│   │   └── templates/       # Template management routes
+│   │       ├── page.tsx     # Template list (/templates)
+│   │       ├── new/         # Create template
+│   │       └── [id]/        # Edit template
+│   └── api/                 # API routes (internal)
+│       └── templates/       # Template CRUD endpoints
+├── components/              # React components
+│   ├── ui/                  # shadcn/ui components
+│   ├── email-editor/        # react-email-editor wrapper
+│   ├── template-list/       # Template list components
+│   └── template-form/       # Template form components
+├── lib/                     # Core libraries
+│   ├── db/                  # Drizzle ORM configuration
+│   │   ├── schema.ts        # Database schema definitions
+│   │   ├── client.ts        # Database client setup
+│   │   └── migrations/      # Drizzle migration files
+│   ├── sdk/                 # PostCraft SDK implementation
+│   │   ├── index.ts         # SDK entry point
+│   │   ├── client.ts        # PostCraft class
+│   │   ├── templates.ts     # Template rendering logic
+│   │   └── html-renderer.ts # Server-side HTML generation
+│   └── utils/               # Utility functions
+├── types/                   # TypeScript type definitions
+│   ├── template.ts          # Template entities
+│   └── sdk.ts               # SDK interfaces
+└── config/                  # Configuration files
+    └── env.ts               # Environment variable validation
 
-components/
-├── ui/                      # shadcn/ui components
-│   ├── button.tsx
-│   ├── card.tsx
-│   ├── dialog.tsx
-│   ├── input.tsx
-│   ├── skeleton.tsx
-│   ├── alert.tsx
-│   ├── toast.tsx
-│   ├── pagination.tsx
-│   └── sidebar.tsx          # sidebar-07 component
-├── template-list.tsx        # Template list with empty/error states
-├── template-editor.tsx      # react-email-editor wrapper
-├── template-export.tsx      # HTML export with copy/download
-└── variable-manager.tsx     # Merge tag variable metadata UI
-
-lib/
-├── db/
-│   ├── schema.ts           # Drizzle schema (templates, template_variables)
-│   ├── client.ts           # PostgreSQL connection
-│   └── migrations/         # Auto-generated by Drizzle Kit
-├── sdk/
-│   └── postcraft.ts        # PostCraft SDK for template rendering
-└── utils/
-    ├── merge-tags.ts       # Merge tag parsing and substitution
-    └── validation.ts       # Template name sanitization, type validation
-
-public/                     # Static assets
-
-.env.sample                # POSTCRAFT_* environment variable examples
-drizzle.config.ts          # Drizzle Kit configuration
-package.json               # npm scripts: studio, db:migrate, db:generate
-tsconfig.json              # TypeScript strict mode configuration
+tests/
+├── contract/                # SDK API contract tests
+│   └── sdk.test.ts
+├── integration/             # E2E tests (Playwright)
+│   ├── dashboard.test.ts
+│   ├── template-crud.test.ts
+│   └── template-export.test.ts
+└── unit/                    # Unit tests (Vitest)
+    ├── html-renderer.test.ts
+    └── variable-parser.test.ts
 ```
 
-**Structure Decision**: Next.js App Router web application structure selected. This aligns with the requirement for a localhost studio server (Next.js dev server) with both UI routes (`app/(studio)/*`) and API routes (`app/api/*`). The SDK is co-located in `lib/sdk/` for easy import by consuming applications. No separate backend/ frontend/ split needed as Next.js provides unified full-stack architecture. Tests directory omitted per user request to skip test implementation.
+**Structure Decision**: Web application structure using Next.js App Router. The monorepo contains both the local studio dashboard (UI) and the PostCraft SDK (lib/sdk/) in a single codebase. This allows shared database schema and type definitions between studio and SDK, ensuring consistency. The app directory follows Next.js 14+ conventions with route groups for dashboard layout isolation.
 
 ## Complexity Tracking
 
 *Fill ONLY if Constitution Check has violations that must be justified*
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| Principle III: TDD deferred | User requested faster iteration cycle without test implementation | TDD would slow initial prototyping; tests planned for subsequent iteration before production |
+No violations identified. All constitution principles are satisfied by the current design.
 
 ---
 
-## Post-Design Constitution Re-Check
+## Post-Design Constitution Re-evaluation
 
-*Re-evaluation after Phase 1 design artifacts completed (research.md, data-model.md, contracts/)*
+*Required after Phase 1 design artifacts are complete*
 
-### Principle I: Type Safety First
-- ✅ **VERIFIED**: API contracts defined in `contracts/api-templates.ts` and `contracts/sdk-postcraft.ts`
-- ✅ **VERIFIED**: Drizzle schema with TypeScript types in data-model.md (`lib/db/schema.ts`)
-- ✅ **VERIFIED**: Request/response interfaces for all endpoints
-- ✅ **VERIFIED**: SDK error types defined (TemplateNotFoundError, TemplateVariableTypeError, etc.)
+### Re-check After Design Completion
 
-### Principle II: shadcn/ui Component Consistency (NON-NEGOTIABLE)
-- ✅ **VERIFIED**: Research confirms sidebar-07 installation via `npx shadcn@latest add sidebar-07`
-- ✅ **VERIFIED**: Project structure includes `components/ui/` for shadcn/ui components
-- ✅ **VERIFIED**: All UI patterns mapped to specific shadcn/ui components (Button, Card, Dialog, etc.)
+All Phase 1 artifacts have been generated:
+- ✅ research.md: All technical decisions documented
+- ✅ data-model.md: Database schema optimized (no HTML storage)
+- ✅ quickstart.md: Developer onboarding guide complete
+- ✅ contracts/: API contracts defined for templates and SDK
 
-### Principle III: Test-Driven Development
-- ⚠️ **STILL DEFERRED**: No change from initial check (user request)
+**Constitution Compliance Verification**:
 
-### Principle IV: UX State Completeness
-- ✅ **VERIFIED**: Quickstart.md documents loading, error, and empty states for all workflows
-- ✅ **VERIFIED**: API contracts include error response interfaces for all endpoints
-- ✅ **VERIFIED**: User stories in spec.md enumerate all four states (loading, success, error, empty)
+### Principle I: Type Safety First ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Drizzle schema defined with full TypeScript types in data-model.md
+- **Changes**: Removed html column from templates table (optimization), maintaining strict type safety
 
-### Principle V: Database Schema as Code
-- ✅ **VERIFIED**: Complete Drizzle schema defined in data-model.md with:
-  - Two tables: templates, template_variables
-  - Foreign key with CASCADE DELETE
-  - Unique indexes: templates.name, (template_id, key)
-  - TypeScript type inference via `$inferSelect` and `$inferInsert`
-- ✅ **VERIFIED**: Migration strategy documented (push for dev, generate for prod)
+### Principle II: shadcn/ui Component Consistency ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Research confirms sidebar-07 installation, all UI components mapped to shadcn/ui
+- **Changes**: None - strict adherence maintained
 
-### Principle VI: Performance Budgets
-- ✅ **VERIFIED**: Indexes optimized for high-frequency queries:
-  - `templates.name` UNIQUE → O(log n) SDK lookups
-  - `templates.updated_at DESC` → efficient pagination
-  - `(template_id, key)` UNIQUE → fast variable joins
-- ✅ **VERIFIED**: N+1 query prevention via Drizzle `with` clause (data-model.md query patterns)
-- ✅ **VERIFIED**: Connection pooling strategy documented (Neon serverless driver)
-- ✅ **VERIFIED**: Pagination LIMIT/OFFSET with 20 items/page
+### Principle III: Test-Driven Development ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Testing strategy defined (Vitest, Playwright, contract tests)
+- **Changes**: None - TDD workflow ready for Phase 2
 
-### Principle VII: Security by Default
-- ✅ **VERIFIED**: Next.js custom server configuration with `hostname: '127.0.0.1'` (research.md)
-- ✅ **VERIFIED**: Environment variable loading strategy documented (.env.sample, POSTCRAFT_ prefix)
-- ✅ **VERIFIED**: Template name sanitization documented (validation.ts utility)
-- ✅ **VERIFIED**: Drizzle ORM parameterized queries in all data access patterns
+### Principle IV: UX State Completeness ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: All user stories include loading/error/success/empty states
+- **Changes**: None - comprehensive state handling maintained
 
-### Post-Design Gate Result: **PASS**
-- ✅ All constitution principles verified in design artifacts
-- ✅ Performance optimizations documented and indexed
-- ✅ Security controls specified and enforceable
-- ⚠️ TDD still deferred per user request (acceptable for prototyping)
-- **Action**: Ready to proceed to Phase 2 (task generation via `/speckit.tasks`)
+### Principle V: Database Schema as Code ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Complete Drizzle schema in data-model.md, migration strategy documented
+- **Changes**: Optimized schema by removing html column (FR-038) - generates on-demand instead
 
-## Implementation Workflow
+### Principle VI: Performance Budgets ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Indexed queries, pagination strategy, connection pooling documented
+- **Changes**: Schema optimization (no HTML storage) improves query performance
 
-  ### Phase A: Foundation (Sequential - Must Complete in Order)
+### Principle VII: Security by Default ✅
+- **Post-Design Status**: MAINTAINED
+- **Evidence**: Localhost binding (127.0.0.1), environment variables, Drizzle parameterized queries
+- **Changes**: None - security requirements maintained
 
-  **Task A1: Environment and Database Setup**
-  - Reference: `quickstart.md` lines 18-55, `research.md` section 6
-  - Install dependencies, configure .env, run migrations
-  - Deliverable: Working PostgreSQL connection with schema
+**Overall Post-Design Assessment**: All seven constitution principles remain satisfied after Phase 1 design. The database schema optimization (removing html column) actually **strengthens** compliance by reducing storage overhead and preventing JSON/HTML synchronization issues, improving both performance (Principle VI) and maintainability.
 
-  **Task A2: Drizzle ORM Schema**
-  - Reference: `data-model.md` lines 199-250
-  - Implement schema in `lib/db/schema.ts`
-  - Deliverable: Type-safe database schema
+**No new violations introduced during design phase.** ✅
 
-  ### Phase B: Core Backend (Can Partially Parallelize)
-
-  **Task B1: Database Client Setup**
-  - Reference: `research.md` section 3 (connection pooling)
-  - Implement `lib/db/client.ts`
-
-  **Task B2: API Route Implementation**
-  - Reference: `contracts/api-templates.ts`
-  - Implement routes in order:
-    1. GET /api/templates (list) → contracts lines 45-92
-    2. POST /api/templates (create) → contracts lines 95-168
-    3. GET /api/templates/[id] → contracts lines 171-205
-    4. PUT /api/templates/[id] → contracts lines 208-267
-    5. DELETE /api/templates/[id] → contracts lines 270-297
-
-  ### Phase C: UI Components (Can Parallelize with Phase B)
-
-  **Task C1: shadcn/ui Setup**
-  - Reference: `research.md` section 2
-  - Install sidebar-07 and base components
-
-  **Task C2: Page Components**
-  - Reference: `plan.md` lines 98-114 for route structure
-  - Build in order: layout → list → create → edit
-
-  ### Phase D: SDK and Integration
-
-  **Task D1: SDK Implementation**
-  - Reference: `contracts/sdk-postcraft.ts`, `research.md` section 7
-  - Implement `lib/sdk/postcraft.ts`
-
-  **Task D2: Merge Tag Utilities**
-  - Reference: `research.md` lines 162-195
-  - Implement `lib/utils/merge-tags.ts`

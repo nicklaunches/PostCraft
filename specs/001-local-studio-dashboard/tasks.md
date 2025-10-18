@@ -3,6 +3,14 @@
 **Input**: Design documents from `/specs/001-local-studio-dashboard/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
 
+**Last Updated**: 2025-10-18 - Updated for database schema optimization (no HTML column storage)
+
+**Key Design Changes**:
+- ✅ **Database Optimization**: templates table does NOT store html column (FR-038)
+- ✅ **On-Demand HTML Generation**: Use exportHtml() in studio UI and server-side HTML renderer in SDK
+- ✅ **react-email-editor Integration**: Use loadDesign(), saveDesign(), exportHtml(), setMergeTags() methods
+- ✅ **Server-Side Rendering**: SDK implements HTML generation from design JSON without browser
+
 **Tests**: Tests are DEFERRED per user request in plan.md - No test tasks included in this implementation
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
@@ -45,7 +53,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T011 Implement Drizzle schema in lib/db/schema.ts with templates and template_variables tables per data-model.md lines 199-250
+- [ ] T011 Implement Drizzle schema in lib/db/schema.ts with templates (NO html column) and template_variables tables per data-model.md lines 210-220
 - [ ] T012 Create database client in lib/db/client.ts using @neondatabase/serverless driver with connection pooling per research.md section 3
 - [ ] T013 Configure drizzle.config.ts for Drizzle Kit with PostgreSQL connection string from POSTCRAFT_DATABASE_URL
 - [ ] T014 Run drizzle-kit push to initialize database schema in PostgreSQL
@@ -114,6 +122,8 @@
 
 - [ ] T037 [P] [US8] Create PostCraft SDK class in lib/sdk/postcraft.ts with constructor accepting PostCraftConfig per contracts/sdk-postcraft.ts lines 76-97
 - [ ] T038 [P] [US8] Implement templates.render() method in lib/sdk/postcraft.ts with database query and merge tag substitution per contracts/sdk-postcraft.ts lines 102-131
+- [ ] T038a [P] [US8] Create lib/sdk/html-renderer.ts implementing server-side HTML generation from react-email-editor design JSON per research.md section 8
+- [ ] T038b [US8] Research react-email-editor design JSON structure and implement HTML generation algorithm in lib/sdk/html-renderer.ts
 - [ ] T039 [US8] Add database connection logic to PostCraft constructor using POSTCRAFT_DATABASE_URL environment variable
 - [ ] T040 [US8] Implement error classes in lib/sdk/postcraft.ts: TemplateNotFoundError, TemplateVariableTypeError, RequiredVariableMissingError, DatabaseConnectionError per contracts/sdk-postcraft.ts lines 36-70
 - [ ] T041 [US8] Add variable type validation in templates.render() method checking provided values against template variable metadata types
@@ -140,7 +150,7 @@
 - [ ] T049 [US3] Implement TemplateEditor component in components/template-editor.tsx wrapping react-email-editor with all features enabled per FR-006a
 - [ ] T050 [US3] Configure react-email-editor in components/template-editor.tsx with merge tags enabled and full tools unlocked per research.md lines 143-205
 - [ ] T051 [US3] Add template name input to app/(studio)/templates/new/page.tsx using shadcn/ui Input with validation
-- [ ] T052 [US3] Implement save handler in app/(studio)/templates/new/page.tsx calling exportHtml() and POST /api/templates
+- [ ] T052 [US3] Implement save handler in app/(studio)/templates/new/page.tsx calling saveDesign() to get design JSON and POST /api/templates
 - [ ] T053 [US3] Add loading state during save using shadcn/ui Toast for "Saving..." notification
 - [ ] T054 [US3] Add success/error feedback after save using shadcn/ui Toast with redirect to /templates on success
 - [ ] T055 [US3] Implement unsaved changes warning using browser beforeunload event per FR-025
@@ -204,7 +214,7 @@
 
 ### Implementation for User Story 7
 
-- [ ] T077 [P] [US7] Implement merge tag detection in components/template-editor.tsx parsing HTML from exportHtml() using regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
+- [ ] T077 [P] [US7] Implement merge tag detection in components/template-editor.tsx by calling exportHtml() and parsing with regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
 - [ ] T078 [P] [US7] Create VariableManager component in components/variable-manager.tsx for defining variable metadata
 - [ ] T079 [US7] Add variable metadata form to components/variable-manager.tsx with fields: key (read-only), type (Select), fallbackValue (Input), isRequired (Checkbox)
 - [ ] T080 [US7] Implement type selection dropdown in components/variable-manager.tsx using shadcn/ui Select with options: string, number, boolean, date
@@ -228,7 +238,7 @@
 
 - [ ] T086 [P] [US6] Create TemplateExport component in components/template-export.tsx with export interface
 - [ ] T087 [P] [US6] Add "Export" button to template cards in components/template-list.tsx opening export dialog
-- [ ] T088 [US6] Implement HTML export in components/template-export.tsx fetching template.html from database
+- [ ] T088 [US6] Implement HTML export in components/template-export.tsx loading template.content into editor and calling exportHtml() to generate HTML on-demand
 - [ ] T089 [US6] Add copy-to-clipboard functionality using navigator.clipboard.writeText() with success feedback via shadcn/ui Toast
 - [ ] T090 [US6] Add download functionality creating Blob with HTML content and triggering download with anchor element
 - [ ] T091 [US6] Add loading state during export using shadcn/ui Skeleton while fetching template data
