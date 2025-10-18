@@ -18,13 +18,6 @@
   - Tested independently
   - Deployed independently
   - Demonstrated to users independently
-
-  UX CONSISTENCY REQUIREMENTS (per Constitution Principle IV):
-  - All stories must follow shadcn/ui component patterns
-  - Include loading states, error states, and empty states
-  - Ensure keyboard navigation and WCAG 2.1 AA accessibility
-  - Provide real-time validation feedback for forms
-  - Maintain consistent spacing, typography, and colors
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)

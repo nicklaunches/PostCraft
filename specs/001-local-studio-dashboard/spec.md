@@ -5,6 +5,26 @@
 **Status**: Draft
 **Input**: User description: "Develop drop-in local studio with dashboard, templates management, react-email-editor integration, and export capabilities"
 
+## Scope
+
+### In Scope
+- Local studio dashboard accessible at localhost:3579
+- Template management (create, read, update, delete)
+- Visual email editor integration (react-email-editor)
+- Template export in multiple formats (React, HTML, JSON, plain text)
+- Template variable management with type definitions and fallback values
+- shadcn/ui components and TailwindCSS design patterns throughout the interface
+
+### Out of Scope
+- Template import functionality (deferred to future version)
+- Multi-user collaboration or real-time editing
+- Template versioning or revision history
+- Email sending/delivery functionality
+- Template preview in multiple email clients
+- Template marketplace or sharing features
+- Authentication or user management
+- Cloud storage or synchronization
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -37,7 +57,7 @@ As a developer, I want to access the PostCraft local studio by navigating to loc
 
 **Acceptance Scenarios**:
 
-1. **Given** the PostCraft package is installed, **When** I start the local studio server, **Then** the dashboard loads at localhost:3579 with a welcome screen
+1. **Given** the PostCraft package is installed, **When** I run `npm run studio` or `yarn studio`, **Then** the local studio server starts and the dashboard loads at localhost:3579 with a welcome screen
 2. **Given** I'm on the dashboard, **When** I look at the navigation, **Then** I see clear options to access Templates and other sections
 3. **Given** the dashboard is loading, **When** the page is rendering, **Then** I see a loading state with appropriate feedback
 4. **Given** the server fails to start, **When** an error occurs, **Then** I see a clear error message with troubleshooting steps
@@ -101,7 +121,8 @@ As a developer, I want to edit an existing email template so that I can update a
 4. **Given** I'm editing a template, **When** I navigate away without saving, **Then** I see a warning about unsaved changes
 5. **Given** a template is loading in the editor, **When** the page renders, **Then** I see a loading state until the content is ready
 6. **Given** I'm editing a template, **When** the save fails, **Then** I see a clear error message and can retry
-7. **Given** I'm editing a template, **When** I use keyboard shortcuts, **Then** common actions (save, undo, redo) are accessible via keyboard
+7. **Given** I'm editing a template in one tab, **When** I try to open the same template in another tab, **Then** the second tab shows read-only mode with a notification
+8. **Given** I'm editing a template, **When** I use keyboard shortcuts, **Then** common actions (save, undo, redo) are accessible via keyboard
 
 ---
 
@@ -165,7 +186,7 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 
 ### Edge Cases
 
-- What happens when the user navigates to localhost:3579 but the server isn't running? Display a connection error with instructions to start the server.
+- What happens when the user navigates to localhost:3579 but the server isn't running? Display a connection error with instructions to run `npm run studio` or `yarn studio`.
 - What happens when a template name contains special characters or is very long? Validate and sanitize template names, enforce character limits.
 - What happens when the user tries to export a template with no content? Show a warning that the template is empty and ask for confirmation.
 - What happens when multiple templates have the same name? Prevent duplicate names with validation or auto-append a number suffix.
@@ -173,6 +194,7 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 - What happens when a user has hundreds of templates? Implement pagination or virtual scrolling to maintain performance.
 - What happens when a template's JSON structure is corrupted? Detect corruption during load and offer recovery options or safe defaults.
 - What happens when the user closes the browser while editing? Implement auto-save or draft functionality to prevent data loss.
+- What happens when the same template is opened in multiple browser tabs? Enforce single-editor lock - first tab gets edit mode, others show read-only with notification.
 - What happens when exported React components contain invalid variable names? Sanitize variable names to be valid JavaScript identifiers.
 - What happens when a template uses deprecated react-email-editor features? Display migration warnings and provide update guidance.
 
@@ -182,13 +204,15 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 
 - **FR-001**: System MUST serve the local studio dashboard on localhost:3579 when started
 - **FR-002**: System MUST display a functional navigation interface following shadcn/ui design patterns
-- **FR-003**: System MUST provide a /templates route that displays all email templates
+- **FR-003**: System MUST use shadcn/ui components exclusively for all UI elements throughout the interface
+- **FR-004**: System MUST apply TailwindCSS design patterns consistently across all pages and components
+- **FR-005**: System MUST provide a /templates route that displays all email templates
 - **FR-004**: System MUST display an empty state on /templates when no templates exist
 - **FR-005**: System MUST allow users to create new email templates via a "Create New Template" action
 - **FR-006**: System MUST integrate react-email-editor for visual template design and editing
 - **FR-007**: System MUST allow users to edit existing email templates
 - **FR-008**: System MUST allow users to delete email templates with confirmation
-- **FR-009**: System MUST persist templates between server restarts
+- **FR-009**: System MUST persist templates as JSON files in a local templates directory between server restarts
 - **FR-010**: System MUST export templates as React components with proper imports and structure
 - **FR-011**: System MUST export templates as HTML with inline styles for email clients
 - **FR-012**: System MUST export templates as JSON in react-email-editor compatible format
@@ -198,13 +222,34 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 - **FR-016**: System MUST allow users to define variable types (string, number) and fallback values
 - **FR-017**: System MUST include variable metadata in template exports
 - **FR-018**: System MUST validate template names and prevent duplicates
-- **FR-019**: System MUST display loading states during async operations (loading templates, saving, exporting)
-- **FR-020**: System MUST display error states with actionable messages when operations fail
-- **FR-021**: System MUST support keyboard navigation for all primary actions
-- **FR-022**: System MUST warn users about unsaved changes before navigation
-- **FR-023**: System MUST handle template list pagination or virtual scrolling for large datasets
-- **FR-024**: System MUST provide visual feedback for all user actions (success, error, loading)
-- **FR-025**: System MUST follow WCAG 2.1 AA accessibility standards
+- **FR-019**: System MUST sanitize template names for file system compatibility when creating JSON files
+- **FR-020**: System MUST enforce single-editor lock per template (only one browser tab can edit at a time)
+- **FR-021**: System MUST display read-only mode with notification when template is being edited in another tab
+- **FR-022**: System MUST display loading states during async operations (loading templates, saving, exporting)
+- **FR-023**: System MUST display error states with actionable messages when operations fail
+- **FR-024**: System MUST support keyboard navigation for all primary actions
+- **FR-025**: System MUST warn users about unsaved changes before navigation
+- **FR-026**: System MUST handle template list pagination or virtual scrolling for large datasets
+- **FR-027**: System MUST provide visual feedback for all user actions (success, error, loading)
+- **FR-028**: System MUST follow WCAG 2.1 AA accessibility standards
+
+### UI/UX Design Requirements
+
+- **UI-001**: System MUST use shadcn/ui components exclusively for all user interface elements
+- **UI-002**: System MUST use shadcn/ui Button component for all button interactions
+- **UI-003**: System MUST use shadcn/ui Card component for template list items and content containers
+- **UI-004**: System MUST use shadcn/ui Dialog component for confirmation prompts and modals
+- **UI-005**: System MUST use shadcn/ui Input component for all text input fields
+- **UI-006**: System MUST use shadcn/ui Select component for dropdown selections (e.g., export format)
+- **UI-007**: System MUST use shadcn/ui Skeleton component for loading states
+- **UI-008**: System MUST use shadcn/ui Alert component for error and success messages
+- **UI-009**: System MUST use shadcn/ui Toast component for transient notifications
+- **UI-010**: System MUST use shadcn/ui Tabs component for multi-section navigation if applicable
+- **UI-011**: System MUST use shadcn/ui Badge component for status indicators
+- **UI-012**: System MUST apply TailwindCSS utility classes following best practices for spacing, typography, and colors
+- **UI-013**: System MUST notify developers when a required UI pattern has no corresponding shadcn/ui component and request solution guidance
+- **UI-014**: System MUST maintain consistent spacing using TailwindCSS spacing scale (4px base unit)
+- **UI-015**: System MUST use shadcn/ui theme variables for colors to support potential theme switching
 
 ### Key Entities
 
@@ -230,15 +275,30 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 
 ### Assumptions
 
-- The local studio runs as a standalone server process that developers start manually
-- Templates are stored locally in the project using file system or local database (e.g., SQLite)
-- The shadcn/ui dashboard template refers to community dashboard layouts compatible with shadcn components
+- The local studio runs as a standalone server process that developers start via npm/yarn script commands
+- Developers run `npm run studio` or `yarn studio` to launch the local studio server
+- Templates are stored as individual JSON files in a local templates directory (file system storage)
+- Each template file contains the complete template data including metadata, content, and variables
+- Template file names are derived from template names (sanitized for file system compatibility)
+- All UI elements use shadcn/ui components exclusively - no custom component alternatives allowed
+- If a required UI pattern lacks a shadcn/ui component, implementation must pause for user guidance
+- TailwindCSS is used for all styling following utility-first design patterns
 - Export functionality provides download files or clipboard copy, not direct code integration
 - Template variables follow Handlebars-style triple-brace syntax: {{{VARIABLE_NAME}}}
 - Authentication is not required for local studio access (runs on localhost for single developer)
 - The react-email-editor is the Unlayer Email Editor React component
 - Templates are personal to the developer's local environment, not shared across team members
 - Export format for React components produces functional components compatible with modern React
+
+## Clarifications
+
+### Session 2025-10-18
+
+- Q: Template Storage Mechanism - File system storage or SQLite database? → A: File system storage - Each template as a JSON file in a templates directory
+- Q: Template Import Capability - Should users be able to import templates from files? → A: No import capability - Export only for initial version
+- Q: Server Startup Command - How do developers start the local studio? → A: npm/yarn script - Run via `npm run studio` or `yarn studio` command
+- Q: Concurrent Editing Handling - What happens if same template edited in multiple tabs? → A: Single edit lock - Only one tab can edit at a time, others show read-only
+- Q: shadcn/ui Component Usage - How strictly should shadcn/ui components be enforced? → A: Strict enforcement - Mandate shadcn/ui for ALL UI elements; if component not found, notify user to provide solution
 
 ## Success Criteria *(mandatory)*
 

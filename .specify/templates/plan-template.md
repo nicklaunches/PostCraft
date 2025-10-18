@@ -31,21 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Verify compliance with PostCraft Constitution (v1.0.0):
-
-- [ ] **Component-First Architecture**: Feature designed as composable, reusable components with clear boundaries
-- [ ] **Type Safety**: All interfaces type-safe with TypeScript strict mode; runtime validation planned (Zod schemas)
-- [ ] **Test Coverage Standards**: TDD approach planned; unit/integration/E2E tests identified
-- [ ] **UX Consistency**: UI follows shadcn/ui patterns; accessibility requirements considered
-- [ ] **Performance Requirements**: Performance targets defined (page load <2s, API <500ms p95)
-- [ ] **Provider Abstraction**: External services use adapter pattern (ESP, AI, Storage, Auth)
-
-**Complexity Justification Required If:**
-- Adding new external service without adapter pattern
-- Introducing tight coupling between feature domains
-- Using `any` types or disabling TypeScript strict checks
-- Skipping tests or reducing coverage below 90%
-- Performance targets cannot be met (document trade-offs)
+[Gates determined based on constitution file]
 
 ## Project Structure
 
