@@ -60,7 +60,6 @@ This constitution defines the non-negotiable principles and standards that guide
 - API contracts MUST define request/response schemas Zod
 - Email template props MUST be validated with schemas
 - ESP adapter interfaces MUST enforce type contracts
-- Database queries MUST use typed ORMs Drizzle
 - AI assistant prompts/responses MUST have defined input/output types
 
 **Rationale**: Type safety catches errors at compile time, provides better IDE support, and serves as living documentation. Runtime validation ensures data integrity from external sources (APIs, user input, ESP responses).
@@ -164,7 +163,7 @@ interface EmailProvider {
 
 ### Required Dependencies
 - **Validation**: Zod for schema validation
-- **ORM**: Prisma or Drizzle ORM (type-safe queries)
+- **ORM**: Drizzle ORM
 - **Testing**: Jest/Vitest, React Testing Library, Playwright
 - **Linting**: ESLint with Next.js config + Prettier
 - **Git Hooks**: Husky + lint-staged for pre-commit checks
