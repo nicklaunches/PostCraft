@@ -247,10 +247,13 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-005**: System MUST allow users to create new email templates via a "Create New Template" action
 - **FR-006**: System MUST integrate react-email-editor for visual template design and editing
 - **FR-006a**: System MUST initialize react-email-editor with all features and tools enabled (full unlocked mode with no restrictions)
+- **FR-006b**: System MUST load saved template designs using `loadDesign()` method called within the `onReady` callback
+- **FR-006c**: System MUST save template designs using `saveDesign()` method with callback to retrieve design JSON for database persistence
 - **FR-007**: System MUST allow users to edit existing email templates
 - **FR-008**: System MUST allow users to delete email templates with confirmation
 - **FR-009**: System MUST persist templates in PostgreSQL database between server restarts
 - **FR-010**: System MUST export templates as HTML with inline styles ready for email clients
+- **FR-010a**: System MUST use `exportHtml()` method to generate fresh HTML at export time rather than returning stored HTML
 - **FR-011**: System MUST preserve merge tag variables in exported HTML in SDK-compatible format
 - **FR-012**: System MUST provide copy-to-clipboard functionality for HTML exports
 - **FR-013**: System MUST provide download functionality for HTML exports
@@ -258,14 +261,17 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-014a**: SDK MUST support instantiation via `new PostCraft()` constructor
 - **FR-014b**: SDK MUST provide `templates.render(name, variables)` method for rendering templates with variable substitution
 - **FR-014c**: SDK MUST retrieve templates from PostgreSQL when rendering using the same DATABASE_URL environment variable as the studio
-- **FR-014d**: SDK MUST replace merge tag variables with provided values during rendering
-- **FR-014e**: SDK MUST use fallback values for missing variables when fallback is defined
-- **FR-014f**: SDK MUST throw clear errors when required variables are missing and no fallback exists
-- **FR-014g**: SDK MUST throw clear errors when template name is not found in database
-- **FR-014h**: SDK MUST validate variable types at runtime against template variable metadata
-- **FR-014i**: SDK MUST throw descriptive errors when provided variable values do not match expected types (e.g., string provided for number type)
-- **FR-014j**: SDK MUST include variable name, expected type, and provided type in validation error messages
+- **FR-014d**: SDK MUST implement server-side HTML generation from design JSON (equivalent to react-email-editor's exportHtml but for Node.js)
+- **FR-014e**: SDK MUST replace merge tag variables with provided values during server-side HTML rendering
+- **FR-014f**: SDK MUST use fallback values for missing variables when fallback is defined
+- **FR-014g**: SDK MUST throw clear errors when required variables are missing and no fallback exists
+- **FR-014h**: SDK MUST throw clear errors when template name is not found in database
+- **FR-014i**: SDK MUST validate variable types at runtime against template variable metadata
+- **FR-014j**: SDK MUST throw descriptive errors when provided variable values do not match expected types (e.g., string provided for number type)
+- **FR-014k**: SDK MUST include variable name, expected type, and provided type in validation error messages
 - **FR-015**: System MUST detect template variables using react-email-editor's native merge tag feature
+- **FR-015a**: System MUST configure merge tags dynamically using `setMergeTags()` method called in `onReady` callback
+- **FR-015b**: System MUST load existing template variable metadata from database and configure them in the editor via `setMergeTags()`
 - **FR-016**: System MUST allow users to define variable types (string, number, boolean, date) and fallback values for merge tags
 - **FR-017**: System MUST include variable metadata in template exports
 - **FR-018**: System MUST validate template names and prevent duplicates
@@ -283,7 +289,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-035**: System MUST enforce referential integrity (cascade delete variables when template is deleted)
 - **FR-036**: System MUST store template name with unique constraint in templates table
 - **FR-037**: System MUST store react-email-editor JSON content in templates.content column
-- **FR-038**: System MUST store rendered HTML with merge tags in templates.html column
+- **FR-038**: System MUST generate HTML on-demand using `exportHtml()` method rather than storing pre-rendered HTML in database
 - **FR-039**: System MUST store variable metadata (key, type as string/number/boolean/date, fallback, is_required) in template_variables table
 - **FR-020**: System MUST enforce single-editor lock per template (only one browser tab can edit at a time)
 - **FR-021**: System MUST display read-only mode with notification when template is being edited in another tab
@@ -327,8 +333,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **Email Template** (Database Table: `templates`): Represents a designed email with metadata
   - ID: Primary key, auto-generated unique identifier
   - Name: Unique template name for referencing in SDK and UI
-  - Content: The email design in react-email-editor JSON format
-  - HTML: Rendered HTML version of the template with merge tags
+  - Content: The email design in react-email-editor JSON format (used for loading in editor and generating HTML on-demand)
   - Created At: Timestamp of template creation
   - Updated At: Timestamp of last modification
 
@@ -361,7 +366,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - Database uses two-table normalized design: `templates` table and `template_variables` table
 - Foreign key relationship exists from template_variables.template_id to templates.id with cascade delete
 - Template name has unique constraint to prevent duplicates
-- Templates table stores: id, name, content (JSON), html, created_at, updated_at
+- Templates table stores: id, name, content (JSON), created_at, updated_at (HTML is generated on-demand via exportHtml(), not stored)
 - Template_variables table stores: id, template_id (FK), key, type (string/number/boolean/date), fallback_value, is_required, created_at
 - Template lists use offset-based pagination with traditional page numbers (LIMIT/OFFSET queries)
 - Default page size is 20 templates per page for optimal load performance
@@ -411,6 +416,11 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - Q: SDK Type Validation for Template Variables - Should the SDK validate variable types at runtime? → A: Validate types at runtime and throw descriptive errors for mismatches
 - Q: Dashboard UI Template - Which shadcn/ui template should be used for the local studio dashboard? → A: sidebar-07 template - Use `npx shadcn@latest add sidebar-07` (collapsible sidebar with icons)
 - Q: How does the PostCraft SDK connect to the database? → A: Shared config - SDK uses same PostgreSQL connection string from environment (POSTCRAFT_DATABASE_URL) as studio
+- Q: react-email-editor Method for Loading Templates - Which method should be used to load saved designs when editing? → A: Use `loadDesign()` in the `onReady` callback
+- Q: react-email-editor Method for Saving Templates - Which method should be called to retrieve design state for database persistence? → A: Use `saveDesign()` method with callback
+- Q: HTML Export Generation Strategy - How should the system generate HTML output when exporting templates? → A: Use `exportHtml()` to generate fresh HTML at export time
+- Q: SDK HTML Rendering Implementation - How should the SDK's templates.render() method generate HTML with variable substitution? → A: Load design JSON and use server-side exportHtml equivalent
+- Q: Merge Tags Configuration in react-email-editor - How should the system configure merge tags (template variables) in the editor? → A: Use `setMergeTags()` method with dynamic configuration
 
 ## Success Criteria *(mandatory)*
 
