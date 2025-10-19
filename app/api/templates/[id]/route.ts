@@ -244,3 +244,99 @@ export async function PUT(
     );
   }
 }
+
+/**
+ * DELETE /api/templates/[id] - Delete Template
+ *
+ * Deletes an existing email template and all associated merge tag variables in a cascade delete operation.
+ * Leverages database foreign key constraints with CASCADE DELETE to automatically remove related variables
+ * when the parent template is deleted, ensuring referential integrity and preventing orphaned records.
+ *
+ * **Cascade Delete Behavior**:
+ * The database schema (data-model.md) defines a foreign key relationship from template_variables.template_id
+ * to templates.id with CASCADE DELETE. This means:
+ * - When DELETE removes the template row, the database automatically deletes all related variable rows
+ * - No manual deletion of variables is required in this route
+ * - The entire operation completes in a single database transaction
+ * - If deletion fails for any reason, the transaction rolls back and nothing is deleted
+ *
+ * **Database Foreign Key**:
+ * ```sql
+ * ALTER TABLE template_variables
+ * ADD FOREIGN KEY (template_id)
+ * REFERENCES templates(id)
+ * ON DELETE CASCADE;
+ * ```
+ *
+ * @param {NextRequest} _request - Incoming HTTP request (unused for DELETE)
+ * @param {Object} params - Dynamic route parameters
+ * @param {string} params.params.id - Template ID from URL path (e.g., "5" in /api/templates/5)
+ *
+ * @returns {Promise<NextResponse>} JSON response with success message or error details
+ *
+ * @throws {400} Invalid template ID (not numeric)
+ * @throws {404} Template not found (no template with given ID exists)
+ * @throws {500} Database deletion error, connection failure, or unexpected error
+ *
+ * @example
+ * DELETE /api/templates/5
+ * // Response (200): { success: true, message: "Template 'password-reset' deleted successfully" }
+ *
+ * @example
+ * DELETE /api/templates/999
+ * // Response (404): { error: "Template not found", details: "No template with id 999 exists" }
+ *
+ * @example
+ * // Cascade delete example:
+ * // Before: templates.id=5 exists with template_variables records for {{NAME}}, {{EMAIL}}
+ * // DELETE /api/templates/5
+ * // After: template row is deleted AND all associated template_variables rows are automatically deleted
+ */
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const templateId = parseInt(params.id, 10);
+
+    if (isNaN(templateId)) {
+      return NextResponse.json(
+        { error: "Invalid template ID" },
+        { status: 400 }
+      );
+    }
+
+    // Check if template exists before deletion
+    const existingTemplate = await db.query.templates.findFirst({
+      where: eq(templates.id, templateId),
+    });
+
+    if (!existingTemplate) {
+      return NextResponse.json(
+        {
+          error: "Template not found",
+          details: `No template with id ${templateId} exists`,
+        },
+        { status: 404 }
+      );
+    }
+
+    // Delete the template (cascade delete removes associated variables via database foreign key)
+    await db.delete(templates).where(eq(templates.id, templateId));
+
+    return NextResponse.json({
+      success: true,
+      message: `Template '${existingTemplate.name}' deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting template:", error);
+    return NextResponse.json(
+      {
+        error: "Failed to delete template",
+        details:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      },
+      { status: 500 }
+    );
+  }
+}

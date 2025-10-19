@@ -39,6 +39,7 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { AlertCircle, FileText, Plus, Edit, Trash2, Download } from 'lucide-react'
 import type { ListTemplatesResponse } from '@/specs/001-local-studio-dashboard/contracts/api-templates'
@@ -74,6 +75,11 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
   const [data, setData] = useState<ListTemplatesResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deleteTargetTemplate, setDeleteTargetTemplate] = useState<{ id: number; name: string } | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   /**
    * Fetches templates from the API
@@ -98,6 +104,60 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
       setLoading(false)
     }
   }, [page, pageSize])
+
+  /**
+   * Handles template deletion with error handling and confirmation
+   *
+   * @returns Promise that resolves when deletion completes
+   */
+  const handleDeleteTemplate = useCallback(async () => {
+    if (!deleteTargetTemplate) return
+
+    try {
+      setIsDeleting(true)
+      setDeleteError(null)
+      const response = await fetch(`/api/templates/${deleteTargetTemplate.id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete template')
+      }
+
+      // Success - show toast and refresh list
+      setToast({
+        type: 'success',
+        message: `Template '${deleteTargetTemplate.name}' deleted successfully`,
+      })
+      setDeleteDialogOpen(false)
+      setDeleteTargetTemplate(null)
+
+      // Refresh the template list
+      fetchTemplates()
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'An error occurred'
+      setDeleteError(errorMsg)
+      setToast({
+        type: 'error',
+        message: errorMsg,
+      })
+    } finally {
+      setIsDeleting(false)
+    }
+  }, [deleteTargetTemplate, fetchTemplates])
+
+  /**
+   * Opens delete confirmation dialog
+   *
+   * @param templateId - ID of template to delete
+   * @param templateName - Name of template to delete
+   */
+  const openDeleteDialog = useCallback((templateId: number, templateName: string) => {
+    setDeleteTargetTemplate({ id: templateId, name: templateName })
+    setDeleteDialogOpen(true)
+    setDeleteError(null)
+  }, [])
 
   useEffect(() => {
     fetchTemplates()
@@ -209,12 +269,11 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
                 <Download className="h-4 w-4" />
               </Button>
               <Button
-                variant="outline"
+                variant="destructive"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation()
-                  // Delete functionality will be implemented in Phase 8
-                  alert('Delete feature coming soon!')
+                  openDeleteDialog(template.id, template.name)
                 }}
               >
                 <Trash2 className="h-4 w-4" />
@@ -223,6 +282,86 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent
+          className="sm:max-w-[425px]"
+          onKeyDown={(e: React.KeyboardEvent) => {
+            // Support Enter key to confirm delete when focus is on delete button
+            if (e.key === 'Enter' && e.ctrlKey) {
+              e.preventDefault()
+              handleDeleteTemplate()
+            }
+            // Escape key already handled by Dialog component
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>Delete Template</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete the template "{deleteTargetTemplate?.name}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+
+          {deleteError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription className="flex items-center justify-between">
+                <span>{deleteError}</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDeleteTemplate()}
+                  disabled={isDeleting}
+                  aria-label="Retry deletion"
+                >
+                  Retry
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false)
+                setDeleteTargetTemplate(null)
+                setDeleteError(null)
+              }}
+              disabled={isDeleting}
+              aria-label="Cancel delete operation (Escape key)"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleDeleteTemplate()}
+              disabled={isDeleting}
+              aria-label="Confirm delete operation (Enter key)"
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleDeleteTemplate()
+                }
+              }}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-4 right-4 p-4 rounded-lg shadow-lg animate-in fade-in slide-in-from-bottom-2" style={{
+          backgroundColor: toast.type === 'success' ? '#10b981' : '#ef4444',
+          color: 'white',
+        }}>
+          <p className="text-sm font-medium">{toast.message}</p>
+        </div>
+      )}
 
       {/* Pagination */}
       {data.pagination.totalPages > 1 && (

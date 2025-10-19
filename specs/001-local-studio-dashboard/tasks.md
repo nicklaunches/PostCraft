@@ -234,17 +234,17 @@
 
 ### Implementation for User Story 5
 
-- [ ] T069 [P] [US5] Create DELETE /api/templates/[id] route in app/api/templates/[id]/route.ts implementing DeleteTemplateResponse per contracts/api-templates.ts lines 270-297
-- [ ] T070 [P] [US5] Implement cascade delete in DELETE route relying on database foreign key CASCADE per data-model.md section on referential integrity
-- [ ] T071 [US5] Add delete button to template cards in components/template-list.tsx using shadcn/ui Button with destructive variant
-- [ ] T072 [US5] Implement delete confirmation dialog in components/template-list.tsx using shadcn/ui Dialog with warning message
-- [ ] T073 [US5] Add delete handler calling DELETE /api/templates/[id] and refreshing template list on success
-- [ ] T074 [US5] Add success notification after deletion using shadcn/ui Toast with template name
-- [ ] T075 [US5] Add error handling for deletion failures using shadcn/ui Alert with retry option
-- [ ] T076 [US5] Add keyboard navigation for confirmation dialog (Enter to confirm, Escape to cancel) using aria-labels
-- [ ] T076a [P] [US5] Add JSDoc to DELETE handler in app/api/templates/[id]/route.ts documenting cascade deletion behavior per Principle VIII
+- [x] T069 [P] [US5] Create DELETE /api/templates/[id] route in app/api/templates/[id]/route.ts implementing DeleteTemplateResponse per contracts/api-templates.ts lines 270-297
+- [x] T070 [P] [US5] Implement cascade delete in DELETE route relying on database foreign key CASCADE per data-model.md section on referential integrity
+- [x] T071 [US5] Add delete button to template cards in components/template-list.tsx using shadcn/ui Button with destructive variant
+- [x] T072 [US5] Implement delete confirmation dialog in components/template-list.tsx using shadcn/ui Dialog with warning message
+- [x] T073 [US5] Add delete handler calling DELETE /api/templates/[id] and refreshing template list on success
+- [x] T074 [US5] Add success notification after deletion using shadcn/ui Toast with template name
+- [x] T075 [US5] Add error handling for deletion failures using shadcn/ui Alert with retry option
+- [x] T076 [US5] Add keyboard navigation for confirmation dialog (Enter to confirm, Escape to cancel) using aria-labels
+- [x] T076a [P] [US5] Add JSDoc to DELETE handler in app/api/templates/[id]/route.ts documenting cascade deletion behavior per Principle VIII
 
-**Checkpoint**: Template deletion functional with confirmation and proper error handling
+**Checkpoint**: Template deletion functional with confirmation and proper error handling ✅ COMPLETE
 
 ---
 
