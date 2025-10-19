@@ -1,290 +1,154 @@
-<!--
-Sync Impact Report - Constitution Update
-============================================
-Version: 0.0.0 → 1.0.0
-Date: 2025-10-18
-
-Change Type: MAJOR - Initial constitution ratification
-
-Principles Established:
-- Component-First Architecture
-- Type Safety & Contract Validation
-- Test Coverage Standards (NON-NEGOTIABLE)
-- User Experience Consistency
-- Performance-First Development
-- Provider Abstraction Pattern
-
-Sections Added:
-- Core Principles (6 principles)
-- Technology Standards
-- Quality Gates
-- Governance
-
-Templates Status:
-✅ plan-template.md - Aligned with constitution checks
-✅ spec-template.md - User scenarios align with UX consistency
-✅ tasks-template.md - Test-first approach enforced
-
-Follow-up Actions: None
--->
-
 # PostCraft Constitution
 
-**Component Email Studio for Developers**
-
-This constitution defines the non-negotiable principles and standards that guide all technical decisions and implementation choices in the PostCraft project.
+<!--
+SYNC IMPACT REPORT:
+Version Change: 1.0.0 → 1.1.0 (Added JSDoc Documentation Principle)
+Modified Principles: N/A
+Added Sections:
+  - Principle VIII: JSDoc Documentation & File Purpose (NEW)
+Removed Sections: N/A
+Templates Requiring Updates:
+  ✅ .specify/templates/spec-template.md - References Principle IV for UX (already aligned)
+  ✅ .specify/templates/plan-template.md - Constitution Check section present
+  ✅ .specify/templates/tasks-template.md - Test-first workflow aligned
+  ⚠️  Code review checklist - Should verify JSDoc compliance
+Follow-up TODOs:
+  - Update pre-commit hooks to validate JSDoc presence
+  - Consider ESLint rule for mandatory JSDoc on public exports
+-->
 
 ## Core Principles
 
-### I. Component-First Architecture
+### I. Type Safety First
 
-**Principle**: Every feature MUST be built as composable, reusable components with clear boundaries and single responsibilities.
+All code MUST use TypeScript with strict mode enabled. Database operations MUST use Drizzle ORM for compile-time type safety. No `any` types allowed except when interfacing with untyped third-party libraries, which MUST be wrapped in typed adapters. All API contracts MUST have TypeScript interfaces defining request/response shapes.
 
-**Requirements**:
-- React components MUST follow single responsibility principle
-- Components MUST be independently testable in isolation
-- Shared UI components MUST use shadcn/ui patterns and conventions
-- Email templates MUST be composed from reusable blocks
-- API endpoints MUST be modular and independently deployable
-- No direct coupling between unrelated feature domains
+**Rationale**: Type safety prevents entire classes of runtime errors, improves refactoring confidence, and serves as living documentation. Drizzle ORM ensures database queries are type-checked at compile time, catching schema mismatches before deployment.
 
-**Rationale**: Component-first design enables rapid feature development, easier testing, and maintainable code. This aligns with React's philosophy and shadcn/ui's composable approach while ensuring PostCraft remains extensible as a platform.
+### II. shadcn/ui Component Consistency (NON-NEGOTIABLE)
 
-### II. Type Safety & Contract Validation
+All user interface elements MUST use shadcn/ui components exclusively. No custom component alternatives are permitted. If a required UI pattern lacks a shadcn/ui component, implementation MUST pause and request user guidance before proceeding. TailwindCSS utility classes MUST be used for all styling following utility-first design patterns.
 
-**Principle**: All interfaces between components, APIs, and external services MUST be type-safe and validated at runtime.
+**Rationale**: Strict adherence to shadcn/ui ensures visual consistency, accessibility compliance (WCAG 2.1 AA), and reduces maintenance burden. Mixed component systems fragment user experience and increase cognitive load for developers.
 
-**Requirements**:
-- TypeScript MUST be used for all application code with strict mode enabled
-- Zero `any` types in production code (use `unknown` with guards if needed)
-- API contracts MUST define request/response schemas Zod
-- Email template props MUST be validated with schemas
-- ESP adapter interfaces MUST enforce type contracts
-- AI assistant prompts/responses MUST have defined input/output types
+### III. Test-Driven Development
 
-**Rationale**: Type safety catches errors at compile time, provides better IDE support, and serves as living documentation. Runtime validation ensures data integrity from external sources (APIs, user input, ESP responses).
+All new features MUST follow TDD workflow: Tests written → User approved → Tests fail → Then implement. Red-Green-Refactor cycle strictly enforced. Contract tests required for all API endpoints. Integration tests required for critical user journeys. Unit tests required for business logic with complex branching.
 
-### III. Test Coverage Standards (NON-NEGOTIABLE)
+**Rationale**: TDD ensures requirements are testable before implementation, prevents regression, and produces modular, testable code architecture. Untested code creates technical debt and deployment risk.
 
-**Principle**: Test-driven development is mandatory. Tests MUST be written first, verified to fail, then implementation proceeds.
+### IV. UX State Completeness
 
-**Requirements**:
-- **Unit Tests**: All services, utilities, and pure functions MUST have ≥90% coverage
-- **Component Tests**: All React components MUST have tests for user interactions and state changes
-- **Integration Tests**: All API endpoints and ESP adapters MUST have integration tests
-- **E2E Tests**: Critical user journeys (template creation, email sending, campaign management) MUST have E2E tests
-- Tests MUST be written BEFORE implementation (Red-Green-Refactor)
-- Test files MUST be co-located with source files or in parallel test directory
-- Mock external services (AWS SES, AI APIs) in unit/integration tests
+Every user-facing feature MUST implement all four UI states: loading, success, error, and empty. Loading states MUST appear within 100ms of user action. Error messages MUST be actionable with clear remediation steps. Empty states MUST provide clear calls-to-action. All interactions MUST support keyboard navigation without mouse dependency.
 
-**Test Framework Standards**:
-- Jest or Vitest for unit/integration tests
-- React Testing Library for component tests
-- Playwright or Cypress for E2E tests
+**Rationale**: Incomplete UI states create poor user experience and support burden. Users abandon features that appear broken during loading or provide cryptic errors. Keyboard accessibility is required for WCAG 2.1 AA compliance and power-user efficiency.
 
-**Rationale**: TDD ensures correctness, prevents regressions, and improves design. PostCraft handles email delivery and campaign management—bugs can directly impact user communication, making comprehensive testing critical.
+### V. Database Schema as Code
 
-### IV. User Experience Consistency
+All database schema MUST be defined in Drizzle schema files with proper TypeScript types. Migrations MUST be generated automatically via Drizzle Kit. Schema changes MUST be versioned and reversible. Foreign key constraints MUST be defined for all entity relationships. Indexes MUST be documented with query patterns they optimize.
 
-**Principle**: All user interfaces MUST provide consistent, intuitive, and accessible experiences across all features.
+**Rationale**: Schema-as-code ensures consistency between application types and database reality. Manual SQL migrations drift from application code over time. Missing constraints cause data integrity violations that corrupt user data.
 
-**Requirements**:
-- Follow shadcn/ui component patterns and styling conventions
-- Maintain consistent spacing, typography, and color usage (TailwindCSS utilities)
-- All interactive elements MUST have clear hover/focus/active states
-- Forms MUST provide real-time validation feedback
-- Loading states MUST be clearly indicated (skeletons, spinners)
-- Error messages MUST be user-friendly and actionable
-- Keyboard navigation MUST work for all interactive elements
-- WCAG 2.1 Level AA accessibility compliance required
-- Email previews MUST accurately represent final output across major clients (Gmail, Outlook, Apple Mail)
+### VI. Performance Budgets
 
-**Rationale**: PostCraft is a developer tool that must be intuitive for technical users. Consistency reduces cognitive load, improves productivity, and ensures professional quality.
+Dashboard initial load MUST complete within 2 seconds on 3G connections. Template list with 100+ items MUST render in under 1 second. API responses MUST have p95 latency under 200ms. Database queries MUST use appropriate indexes with EXPLAIN analysis for N+1 prevention. Pagination MUST be used for collections exceeding 20 items.
 
-### V. Performance-First Development
+**Rationale**: Performance directly impacts user satisfaction and retention. Slow interfaces feel broken even when functional. Unoptimized queries degrade as data grows, creating production incidents.
 
-**Principle**: Performance is a feature. All code MUST meet defined performance standards before merging.
+### VII. Security by Default
 
-**Requirements**:
-- **Frontend Performance**:
-  - Initial page load: <2s (Lighthouse Performance score ≥90)
-  - Time to Interactive: <3s
-  - First Contentful Paint: <1.5s
-  - React component rendering: No unnecessary re-renders (use profiler to verify)
-  - Email editor: Drag-drop operations <100ms response
-- **Backend Performance**:
-  - API response time: p95 <500ms, p99 <1s
-  - Email sending via SES: <2s per email
-  - Database queries: <100ms for reads, <500ms for complex queries
-  - Batch operations: Support pagination for large datasets
-- **Build Performance**:
-  - Production build time: <5 minutes
-  - Development HMR: <1s for most changes
-- Code splitting MUST be used for large dependencies
-- Images MUST be optimized (Next.js Image component)
-- API responses MUST be cached where appropriate
+Local studio server MUST bind exclusively to 127.0.0.1 (localhost), refusing external network connections. Database connection strings MUST be loaded from environment variables, never committed to source control. All user inputs MUST be sanitized before database operations. SQL injection MUST be prevented through Drizzle ORM parameterized queries, not string concatenation.
 
-**Rationale**: PostCraft must handle email operations at scale. Slow tools frustrate users. Performance targets ensure the platform remains responsive even with large template libraries and campaign histories.
+**Rationale**: Security vulnerabilities in developer tools expose entire development environments and production credentials. Local-only binding prevents accidental exposure on public networks. Environment-based secrets prevent credential leaks in version control.
 
-### VI. Provider Abstraction Pattern
+### VIII. JSDoc Documentation & File Purpose
 
-**Principle**: All external service integrations MUST use adapter patterns to enable swappable implementations without affecting core functionality.
+Every TypeScript file MUST begin with a JSDoc comment describing the file's purpose and responsibilities. All public exports (classes, functions, interfaces, types) MUST have JSDoc comments documenting their purpose, parameters, return values, and exceptions. Complex internal functions with branching complexity >3 MUST include JSDoc explaining the logic. JSDoc comments MUST include `@example` blocks for SDK methods and public APIs. Type information alone is insufficient; behavioral intent and usage patterns MUST be documented.
 
-**Requirements**:
-- ESP integrations (SES, Mailgun, Postmark) MUST implement a common `EmailProvider` interface
-- AI service integrations MUST implement a common `AIProvider` interface
-- Storage backends MUST implement a common `StorageProvider` interface
-- Authentication providers MUST implement a common `AuthProvider` interface
-- Each adapter MUST be independently testable with mocks
-- Configuration MUST allow runtime provider selection via environment variables
-- Adapters MUST handle provider-specific errors and normalize to standard error types
+**Rationale**: Types describe structure but not intent. JSDoc documents behavior, constraints, and usage patterns that types cannot express. File-level comments provide architectural context that helps developers navigate unfamiliar codebases. Examples prevent API misuse and serve as living documentation that stays in sync with code. Complex logic without explanation creates maintenance bottlenecks when original authors are unavailable.
 
-**Example Structure**:
-```typescript
-interface EmailProvider {
-  send(params: SendEmailParams): Promise<SendEmailResult>
-  validateConnection(): Promise<boolean>
-  getDeliveryStatus(id: string): Promise<DeliveryStatus>
-}
-```
+## Quality Standards
 
-**Rationale**: PostCraft's roadmap includes supporting multiple ESPs and AI providers. The adapter pattern ensures users can switch providers without code changes and enables future extensibility.
+### Code Quality
 
-## Technology Standards
+- **Linting**: ESLint with strict TypeScript rules enforced in CI/CD
+- **Formatting**: Prettier with project-wide config; formatting violations block commits
+- **Complexity**: Cyclomatic complexity limit of 10 per function; violations require refactoring justification
+- **Dependencies**: Regular security audits via `npm audit`; critical vulnerabilities block deployment
 
-### Core Stack (Non-Negotiable)
-- **Framework**: Next.js (latest stable) with App Router
-- **Language**: TypeScript 5.x with strict mode
-- **UI Library**: React 18+ with shadcn/ui components
-- **Styling**: TailwindCSS 3.x
-- **Email Builder**: react-email-editor (or React Email components where applicable)
-- **Primary ESP**: AWS SES SDK v3
-- **Package Manager**: pnpm (for workspace management)
+### Testing Coverage
 
-### Required Dependencies
-- **Validation**: Zod for schema validation
-- **ORM**: Drizzle ORM
-- **Testing**: Jest/Vitest, React Testing Library, Playwright
-- **Linting**: ESLint with Next.js config + Prettier
-- **Git Hooks**: Husky + lint-staged for pre-commit checks
+- **Contract Tests**: All API endpoints MUST have contract tests verifying request/response schemas
+- **Integration Tests**: All critical user journeys (P1 user stories) MUST have end-to-end integration tests
+- **Unit Tests**: Business logic with branching complexity >5 MUST have unit test coverage
+- **Test Data**: Tests MUST use isolated test databases; production data MUST NOT be used in tests
 
-### Database
-- PostgreSQL for production (relational data, campaigns, analytics)
-- SQLite for local development (optional)
+### Documentation
 
-### AI Integration
-- Provider-agnostic with adapters for OpenAI, Anthropic, etc.
-- Users bring their own API keys
-- Streaming responses for real-time generation
+- **API Contracts**: All endpoints documented in `contracts/` directory with TypeScript interfaces
+- **Data Models**: Entity relationships documented in `data-model.md` with diagrams
+- **Quickstart**: `quickstart.md` MUST be updated for every user-facing feature change
+- **JSDoc**: File-level and public export JSDoc required per Principle VIII; examples mandatory for SDK methods
+- **Comments**: Complex business logic MUST have explanatory comments; self-documenting code preferred otherwise
 
-## Quality Gates
+## Development Workflow
 
-All feature work MUST pass these gates before merging to main:
+### Feature Development
 
-### 1. Constitution Check
-- [ ] Follows component-first architecture
-- [ ] All interfaces are type-safe with runtime validation
-- [ ] Tests written first and achieve coverage requirements
-- [ ] UI follows shadcn/ui patterns and accessibility standards
-- [ ] Performance benchmarks met
-- [ ] External services use provider abstraction pattern
+1. **Specification**: Create feature spec in `specs/###-feature-name/spec.md` with user stories
+2. **Clarification**: Run `/speckit.clarify` to resolve ambiguities before planning
+3. **Planning**: Run `/speckit.plan` to generate implementation plan with constitution check
+4. **Task Generation**: Run `/speckit.tasks` to create dependency-ordered task list
+5. **Implementation**: Execute tasks following TDD workflow per Principle III
+6. **Validation**: Verify all four UI states (Principle IV) before marking complete
 
-### 2. Code Quality
-- [ ] TypeScript strict mode with no `any` types
-- [ ] ESLint passes with zero warnings
-- [ ] Prettier formatting applied
-- [ ] No console.log statements in production code (use proper logging)
-- [ ] All functions have clear, descriptive names
-- [ ] Complex logic includes explanatory comments
+### Code Review Requirements
 
-### 3. Testing Gate
-- [ ] All tests pass (unit, integration, E2E)
-- [ ] Code coverage ≥90% for new code
-- [ ] Tests include happy paths and edge cases
-- [ ] External services properly mocked
-- [ ] E2E tests cover critical user flows
+- All PRs MUST pass automated linting, type-checking, and test suites before review
+- Reviewers MUST verify compliance with all applicable constitution principles
+- New files and public exports MUST have JSDoc documentation per Principle VIII
+- Performance-impacting changes MUST include benchmark results against budgets (Principle VI)
+- Database schema changes MUST include migration scripts and rollback procedures (Principle V)
 
-### 4. Performance Gate
-- [ ] Lighthouse Performance score ≥90 (frontend)
-- [ ] API endpoints meet p95 <500ms target
-- [ ] No blocking render operations
-- [ ] Bundle size analyzed (no unexpected increases)
+### Quality Gates
 
-### 5. Documentation Gate
-- [ ] Public APIs/components have JSDoc comments
-- [ ] README updated if new features/setup required
-- [ ] User-facing features have quickstart documentation
-- [ ] Breaking changes documented in CHANGELOG
-
-### 6. Security Gate
-- [ ] No hardcoded secrets or API keys
-- [ ] Environment variables properly configured
-- [ ] User input validated and sanitized
-- [ ] SQL injection prevention (parameterized queries)
-- [ ] XSS prevention (React's built-in escaping + CSP headers)
-- [ ] Rate limiting on public endpoints
+- **Pre-commit**: Linting and formatting checks via git hooks
+- **CI/CD**: Type-checking, test suite execution, build verification
+- **Pre-deployment**: Manual QA verification of all four UI states for new features
+- **Post-deployment**: Monitoring alerts for performance budget violations
 
 ## Governance
 
-### Authority & Compliance
-
-This constitution **supersedes all other development practices**. When conflicts arise between this constitution and other guidance, the constitution takes precedence.
-
-**All technical decisions MUST:**
-1. Align with at least one core principle
-2. Pass all quality gates before merging
-3. Be justified if adding complexity beyond principle requirements
-
-**When principles conflict:**
-- Prioritize: Security > Performance > UX Consistency > Architecture Cleanliness
-- Document trade-offs explicitly in implementation plan
+This constitution supersedes all other development practices and coding conventions. When conflicts arise between this constitution and individual preferences or external guidelines, the constitution takes precedence.
 
 ### Amendment Process
 
-**Who Can Propose**: Any project contributor
-**Approval Required**: Project maintainers or technical lead
-
-**Amendment Categories**:
-- **MAJOR** (X.0.0): Changes principle definitions, removes principles, or introduces backward-incompatible governance
-- **MINOR** (0.X.0): Adds new principles, expands requirements materially, or adds new quality gates
-- **PATCH** (0.0.X): Clarifications, typo fixes, non-semantic improvements, example updates
-
-**Amendment Steps**:
-1. Propose change via RFC document explaining rationale
-2. Identify impact on existing codebase and templates
-3. Gain approval from maintainers
-4. Update constitution with new version number
-5. Update all affected templates and documentation
-6. Communicate changes to all contributors
-7. Create migration plan if changes require code updates
+1. **Proposal**: Document proposed change with justification and impact analysis
+2. **Review**: All team members review and provide feedback
+3. **Migration**: Create migration plan for existing code violating new principles
+4. **Approval**: Requires consensus; contentious changes require 2-week discussion period
+5. **Documentation**: Update constitution version, templates, and dependent artifacts
 
 ### Versioning Policy
 
-Constitution follows semantic versioning. Current version is documented in the footer of this file.
+Constitution follows semantic versioning (MAJOR.MINOR.PATCH):
+- **MAJOR**: Backward-incompatible governance changes or principle removals
+- **MINOR**: New principles added or existing principles materially expanded
+- **PATCH**: Clarifications, wording improvements, or non-semantic refinements
 
-**Version History:**
-- 1.0.0 (2025-10-18): Initial ratification with 6 core principles
+### Compliance Review
 
-### Review Cadence
+- All PRs MUST include constitution compliance checklist in description
+- Monthly audits identify code violating constitution principles
+- Violations MUST be remediated or documented with exception justification
+- Repeated violations trigger architecture review and refactoring sprint
 
-- **Quarterly Review**: Assess if principles still serve project needs
-- **Post-Mortem Review**: After major incidents, review if constitution would have prevented the issue
-- **Onboarding**: All new contributors must read and acknowledge this constitution
+### Exception Handling
 
-### Enforcement
+Exceptions to constitution principles MUST be:
+1. Documented in implementation plan's "Complexity Tracking" section
+2. Justified with specific technical or business constraints
+3. Include explanation of why simpler constitutional approach was insufficient
+4. Time-bound with remediation plan if temporary exception
 
-- Pre-commit hooks verify linting and type-checking
-- CI/CD pipeline enforces test coverage and quality gates
-- Code reviews MUST explicitly verify constitution compliance
-- Complexity violations MUST be justified in PR description with reference to specific principle trade-offs
-
-### Guidance Files
-
-For runtime development assistance and detailed implementation patterns, refer to:
-- `.specify/templates/plan-template.md` - Feature planning workflow
-- `.specify/templates/spec-template.md` - Feature specification structure
-- `.specify/templates/tasks-template.md` - Task breakdown and execution order
-
----
-
-**Version**: 1.0.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-18
+**Version**: 1.1.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-18

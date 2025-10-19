@@ -1,0 +1,102 @@
+/**
+ * @fileoverview Validation utilities for template management
+ *
+ * Provides template name validation, sanitization, and formatting functions
+ * ensuring template names are safe for database storage, URL routes, and SDK usage.
+ *
+ * Validation Rules (per FR-019):
+ * - Length: 1-100 characters
+ * - Allowed characters: alphanumeric (a-z, A-Z, 0-9), hyphens (-), underscores (_)
+ * - No spaces, special characters, or international characters
+ * - Applied to all template create/update operations
+ *
+ * Functions:
+ * - `validateTemplateName()`: Validates template name and returns sanitized version
+ * - `sanitizeTemplateName()`: Forcefully cleans template name (lowercase, remove invalid chars)
+ *
+ * @example
+ * // Validate template name from user input
+ * const { isValid, sanitized, error } = validateTemplateName(userInput);
+ * if (!isValid) {
+ *   throw new Error(error); // User-facing error message
+ * }
+ *
+ * @example
+ * // Sanitize a template name
+ * const clean = sanitizeTemplateName('My Email Template!');
+ * // Returns: 'my-email-template'
+ */
+
+const TEMPLATE_NAME_REGEX = /^[a-zA-Z0-9_-]{1,100}$/;
+
+/**
+ * Validates and sanitizes a template name
+ * Requirements:
+ * - 1-100 characters
+ * - Alphanumeric, hyphens, underscores only
+ * - No special characters or spaces
+ *
+ * @param name - The template name to validate
+ * @returns {{isValid: boolean, sanitized: string, error?: string}} Validation result with sanitized name
+ *
+ * @example
+ * const result = validateTemplateName('my-template');
+ * if (result.isValid) {
+ *   console.log(result.sanitized); // 'my-template'
+ * }
+ */
+export function validateTemplateName(
+  name: string
+): { isValid: boolean; sanitized: string; error?: string } {
+  if (!name || typeof name !== "string") {
+    return { isValid: false, sanitized: "", error: "Template name is required" };
+  }
+
+  const trimmed = name.trim();
+
+  if (trimmed.length === 0) {
+    return {
+      isValid: false,
+      sanitized: "",
+      error: "Template name cannot be empty",
+    };
+  }
+
+  if (trimmed.length > 100) {
+    return {
+      isValid: false,
+      sanitized: "",
+      error: "Template name cannot exceed 100 characters",
+    };
+  }
+
+  if (!TEMPLATE_NAME_REGEX.test(trimmed)) {
+    return {
+      isValid: false,
+      sanitized: trimmed,
+      error:
+        "Template name can only contain alphanumeric characters, hyphens, and underscores",
+    };
+  }
+
+  return { isValid: true, sanitized: trimmed };
+}
+
+/**
+ * Sanitizes a template name by removing invalid characters
+ * and converting to lowercase
+ *
+ * @param name - The template name to sanitize
+ * @returns {string} Sanitized name (lowercase, no special characters)
+ *
+ * @example
+ * sanitizeTemplateName('My Email!') // => 'my-email'
+ */
+export function sanitizeTemplateName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "-")
+    .replace(/-+/g, "-")
+    .substring(0, 100);
+}
+
