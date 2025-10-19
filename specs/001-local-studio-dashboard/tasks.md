@@ -300,8 +300,8 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T095 [P] Add consistent error handling across all API routes with proper HTTP status codes and error response formats
-- [ ] T096 [P] Implement request validation for all API routes validating request body schemas match contracts
+- [x] T095 [P] Add consistent error handling across all API routes with proper HTTP status codes and error response formats
+- [x] T096 [P] Implement request validation for all API routes validating request body schemas match contracts
 - [ ] T097 [P] Add consistent loading states across all pages using shadcn/ui Skeleton components
 - [ ] T098 [P] Ensure all forms have proper validation with real-time feedback using shadcn/ui form components
 - [ ] T099 [P] Add WCAG 2.1 AA accessibility: aria-labels, keyboard navigation, focus management across all components

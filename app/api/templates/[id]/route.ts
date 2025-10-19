@@ -47,6 +47,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { templates, templateVariables } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { validateUpdateTemplateRequest } from "@/lib/utils/api-validation";
 
 /**
  * GET /api/templates/[id] - Get Single Template with Variables
@@ -167,21 +168,23 @@ export async function PUT(
 
     if (isNaN(templateId)) {
       return NextResponse.json(
-        { error: "Invalid template ID" },
+        { error: "Invalid template ID", field: "id" },
         { status: 400 }
       );
     }
 
     const body = await request.json();
-    const { content, variables } = body;
 
-    // Validate required fields
-    if (!content || typeof content !== "object") {
+    // Validate request body against contract
+    const validation = validateUpdateTemplateRequest(body);
+    if (!validation.valid) {
       return NextResponse.json(
-        { error: "Template content is required and must be a JSON object" },
+        { error: validation.errors[0] },
         { status: 400 }
       );
     }
+
+    const { content, variables } = validation.data!;
 
     // Check if template exists
     const existingTemplate = await db.query.templates.findFirst({

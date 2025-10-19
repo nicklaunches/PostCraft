@@ -48,6 +48,10 @@ import { db } from "@/lib/db/client";
 import { templates, templateVariables } from "@/lib/db/schema";
 import { desc, eq, count } from "drizzle-orm";
 import { validateTemplateName } from "@/lib/utils/validation";
+import {
+  validateCreateTemplateRequest,
+  validatePaginationParams,
+} from "@/lib/utils/api-validation";
 
 /**
  * GET /api/templates
@@ -98,12 +102,19 @@ export async function GET(request: NextRequest) {
   try {
     // Get pagination params from query string
     const searchParams = request.nextUrl.searchParams;
-    const pageStr = searchParams.get("page") || "1";
-    const pageSizeStr = searchParams.get("pageSize") || "20";
+    const pageStr = searchParams.get("page");
+    const pageSizeStr = searchParams.get("pageSize");
 
-    const page = Math.max(1, parseInt(pageStr, 10) || 1);
-    const pageSize = Math.min(100, Math.max(1, parseInt(pageSizeStr, 10) || 20));
+    // Validate pagination parameters
+    const paginationValidation = validatePaginationParams(pageStr ?? undefined, pageSizeStr ?? undefined);
+    if (!paginationValidation.valid) {
+      return NextResponse.json(
+        { error: paginationValidation.errors[0] },
+        { status: 400 }
+      );
+    }
 
+    const { page, pageSize } = paginationValidation.data!;
     const offset = (page - 1) * pageSize;
 
     // Get total count using Drizzle count() function
@@ -354,21 +365,23 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, content, variables } = body;
+
+    // Validate request body against contract
+    const validation = validateCreateTemplateRequest(body);
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.errors[0] },
+        { status: 400 }
+      );
+    }
+
+    const { name, content, variables } = validation.data!;
 
     // Validate template name
     const nameValidation = validateTemplateName(name);
     if (!nameValidation.isValid) {
       return NextResponse.json(
-        { error: nameValidation.error },
-        { status: 400 }
-      );
-    }
-
-    // Validate required fields
-    if (!content || typeof content !== "object") {
-      return NextResponse.json(
-        { error: "Template content is required and must be a JSON object" },
+        { error: nameValidation.error, field: "name" },
         { status: 400 }
       );
     }
