@@ -3,13 +3,17 @@
 **Input**: Design documents from `/specs/001-local-studio-dashboard/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
 
-**Last Updated**: 2025-10-18 - Updated for database schema optimization (no HTML column storage)
+**Last Updated**: 2025-10-18 - Updated for JSDoc documentation requirements (Constitution Principle VIII)
 
-**Recent Corrections**: 2025-10-18 - Re-implemented T015 and Phase 3 (T020-T026) with proper shadcn/ui sidebar-07
+**Recent Updates**:
+- 2025-10-18 - Added JSDoc documentation tasks per Constitution Principle VIII
+- 2025-10-18 - Updated for database schema optimization (no HTML column storage)
+- 2025-10-18 - Re-implemented T015 and Phase 3 (T020-T026) with proper shadcn/ui sidebar-07
 - ⚠️ **T015 Re-executed**: Properly installed shadcn/ui sidebar-07 template via `npx shadcn@latest add sidebar-07`
 - ⚠️ **Phase 3 Corrected**: Replaced custom sidebar implementation with proper shadcn/ui AppSidebar component
 - ✅ **Principle II Compliance**: Now using shadcn/ui components exclusively (NON-NEGOTIABLE requirement)
 - 🗑️ **Cleanup**: Removed custom sidebar.tsx and unused sample components (nav-projects, nav-user, team-switcher)
+- 📝 **Principle VIII Compliance**: All TypeScript files require file-level JSDoc and public exports require JSDoc with @example blocks
 
 **Key Design Changes**:
 - ✅ **Database Optimization**: templates table does NOT store html column (FR-038)
@@ -68,8 +72,12 @@
 - [x] T017 Create root layout in app/layout.tsx with TailwindCSS global styles and font configuration
 - [x] T018 [P] Implement validation utilities in lib/utils/validation.ts for template name sanitization per FR-019
 - [x] T019 [P] Implement template variable utilities in lib/utils/merge-tags.ts for variable substitution per research.md lines 162-195
+- [ ] T019a [P] Add file-level JSDoc to lib/db/schema.ts describing database schema purpose and table relationships per Principle VIII
+- [ ] T019b [P] Add file-level JSDoc to lib/db/client.ts describing database client configuration and connection pooling per Principle VIII
+- [ ] T019c [P] Add file-level JSDoc to lib/utils/validation.ts describing validation utilities purpose per Principle VIII
+- [ ] T019d [P] Add file-level JSDoc to lib/utils/merge-tags.ts describing merge tag substitution utilities per Principle VIII
 
-**Checkpoint**: Foundation ready - database schema created, shadcn/ui installed, utilities available ✅ COMPLETE
+**Checkpoint**: Foundation ready - database schema created, shadcn/ui installed, utilities available ✅ COMPLETE (JSDoc pending)
 
 ---
 
@@ -86,8 +94,12 @@
 - [x] T024 [US1] Implement error boundary in app/(studio)/error.tsx using shadcn/ui Alert for server errors
 - [x] T025 [US1] Add keyboard navigation support for sidebar using aria-labels and keyboard event handlers
 - [x] T026 [US1] Test server startup and verify dashboard loads at localhost:3579 with proper binding to 127.0.0.1
+- [ ] T026a [P] [US1] Add file-level JSDoc to app/(studio)/layout.tsx describing studio layout structure and sidebar configuration per Principle VIII
+- [ ] T026b [P] [US1] Add file-level JSDoc to app/(studio)/page.tsx describing dashboard home page purpose per Principle VIII
+- [ ] T026c [P] [US1] Add file-level JSDoc to app/(studio)/loading.tsx describing loading state component per Principle VIII
+- [ ] T026d [P] [US1] Add file-level JSDoc to app/(studio)/error.tsx describing error boundary component per Principle VIII
 
-**Checkpoint**: Dashboard accessible at localhost:3579 with functional sidebar navigation ✅ COMPLETE
+**Checkpoint**: Dashboard accessible at localhost:3579 with functional sidebar navigation ✅ COMPLETE (JSDoc pending)
 
 ---
 
@@ -109,8 +121,13 @@
 - [x] T034 [US2] Add error state handling in components/template-list.tsx with retry button using shadcn/ui Alert
 - [x] T035 [US2] Add keyboard navigation for template cards using arrow key event handlers and focus management
 - [x] T036 [US2] Add quick action buttons (edit, delete, export) to template cards with hover effects
+- [ ] T036a [P] [US2] Add file-level JSDoc to app/api/templates/route.ts describing templates API endpoints and request/response contracts per Principle VIII
+- [ ] T036b [P] [US2] Add JSDoc to GET handler in app/api/templates/route.ts with @example showing pagination query parameters per Principle VIII
+- [ ] T036c [P] [US2] Add file-level JSDoc to app/(studio)/templates/page.tsx describing template list page purpose per Principle VIII
+- [ ] T036d [P] [US2] Add file-level JSDoc to components/template-list.tsx describing template list component and props per Principle VIII
+- [ ] T036e [P] [US2] Add JSDoc to public methods in components/template-list.tsx with parameter and return value documentation per Principle VIII
 
-**Checkpoint**: Template list page functional with pagination, empty states, and loading states
+**Checkpoint**: Template list page functional with pagination, empty states, and loading states ✅ COMPLETE (JSDoc pending)
 
 ---
 
@@ -136,8 +153,16 @@
 - [x] T043 [US8] Add required variable validation throwing RequiredVariableMissingError when required variables missing with no fallback
 - [x] T044 [US8] Update package.json exports to expose PostCraft SDK: "exports": { ".": "./lib/sdk/postcraft.ts" }
 - [x] T045 [US8] Test SDK with sample template: create template in database, call render(), verify HTML output with substituted variables
+- [ ] T045a [P] [US8] Add comprehensive file-level JSDoc to lib/sdk/postcraft.ts describing SDK purpose and usage patterns with @example per Principle VIII
+- [ ] T045b [P] [US8] Add JSDoc to PostCraft class constructor with @param for config and @throws for connection errors with @example per Principle VIII
+- [ ] T045c [P] [US8] Add JSDoc to templates.render() method with @param, @returns, @throws, and @example showing variable substitution per Principle VIII
+- [ ] T045d [P] [US8] Add JSDoc to PostCraftConfig interface documenting all configuration options per Principle VIII
+- [ ] T045e [P] [US8] Add file-level JSDoc to lib/sdk/html-renderer.ts describing HTML rendering algorithm and design JSON processing per Principle VIII
+- [ ] T045f [P] [US8] Add JSDoc to renderDesignToHtml() and substituteMergeTags() functions with @param, @returns, and @example per Principle VIII
+- [ ] T045g [P] [US8] Add file-level JSDoc to lib/sdk/errors.ts describing error classes and their usage per Principle VIII
+- [ ] T045h [P] [US8] Add JSDoc to each error class with @example showing when each error is thrown per Principle VIII
 
-**Checkpoint**: PostCraft SDK functional and can render templates from database with variable substitution ✅ COMPLETE
+**Checkpoint**: PostCraft SDK functional with comprehensive JSDoc documentation ✅ COMPLETE (JSDoc pending)
 
 ---
 
@@ -161,8 +186,12 @@
 - [x] T055 [US3] Implement unsaved changes warning using browser beforeunload event per FR-025
 - [x] T056 [US3] Add validation for template name (1-100 chars, alphanumeric + hyphens/underscores) using lib/utils/validation.ts
 - [x] T057 [US3] Handle duplicate name error from API showing shadcn/ui Alert with field-specific error per contracts/api-templates.ts lines 162-167
+- [ ] T057a [P] [US3] Add JSDoc to POST handler in app/api/templates/route.ts documenting request/response with @example per Principle VIII
+- [ ] T057b [P] [US3] Add file-level JSDoc to app/(studio)/templates/new/page.tsx describing template creation page per Principle VIII
+- [ ] T057c [P] [US3] Add file-level JSDoc to components/template-editor.tsx describing react-email-editor wrapper and configuration per Principle VIII
+- [ ] T057d [P] [US3] Add JSDoc to TemplateEditor component props and public methods with @example per Principle VIII
 
-**Checkpoint**: Template creation functional with react-email-editor, validation, and error handling ✅ COMPLETE
+**Checkpoint**: Template creation functional with react-email-editor, validation, and error handling ✅ COMPLETE (JSDoc pending)
 
 ---
 
@@ -189,8 +218,11 @@
 - [x] T066 [US4] Implement unsaved changes tracking and warning using beforeunload event per FR-025
 - [x] T067 [US4] Preserve editor state in memory on failed save per FR-023a with retry button using shadcn/ui Alert
 - [x] T068 [US4] Add keyboard shortcuts for save (Cmd+S / Ctrl+S) using keydown event handler
+- [ ] T068a [P] [US4] Add file-level JSDoc to app/api/templates/[id]/route.ts describing template CRUD operations per Principle VIII
+- [ ] T068b [P] [US4] Add JSDoc to GET, PUT handlers in app/api/templates/[id]/route.ts with @param, @returns, @throws per Principle VIII
+- [ ] T068c [P] [US4] Add file-level JSDoc to app/(studio)/templates/[id]/edit/page.tsx describing template editing page per Principle VIII
 
-**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection ✅ COMPLETE (locking features deferred)
+**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection ✅ COMPLETE (locking features deferred, JSDoc pending)
 
 ---
 
@@ -210,6 +242,7 @@
 - [ ] T074 [US5] Add success notification after deletion using shadcn/ui Toast with template name
 - [ ] T075 [US5] Add error handling for deletion failures using shadcn/ui Alert with retry option
 - [ ] T076 [US5] Add keyboard navigation for confirmation dialog (Enter to confirm, Escape to cancel) using aria-labels
+- [ ] T076a [P] [US5] Add JSDoc to DELETE handler in app/api/templates/[id]/route.ts documenting cascade deletion behavior per Principle VIII
 
 **Checkpoint**: Template deletion functional with confirmation and proper error handling
 
@@ -232,6 +265,8 @@
 - [ ] T083 [US7] Display detected variables in VariableManager during template creation/editing with real-time detection on editor changes
 - [ ] T084 [US7] Add variable removal detection comparing old and new merge tags, removing orphaned variables from metadata
 - [ ] T085 [US7] Test variable metadata persistence by creating template with variables, saving, reopening, and verifying metadata retained
+- [ ] T085a [P] [US7] Add file-level JSDoc to components/variable-manager.tsx describing variable metadata management per Principle VIII
+- [ ] T085b [P] [US7] Add JSDoc to VariableManager component props and methods documenting variable detection and validation per Principle VIII
 
 **Checkpoint**: Variable management functional with type definitions, fallbacks, and validation
 
@@ -254,6 +289,8 @@
 - [ ] T092 [US6] Verify template variables preserved in exported HTML in format {{VARIABLE_NAME}} per FR-013
 - [ ] T093 [US6] Add empty template warning when exporting template with no content using shadcn/ui Alert with confirmation
 - [ ] T094 [US6] Add error handling for export failures using shadcn/ui Alert with retry option
+- [ ] T094a [P] [US6] Add file-level JSDoc to components/template-export.tsx describing HTML export functionality per Principle VIII
+- [ ] T094b [P] [US6] Add JSDoc to TemplateExport component methods documenting export, copy, and download operations per Principle VIII
 
 **Checkpoint**: HTML export functional with copy, download, and proper merge tag preservation
 
@@ -277,8 +314,13 @@
 - [ ] T106 Run through quickstart.md validation: install, setup, create template, edit, delete, SDK usage
 - [ ] T107 [P] Update CLAUDE.md with final technology stack and project structure
 - [ ] T108 Code cleanup: remove unused imports, add comments for complex logic, ensure consistent formatting
+- [ ] T109 [P] Verify all TypeScript files have file-level JSDoc comments per Principle VIII
+- [ ] T110 [P] Verify all public exports (functions, classes, interfaces) have JSDoc with @param, @returns, @throws per Principle VIII
+- [ ] T111 [P] Verify all SDK methods and public APIs have @example blocks in JSDoc per Principle VIII
+- [ ] T112 [P] Add JSDoc to complex internal functions with branching complexity >3 per Principle VIII
+- [ ] T113 Conduct JSDoc documentation audit across all files ensuring compliance with Principle VIII
 
-**Checkpoint**: All polish tasks complete, application ready for production use
+**Checkpoint**: All polish tasks complete, JSDoc documentation comprehensive, application ready for production use
 
 ---
 

@@ -2,19 +2,19 @@
 
 <!--
 SYNC IMPACT REPORT:
-Version Change: NONE → 1.0.0 (Initial Constitution)
-Modified Principles: N/A (New document)
+Version Change: 1.0.0 → 1.1.0 (Added JSDoc Documentation Principle)
+Modified Principles: N/A
 Added Sections:
-  - Core Principles (I-VII)
-  - Quality Standards
-  - Development Workflow
-  - Governance
+  - Principle VIII: JSDoc Documentation & File Purpose (NEW)
 Removed Sections: N/A
 Templates Requiring Updates:
   ✅ .specify/templates/spec-template.md - References Principle IV for UX (already aligned)
   ✅ .specify/templates/plan-template.md - Constitution Check section present
   ✅ .specify/templates/tasks-template.md - Test-first workflow aligned
-Follow-up TODOs: None
+  ⚠️  Code review checklist - Should verify JSDoc compliance
+Follow-up TODOs:
+  - Update pre-commit hooks to validate JSDoc presence
+  - Consider ESLint rule for mandatory JSDoc on public exports
 -->
 
 ## Core Principles
@@ -61,6 +61,12 @@ Local studio server MUST bind exclusively to 127.0.0.1 (localhost), refusing ext
 
 **Rationale**: Security vulnerabilities in developer tools expose entire development environments and production credentials. Local-only binding prevents accidental exposure on public networks. Environment-based secrets prevent credential leaks in version control.
 
+### VIII. JSDoc Documentation & File Purpose
+
+Every TypeScript file MUST begin with a JSDoc comment describing the file's purpose and responsibilities. All public exports (classes, functions, interfaces, types) MUST have JSDoc comments documenting their purpose, parameters, return values, and exceptions. Complex internal functions with branching complexity >3 MUST include JSDoc explaining the logic. JSDoc comments MUST include `@example` blocks for SDK methods and public APIs. Type information alone is insufficient; behavioral intent and usage patterns MUST be documented.
+
+**Rationale**: Types describe structure but not intent. JSDoc documents behavior, constraints, and usage patterns that types cannot express. File-level comments provide architectural context that helps developers navigate unfamiliar codebases. Examples prevent API misuse and serve as living documentation that stays in sync with code. Complex logic without explanation creates maintenance bottlenecks when original authors are unavailable.
+
 ## Quality Standards
 
 ### Code Quality
@@ -82,6 +88,7 @@ Local studio server MUST bind exclusively to 127.0.0.1 (localhost), refusing ext
 - **API Contracts**: All endpoints documented in `contracts/` directory with TypeScript interfaces
 - **Data Models**: Entity relationships documented in `data-model.md` with diagrams
 - **Quickstart**: `quickstart.md` MUST be updated for every user-facing feature change
+- **JSDoc**: File-level and public export JSDoc required per Principle VIII; examples mandatory for SDK methods
 - **Comments**: Complex business logic MUST have explanatory comments; self-documenting code preferred otherwise
 
 ## Development Workflow
@@ -99,6 +106,7 @@ Local studio server MUST bind exclusively to 127.0.0.1 (localhost), refusing ext
 
 - All PRs MUST pass automated linting, type-checking, and test suites before review
 - Reviewers MUST verify compliance with all applicable constitution principles
+- New files and public exports MUST have JSDoc documentation per Principle VIII
 - Performance-impacting changes MUST include benchmark results against budgets (Principle VI)
 - Database schema changes MUST include migration scripts and rollback procedures (Principle V)
 
@@ -143,4 +151,4 @@ Exceptions to constitution principles MUST be:
 3. Include explanation of why simpler constitutional approach was insufficient
 4. Time-bound with remediation plan if temporary exception
 
-**Version**: 1.0.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-18
+**Version**: 1.1.0 | **Ratified**: 2025-10-18 | **Last Amended**: 2025-10-18

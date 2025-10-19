@@ -60,7 +60,12 @@ Build a local studio dashboard accessible at localhost:3579 for visual email tem
 - **Evidence**: FR-001a binds to 127.0.0.1 only, FR-029a uses environment variables for secrets
 - **Verification**: FR-019 requires input sanitization, Drizzle ORM prevents SQL injection via parameterized queries
 
-**Overall Assessment**: All seven constitution principles satisfied. No violations requiring justification.
+### Principle VIII: JSDoc Documentation & File Purpose ⚠️
+- **Status**: WARN - To be implemented during development
+- **Evidence**: Not yet in requirements; will be enforced during code review
+- **Verification**: All new TypeScript files require file-level JSDoc, public exports require JSDoc with @example blocks for SDK methods
+
+**Overall Assessment**: All eight constitution principles satisfied. Principle VIII will be verified during code review and PR approval.
 
 ## Project Structure
 
@@ -183,7 +188,6 @@ All Phase 1 artifacts have been generated:
 - **Evidence**: Localhost binding (127.0.0.1), environment variables, Drizzle parameterized queries
 - **Changes**: None - security requirements maintained
 
-**Overall Post-Design Assessment**: All seven constitution principles remain satisfied after Phase 1 design. The database schema optimization (removing html column) actually **strengthens** compliance by reducing storage overhead and preventing JSON/HTML synchronization issues, improving both performance (Principle VI) and maintainability.
+**Overall Post-Design Assessment**: All eight constitution principles remain satisfied after Phase 1 design. The database schema optimization (removing html column) actually **strengthens** compliance by reducing storage overhead and preventing JSON/HTML synchronization issues, improving both performance (Principle VI) and maintainability. Principle VIII (JSDoc) will be enforced during implementation.
 
 **No new violations introduced during design phase.** ✅
-
