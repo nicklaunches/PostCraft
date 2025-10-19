@@ -2,8 +2,13 @@
   "name": "postcraft",
   "version": "0.1.0",
   "private": true,
+  "main": "./lib/sdk/index.ts",
+  "types": "./lib/sdk/index.ts",
   "exports": {
-    ".": "./lib/sdk/postcraft.ts"
+    ".": {
+      "import": "./lib/sdk/index.ts",
+      "types": "./lib/sdk/index.ts"
+    }
   },
   "scripts": {
     "dev": "next dev",
