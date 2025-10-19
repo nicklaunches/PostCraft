@@ -375,7 +375,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, content, variables } = validation.data!;
+    const { name, content, variables, html } = validation.data!;
 
     // Validate template name
     const nameValidation = validateTemplateName(name);
@@ -392,6 +392,7 @@ export async function POST(request: NextRequest) {
       .values({
         name: nameValidation.sanitized,
         content,
+        html: html || null,
       })
       .returning();
 

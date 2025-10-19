@@ -184,7 +184,7 @@ export async function PUT(
       );
     }
 
-    const { content, variables } = validation.data!;
+    const { content, variables, html } = validation.data!;
 
     // Check if template exists
     const existingTemplate = await db.query.templates.findFirst({
@@ -205,6 +205,7 @@ export async function PUT(
         .update(templates)
         .set({
           content,
+          html: html || null,
           updatedAt: new Date(),
         })
         .where(eq(templates.id, templateId));

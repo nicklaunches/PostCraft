@@ -59,6 +59,7 @@ export interface ValidationResult<T = any> {
 export interface CreateTemplateRequestBody {
   name: string;
   content: any;
+  html?: string;
   variables?: Array<{
     key: string;
     type: VariableType;
@@ -69,6 +70,7 @@ export interface CreateTemplateRequestBody {
 
 export interface UpdateTemplateRequestBody {
   content: any;
+  html?: string;
   variables?: Array<{
     key: string;
     type: VariableType;
@@ -217,6 +219,13 @@ export function validateCreateTemplateRequest(
     errors.push('Field "content" cannot be null');
   }
 
+  // Validate html (optional)
+  if (body.html !== undefined && body.html !== null) {
+    if (typeof body.html !== 'string') {
+      errors.push(`Field "html" must be string, got ${typeof body.html}`);
+    }
+  }
+
   // Validate variables (optional)
   if (body.variables !== undefined && body.variables !== null) {
     if (!Array.isArray(body.variables)) {
@@ -243,6 +252,7 @@ export function validateCreateTemplateRequest(
     data: {
       name: body.name,
       content: body.content,
+      html: body.html,
       variables: body.variables || [],
     },
   };
@@ -286,6 +296,13 @@ export function validateUpdateTemplateRequest(
     errors.push('Field "content" cannot be null');
   }
 
+  // Validate html (optional)
+  if (body.html !== undefined && body.html !== null) {
+    if (typeof body.html !== 'string') {
+      errors.push(`Field "html" must be string, got ${typeof body.html}`);
+    }
+  }
+
   // Validate variables (optional)
   if (body.variables !== undefined && body.variables !== null) {
     if (!Array.isArray(body.variables)) {
@@ -311,6 +328,7 @@ export function validateUpdateTemplateRequest(
     errors: [],
     data: {
       content: body.content,
+      html: body.html,
       variables: body.variables || [],
     },
   };

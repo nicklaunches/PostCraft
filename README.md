@@ -33,10 +33,10 @@ npm install postcraft
 
 ### 2. Environment Configuration
 
-Create a `.env.local` file in your project root:
+Create a `.env` file in your project root:
 
 ```bash
-# .env.local
+# .env
 POSTCRAFT_DATABASE_URL=postgresql://user:password@localhost:5432/postcraft
 ```
 

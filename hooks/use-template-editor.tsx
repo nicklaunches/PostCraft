@@ -174,10 +174,12 @@ export function useTemplateEditor(options: UseTemplateEditorOptions) {
                             ? {
                                   name: validateTemplateName(templateName).sanitized,
                                   content: design,
+                                  html: html,
                                   variables: allVariables,
                               }
                             : {
                                   content: design,
+                                  html: html,
                                   variables: allVariables,
                               };
 

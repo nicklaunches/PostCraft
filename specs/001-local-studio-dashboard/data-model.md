@@ -11,7 +11,8 @@
 │ id: SERIAL PK               │
 │ name: TEXT UNIQUE NOT NULL  │◄──┐
 │ content: JSONB NOT NULL     │   │ ONE-TO-MANY
-│ created_at: TIMESTAMP       │   │ (CASCADE DELETE)
+│ html: TEXT                  │   │ (CASCADE DELETE)
+│ created_at: TIMESTAMP       │   │
 │ updated_at: TIMESTAMP       │   │
 └─────────────────────────────┘   │
                                   │
@@ -30,7 +31,7 @@
 
 UNIQUE INDEX: (template_id, key)
 
-NOTE: HTML is NOT stored - generated on-demand via exportHtml() (FR-038)
+NOTE: HTML is stored in database for faster rendering
 ```
 
 ---
@@ -49,13 +50,14 @@ NOTE: HTML is NOT stored - generated on-demand via exportHtml() (FR-038)
 | `id` | SERIAL | PRIMARY KEY | Auto-incrementing unique identifier |
 | `name` | TEXT | NOT NULL, UNIQUE | Template name for SDK rendering and UI display (e.g., "welcome-email") |
 | `content` | JSONB | NOT NULL | react-email-editor design JSON structure (stores drag-and-drop layout) |
+| `html` | TEXT | NULLABLE | Exported HTML from exportHtml() with merge tags (saved for faster rendering) |
 | `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Template creation timestamp |
 | `updated_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last modification timestamp (updated on save) |
 
-**IMPORTANT**: HTML is NOT stored in the database (FR-038). Instead:
-- **Studio export**: Generate HTML on-demand using `exportHtml()` method when user clicks "Export"
-- **SDK rendering**: Generate HTML server-side from design JSON during `templates.render()` call
-- **Rationale**: Prevents JSON/HTML synchronization issues, reduces storage, ensures fresh HTML generation
+**HTML Storage**:
+- **Studio export**: HTML is generated using `exportHtml()` method and saved to database on template save
+- **SDK rendering**: Stored HTML is used for rendering, eliminating need to regenerate from design JSON
+- **Rationale**: Improves rendering performance by eliminating JSON-to-HTML conversion at runtime
 
 **Indexes**:
 - Primary key index on `id` (automatic)
@@ -211,7 +213,7 @@ export const templates = pgTable('templates', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(), // SDK lookup key
   content: jsonb('content').notNull(), // react-email-editor design JSON from saveDesign()
-  // NOTE: html column REMOVED - generated on-demand via exportHtml() (FR-038)
+  html: text('html'), // Exported HTML from exportHtml() with merge tags
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 }, (table) => ({
@@ -276,7 +278,7 @@ CREATE TABLE "templates" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL UNIQUE,
   "content" JSONB NOT NULL,
-  -- NOTE: No html column - generated on-demand (FR-038)
+  "html" TEXT,
   "created_at" TIMESTAMP DEFAULT NOW() NOT NULL,
   "updated_at" TIMESTAMP DEFAULT NOW() NOT NULL
 );

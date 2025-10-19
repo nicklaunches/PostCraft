@@ -56,7 +56,7 @@ export const templates = pgTable(
     id: serial("id").primaryKey(),
     name: text("name").notNull().unique(), // SDK lookup key
     content: jsonb("content").notNull(), // react-email-editor design JSON from saveDesign()
-    // NOTE: html column REMOVED - generated on-demand via exportHtml() (FR-038)
+    html: text("html"), // Exported HTML from exportHtml() with merge tags
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
