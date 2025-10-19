@@ -280,19 +280,19 @@
 
 ### Implementation for User Story 6
 
-- [ ] T086 [P] [US6] Create TemplateExport component in components/template-export.tsx with export interface
-- [ ] T087 [P] [US6] Add "Export" button to template cards in components/template-list.tsx opening export dialog
-- [ ] T088 [US6] Implement HTML export in components/template-export.tsx loading template.content into editor and calling exportHtml() to generate HTML on-demand
-- [ ] T089 [US6] Add copy-to-clipboard functionality using navigator.clipboard.writeText() with success feedback via shadcn/ui Toast
-- [ ] T090 [US6] Add download functionality creating Blob with HTML content and triggering download with anchor element
-- [ ] T091 [US6] Add loading state during export using shadcn/ui Skeleton while fetching template data
-- [ ] T092 [US6] Verify template variables preserved in exported HTML in format {{VARIABLE_NAME}} per FR-013
-- [ ] T093 [US6] Add empty template warning when exporting template with no content using shadcn/ui Alert with confirmation
-- [ ] T094 [US6] Add error handling for export failures using shadcn/ui Alert with retry option
-- [ ] T094a [P] [US6] Add file-level JSDoc to components/template-export.tsx describing HTML export functionality per Principle VIII
-- [ ] T094b [P] [US6] Add JSDoc to TemplateExport component methods documenting export, copy, and download operations per Principle VIII
+- [x] T086 [P] [US6] Create TemplateExport component in components/template-export.tsx with export interface
+- [x] T087 [P] [US6] Add "Export" button to template cards in components/template-list.tsx opening export dialog
+- [x] T088 [US6] Implement HTML export in components/template-export.tsx loading template.content into editor and calling exportHtml() to generate HTML on-demand
+- [x] T089 [US6] Add copy-to-clipboard functionality using navigator.clipboard.writeText() with success feedback via shadcn/ui Toast
+- [x] T090 [US6] Add download functionality creating Blob with HTML content and triggering download with anchor element
+- [x] T091 [US6] Add loading state during export using shadcn/ui Skeleton while fetching template data
+- [x] T092 [US6] Verify template variables preserved in exported HTML in format {{VARIABLE_NAME}} per FR-013
+- [x] T093 [US6] Add empty template warning when exporting template with no content using shadcn/ui Alert with confirmation
+- [x] T094 [US6] Add error handling for export failures using shadcn/ui Alert with retry option
+- [x] T094a [P] [US6] Add file-level JSDoc to components/template-export.tsx describing HTML export functionality per Principle VIII
+- [x] T094b [P] [US6] Add JSDoc to TemplateExport component methods documenting export, copy, and download operations per Principle VIII
 
-**Checkpoint**: HTML export functional with copy, download, and proper merge tag preservation
+**Checkpoint**: HTML export functional with copy, download, and proper merge tag preservation ✅ COMPLETE
 
 ---
 

@@ -42,6 +42,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Pagination } from '@/components/ui/pagination'
 import { AlertCircle, FileText, Plus, Edit, Trash2, Download } from 'lucide-react'
+import { TemplateExport } from '@/components/template-export'
 import type { ListTemplatesResponse } from '@/specs/001-local-studio-dashboard/contracts/api-templates'
 
 interface TemplateListProps {
@@ -80,6 +81,8 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [exportOpen, setExportOpen] = useState(false)
+  const [exportTemplate, setExportTemplate] = useState<{ id: number; name: string } | null>(null)
 
   /**
    * Fetches templates from the API
@@ -146,6 +149,17 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
       setIsDeleting(false)
     }
   }, [deleteTargetTemplate, fetchTemplates])
+
+  /**
+   * Opens export dialog
+   *
+   * @param templateId - ID of template to export
+   * @param templateName - Name of template to export
+   */
+  const openExportDialog = useCallback((templateId: number, templateName: string) => {
+    setExportTemplate({ id: templateId, name: templateName })
+    setExportOpen(true)
+  }, [])
 
   /**
    * Opens delete confirmation dialog
@@ -262,8 +276,7 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation()
-                  // Export functionality will be implemented in Phase 10
-                  alert('Export feature coming soon!')
+                  openExportDialog(template.id, template.name)
                 }}
               >
                 <Download className="h-4 w-4" />
@@ -370,6 +383,18 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
           totalPages={data.pagination.totalPages}
           onPageChange={(newPage) => {
             router.push(`/templates?page=${newPage}&pageSize=${pageSize}`)
+          }}
+        />
+      )}
+
+      {/* Export Template Dialog */}
+      {exportOpen && exportTemplate && (
+        <TemplateExport
+          templateId={exportTemplate.id}
+          templateName={exportTemplate.name}
+          onClose={() => {
+            setExportOpen(false)
+            setExportTemplate(null)
           }}
         />
       )}
