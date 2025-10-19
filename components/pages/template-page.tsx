@@ -87,6 +87,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
     handleSave: hookHandleSave,
     handleCancel,
     initializeVariables,
+    markAsChanged,
   } = useTemplateEditor({
     mode,
     templateId,
@@ -369,6 +370,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
           <TemplateEditor
             ref={editorRef}
             onReady={handleEditorReady}
+            onChange={markAsChanged}
             initialDesign={mode === "edit" && template ? template.content : undefined}
           />
         </div>
@@ -378,7 +380,10 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
           <div className="p-6">
             <VariableManager
               variables={variables}
-              onChange={setVariables}
+              onChange={(newVariables) => {
+                setVariables(newVariables);
+                markAsChanged();
+              }}
               detectedVariables={detectedVariables}
               label="Email Variables"
               showEmpty={true}

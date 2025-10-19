@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 import {
   Home,
   Mail,
@@ -22,25 +23,33 @@ const data = {
       title: "Dashboard",
       url: "/",
       icon: Home,
-      isActive: true,
     },
     {
       title: "Templates",
       url: "/templates",
       icon: Mail,
-      isActive: false,
     },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+
+  // Determine which nav item is active based on current pathname
+  const navItems = data.navMain.map((item) => ({
+    ...item,
+    isActive:
+      pathname === item.url ||
+      (item.url === "/templates" && pathname.startsWith("/templates")),
+  }))
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarLogo />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navItems} />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

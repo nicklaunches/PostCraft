@@ -201,6 +201,25 @@ interface TemplateEditorProps {
     onLoad?: () => void;
 
     /**
+     * Optional callback fired when the design changes in the editor.
+     *
+     * This is useful for tracking unsaved changes and triggering auto-save.
+     * Note: This may fire frequently during editing, so consider debouncing.
+     *
+     * @callback
+     * @example
+     * ```tsx
+     * <TemplateEditor
+     *   onChange={() => {
+     *     console.log('Design changed');
+     *     markAsChanged();
+     *   }}
+     * />
+     * ```
+     */
+    onChange?: () => void;
+
+    /**
      * Optional initial design to load into editor.
      *
      * This should be a react-email-editor design JSON object from a previous saveDesign() call.
@@ -408,12 +427,13 @@ interface TemplateEditorProps {
  * ```
  */
 export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
-    ({ onReady, onLoad, initialDesign }, ref) => {
+    ({ onReady, onLoad, onChange, initialDesign }, ref) => {
         const editorRef = useRef<EditorRef>(null);
 
         // Store callbacks in refs to avoid re-running effects when they change
         const onReadyRef = useRef(onReady);
         const onLoadRef = useRef(onLoad);
+        const onChangeRef = useRef(onChange);
         const isEditorInitialized = useRef(false);
         const hasLoadedDesign = useRef(false);
 
@@ -421,7 +441,8 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         useEffect(() => {
             onReadyRef.current = onReady;
             onLoadRef.current = onLoad;
-        }, [onReady, onLoad]);
+            onChangeRef.current = onChange;
+        }, [onReady, onLoad, onChange]);
 
         // Expose the editor ref to parent using useImperativeHandle
         // Don't use dependency array to ensure it always returns the latest editorRef.current
@@ -435,13 +456,11 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
                 !hasLoadedDesign.current &&
                 editorRef.current?.editor
             ) {
-                console.log("TemplateEditor: Loading initial design");
                 editorRef.current.editor.loadDesign(initialDesign as any);
                 hasLoadedDesign.current = true;
 
                 // Call onLoad callback after design is loaded
                 if (onLoadRef.current) {
-                    console.log("TemplateEditor: Calling onLoad callback");
                     onLoadRef.current();
                 }
             }
@@ -453,35 +472,37 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
                 return;
             }
 
-            console.log("TemplateEditor: handleReady callback invoked");
-            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
-            console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
-
             isEditorInitialized.current = true;
+
+            // Add event listener for design changes
+            if (editorRef.current?.editor) {
+                (editorRef.current.editor as any).addEventListener('design:updated', () => {
+                    // Call onChange callback when design changes
+                    if (onChangeRef.current) {
+                        onChangeRef.current();
+                    }
+                });
+            }
 
             // Load initial design if provided
             if (initialDesign && editorRef.current?.editor) {
-                console.log("TemplateEditor: Loading initial design");
                 editorRef.current.editor.loadDesign(initialDesign as any);
                 hasLoadedDesign.current = true;
 
                 // Call onLoad callback after design is loaded
                 if (onLoadRef.current) {
-                    console.log("TemplateEditor: Calling onLoad callback");
                     onLoadRef.current();
                 }
             }
 
             // Call onReady callback
             if (onReadyRef.current) {
-                console.log("TemplateEditor: Calling onReady callback");
                 onReadyRef.current();
             }
-        };        // Check if Unlayer script loads
-        useEffect(() => {
-            // console.log("TemplateEditor: Checking for Unlayer global");
-            // console.log("TemplateEditor: window.unlayer exists?", !!(typeof window !== 'undefined' && (window as any).unlayer));
+        };
 
+        // Check if Unlayer script loads
+        useEffect(() => {
             // Listen for script errors
             const handleError = (event: ErrorEvent) => {
                 console.error("TemplateEditor: Script error detected:", event.message, event.filename);
@@ -504,13 +525,6 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
                 // Users can define merge tags in the editor
             },
         };
-
-        // console.log("TemplateEditor: Rendering component");
-        // console.log("TemplateEditor: POSTCRAFT_UNLAYER_PROJECT_ID?", !!process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
-        // console.log("TemplateEditor: projectId value:", process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
-        // console.log("TemplateEditor: projectId as number:", Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID));
-        // console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
-        // console.log("TemplateEditor: editorOptions:", editorOptions);
 
         return (
             <div className="h-full w-full" style={{ minHeight: '100%' }}>
