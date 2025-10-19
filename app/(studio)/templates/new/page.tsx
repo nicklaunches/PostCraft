@@ -34,6 +34,7 @@ export default function NewTemplatePage() {
 
     // Track changes in the editor
     const handleEditorReady = () => {
+        console.log("[NewTemplatePage] handleEditorReady called");
         setIsEditorReady(true);
     };
 
@@ -45,6 +46,13 @@ export default function NewTemplatePage() {
     }, [templateName, isEditorReady]);
 
     const handleSave = async () => {
+        console.log("[NewTemplatePage] Save button clicked", {
+            templateName,
+            isEditorReady,
+            hasEditorRef: !!editorRef.current,
+            hasEditor: !!editorRef.current?.editor,
+        });
+        
         // Validate template name
         const validation = validateTemplateName(templateName);
         if (!validation.isValid) {
@@ -56,21 +64,30 @@ export default function NewTemplatePage() {
         }
         setNameError("");
 
-        if (!editorRef.current?.editor) {
+        // Ensure editor is ready
+        if (!isEditorReady || !editorRef.current?.editor) {
+            console.error("[NewTemplatePage] Editor not ready!", {
+                isEditorReady,
+                hasEditorRef: !!editorRef.current,
+                hasEditor: !!editorRef.current?.editor,
+            });
             toast.error("Editor not ready", {
                 description: "Please wait for the editor to load",
             });
             return;
         }
 
+        console.log("[NewTemplatePage] Editor is ready, proceeding with save");
         setIsSaving(true);
         const savingToast = toast.loading("Saving template...");
 
         try {
             // Export design from editor
             editorRef.current.editor.saveDesign((design: object) => {
+                console.log("[NewTemplatePage] Design saved", { design });
                 // Export HTML with merge tags
                 editorRef.current?.editor?.exportHtml((data: { html: string }) => {
+                    console.log("[NewTemplatePage] HTML exported");
                     const html = data.html;
 
                     // Extract variables from HTML using regex
@@ -100,6 +117,10 @@ export default function NewTemplatePage() {
                         }),
                     })
                         .then(async (response) => {
+                            console.log("[NewTemplatePage] API response received", {
+                                status: response.status,
+                                ok: response.ok,
+                            });
                             if (!response.ok) {
                                 const error = await response.json();
                                 throw new Error(error.error || "Failed to create template");
@@ -107,6 +128,7 @@ export default function NewTemplatePage() {
                             return response.json();
                         })
                         .then(() => {
+                            console.log("[NewTemplatePage] Template saved successfully");
                             toast.dismiss(savingToast);
                             toast.success("Template created!", {
                                 description: `Template "${validation.sanitized}" has been created successfully.`,
@@ -118,6 +140,7 @@ export default function NewTemplatePage() {
                             }, 500);
                         })
                         .catch((error) => {
+                            console.error("[NewTemplatePage] Error saving template", error);
                             toast.dismiss(savingToast);
 
                             // Handle duplicate name error
