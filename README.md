@@ -96,6 +96,28 @@ npx postcraft db:studio
 
 These commands use your project's `POSTCRAFT_DATABASE_URL` environment variable, so you can manage the PostCraft database from any project that has postcraft installed.
 
+**Optional: Add npm script aliases to your package.json**
+
+For convenience, you can add these scripts to your project's `package.json`:
+
+```json
+{
+  "scripts": {
+    "postcraft": "postcraft",
+    "postcraft:db:push": "postcraft db:push",
+    "postcraft:db:generate": "postcraft db:generate",
+    "postcraft:db:studio": "postcraft db:studio"
+  }
+}
+```
+
+Then you can run them as:
+```bash
+npm run postcraft:db:push
+npm run postcraft:db:generate
+npm run postcraft:db:studio
+```
+
 ## Usage Example in Your Codebase
 
 ```typescript

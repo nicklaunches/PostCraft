@@ -27,15 +27,13 @@ if (command === 'db:push' || command === 'db:generate' || command === 'db:studio
   }[command];
 
   // Run drizzle-kit from the postcraft installation directory
-  // but use the current working directory's environment variables
+  // This ensures schema paths in drizzle.config.ts are resolved correctly
   const child = spawn('npx', ['drizzle-kit', drizzleCommand, '--config', path.join(postcraftDir, 'drizzle.config.ts')], {
-    cwd: process.cwd(), // Use user's current directory for env variables
+    cwd: postcraftDir, // Run from PostCraft directory for schema resolution
     stdio: 'inherit',
     shell: true,
     env: {
-      ...process.env,
-      // Ensure the schema path is relative to postcraft installation
-      NODE_PATH: postcraftDir
+      ...process.env, // Include user's environment variables (POSTCRAFT_DATABASE_URL)
     }
   });
 
