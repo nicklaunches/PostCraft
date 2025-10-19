@@ -161,7 +161,7 @@ As a developer, I want to export my email templates as HTML so that I can copy a
 
 1. **Given** I'm viewing a template, **When** I click "Export as HTML", **Then** I see the HTML export interface
 2. **Given** I'm exporting a template, **When** the export completes, **Then** I receive valid HTML with inline styles ready for email clients
-3. **Given** the exported HTML contains merge tags, **When** I view the HTML, **Then** merge tag variables are preserved in a format compatible with the SDK
+3. **Given** the exported HTML contains template variables, **When** I view the HTML, **Then** template variables are preserved in a format compatible with the SDK
 4. **Given** I'm exporting a template, **When** I want to copy instead of download, **Then** I have an option to copy the HTML to clipboard
 5. **Given** export is in progress, **When** the system is generating the export, **Then** I see a loading indicator with progress feedback
 6. **Given** export fails, **When** an error occurs, **Then** I see a clear error message explaining what went wrong
@@ -179,8 +179,8 @@ As a developer, I want to define and manage template variables (like NAME, AGE) 
 
 **Acceptance Scenarios**:
 
-1. **Given** I'm creating/editing a template, **When** I add variables using react-email-editor's merge tag feature, **Then** the system detects and lists all variables
-2. **Given** variables are detected, **When** I view the variable panel, **Then** I can define the type (string, number, boolean, date) and fallback value for each variable
+1. **Given** I'm creating/editing a template, **When** I add template variables using react-email-editor's merge tag feature, **Then** the system detects and lists all variables
+2. **Given** template variables are detected, **When** I view the variable panel, **Then** I can define the type (string, number, boolean, date) and fallback value for each variable
 3. **Given** I define a variable with a fallback value, **When** I preview the template, **Then** the fallback value is displayed in place of the variable
 4. **Given** I have optional variables, **When** I export the template, **Then** the export includes variable metadata and usage documentation
 5. **Given** I'm managing variables, **When** I remove a variable from the template, **Then** the variable is removed from the variable list
@@ -243,70 +243,73 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **FR-003**: System MUST use shadcn/ui components exclusively for all UI elements throughout the interface
 - **FR-004**: System MUST apply TailwindCSS design patterns consistently across all pages and components
 - **FR-005**: System MUST provide a /templates route that displays all email templates
-- **FR-004**: System MUST display an empty state on /templates when no templates exist
-- **FR-005**: System MUST allow users to create new email templates via a "Create New Template" action
-- **FR-006**: System MUST integrate react-email-editor for visual template design and editing
-- **FR-006a**: System MUST initialize react-email-editor with all features and tools enabled (full unlocked mode with no restrictions)
-- **FR-006b**: System MUST load saved template designs using `loadDesign()` method called within the `onReady` callback
-- **FR-006c**: System MUST save template designs using `saveDesign()` method with callback to retrieve design JSON for database persistence
-- **FR-007**: System MUST allow users to edit existing email templates
-- **FR-008**: System MUST allow users to delete email templates with confirmation
-- **FR-009**: System MUST persist templates in PostgreSQL database between server restarts
-- **FR-010**: System MUST export templates as HTML with inline styles ready for email clients
-- **FR-010a**: System MUST use `exportHtml()` method to generate fresh HTML at export time rather than returning stored HTML
-- **FR-011**: System MUST preserve merge tag variables in exported HTML in SDK-compatible format
-- **FR-012**: System MUST provide copy-to-clipboard functionality for HTML exports
-- **FR-013**: System MUST provide download functionality for HTML exports
-- **FR-014**: System MUST provide a PostCraft SDK importable as `import { PostCraft } from 'postcraft'`
-- **FR-014a**: SDK MUST support instantiation via `new PostCraft()` constructor
-- **FR-014b**: SDK MUST provide `templates.render(name, variables)` method for rendering templates with variable substitution
-- **FR-014c**: SDK MUST retrieve templates from PostgreSQL when rendering using the same DATABASE_URL environment variable as the studio
-- **FR-014d**: SDK MUST implement server-side HTML generation from design JSON (equivalent to react-email-editor's exportHtml but for Node.js)
-- **FR-014e**: SDK MUST replace merge tag variables with provided values during server-side HTML rendering
-- **FR-014f**: SDK MUST use fallback values for missing variables when fallback is defined
-- **FR-014g**: SDK MUST throw clear errors when required variables are missing and no fallback exists
-- **FR-014h**: SDK MUST throw clear errors when template name is not found in database
-- **FR-014i**: SDK MUST validate variable types at runtime against template variable metadata
-- **FR-014j**: SDK MUST throw descriptive errors when provided variable values do not match expected types (e.g., string provided for number type)
-- **FR-014k**: SDK MUST include variable name, expected type, and provided type in validation error messages
-- **FR-015**: System MUST detect template variables using react-email-editor's native merge tag feature
-- **FR-015a**: System MUST configure merge tags dynamically using `setMergeTags()` method called in `onReady` callback
-- **FR-015b**: System MUST load existing template variable metadata from database and configure them in the editor via `setMergeTags()`
-- **FR-016**: System MUST allow users to define variable types (string, number, boolean, date) and fallback values for merge tags
-- **FR-017**: System MUST include variable metadata in template exports
-- **FR-018**: System MUST validate template names and prevent duplicates
-- **FR-019**: System MUST sanitize template names to prevent SQL injection and ensure database compatibility
-- **FR-029**: System MUST read all environment variables with POSTCRAFT_ prefix for configuration
-- **FR-029a**: System MUST use POSTCRAFT_DATABASE_URL environment variable for PostgreSQL connection string
-- **FR-029b**: System MUST use POSTCRAFT_PORT environment variable for preferred server port (default: 3579 if not set)
-- **FR-029c**: System MUST support optional POSTCRAFT_SDK_* prefixed variables for SDK-specific configuration
-- **FR-029d**: System MUST provide a .env.sample file documenting all supported POSTCRAFT_ environment variables with example values
-- **FR-030**: System MUST handle database connection failures gracefully with clear error messages
-- **FR-031**: System MUST use Drizzle ORM for all database operations with type-safe queries
-- **FR-032**: System MUST use Drizzle Kit to generate and run database migrations automatically
-- **FR-033**: System MUST use a two-table database schema: `templates` table and `template_variables` table
-- **FR-034**: System MUST define foreign key relationship from template_variables.template_id to templates.id
-- **FR-035**: System MUST enforce referential integrity (cascade delete variables when template is deleted)
-- **FR-036**: System MUST store template name with unique constraint in templates table
-- **FR-037**: System MUST store react-email-editor JSON content in templates.content column
-- **FR-038**: System MUST generate HTML on-demand using `exportHtml()` method rather than storing pre-rendered HTML in database
-- **FR-039**: System MUST store variable metadata (key, type as string/number/boolean/date, fallback, is_required) in template_variables table
-- **FR-020**: System MUST enforce single-editor lock per template (only one browser tab can edit at a time)
-- **FR-021**: System MUST display read-only mode with notification when template is being edited in another tab
-- **FR-022**: System MUST display loading states during async operations (loading templates, saving, exporting)
-- **FR-023**: System MUST display error states with actionable messages when operations fail
-- **FR-023a**: System MUST preserve editor state in memory when save operations fail
-- **FR-023b**: System MUST display a retry button with detailed error information for failed saves
-- **FR-023c**: System MUST maintain unsaved changes state after failed save attempts until successful save or explicit user navigation
-- **FR-024**: System MUST support keyboard navigation for all primary actions
-- **FR-025**: System MUST warn users about unsaved changes before navigation
-- **FR-025a**: System MUST NOT implement auto-save functionality - all saves are manual and user-initiated
-- **FR-025b**: System MUST track unsaved changes state and prevent data loss through warning dialogs only
-- **FR-026**: System MUST implement offset-based pagination with page numbers for template lists using LIMIT/OFFSET queries
-- **FR-033**: System MUST display pagination controls (previous, next, page numbers) when template count exceeds page size
-- **FR-034**: System MUST use a default page size of 20 templates per page for optimal performance
-- **FR-027**: System MUST provide visual feedback for all user actions (success, error, loading)
-- **FR-028**: System MUST follow WCAG 2.1 AA accessibility standards
+- **FR-006**: System MUST display an empty state on /templates when no templates exist
+- **FR-007**: System MUST allow users to create new email templates via a "Create New Template" action
+- **FR-008**: System MUST integrate react-email-editor for visual template design and editing
+- **FR-008a**: System MUST initialize react-email-editor with all features and tools enabled (full unlocked mode with no restrictions)
+- **FR-008b**: System MUST load saved template designs using `loadDesign()` method called within the `onReady` callback
+- **FR-008c**: System MUST save template designs using `saveDesign()` method with callback to retrieve design JSON for database persistence
+- **FR-009**: System MUST allow users to edit existing email templates
+- **FR-010**: System MUST allow users to delete email templates with confirmation
+- **FR-011**: System MUST persist templates in PostgreSQL database between server restarts
+- **FR-012**: System MUST export templates as HTML with inline styles ready for email clients
+- **FR-012a**: System MUST use `exportHtml()` method to generate fresh HTML at export time rather than returning stored HTML
+- **FR-013**: System MUST preserve template variables in exported HTML in SDK-compatible format
+- **FR-014**: System MUST provide copy-to-clipboard functionality for HTML exports
+- **FR-015**: System MUST provide download functionality for HTML exports
+- **FR-016**: System MUST provide a PostCraft SDK importable as `import { PostCraft } from 'postcraft'`
+- **FR-016a**: SDK MUST support instantiation via `new PostCraft()` constructor
+- **FR-016b**: SDK MUST provide `templates.render(name, variables)` method for rendering templates with variable substitution
+- **FR-016c**: SDK MUST retrieve templates from PostgreSQL when rendering using the same DATABASE_URL environment variable as the studio
+- **FR-016d**: SDK MUST implement server-side HTML generation from design JSON (equivalent to react-email-editor's exportHtml but for Node.js)
+- **FR-016e**: SDK MUST replace template variables with provided values during server-side HTML rendering
+- **FR-016f**: SDK MUST use fallback values for missing variables when fallback is defined
+- **FR-016g**: SDK MUST throw clear errors when required variables are missing and no fallback exists
+- **FR-016h**: SDK MUST throw clear errors when template name is not found in database
+- **FR-016i**: SDK MUST validate variable types at runtime against template variable metadata
+- **FR-016j**: SDK MUST throw descriptive errors when provided variable values do not match expected types (e.g., string provided for number type)
+- **FR-016k**: SDK MUST include variable name, expected type, and provided type in validation error messages
+- **FR-016l**: SDK MUST NOT perform automatic type coercion; string "123" provided for number type MUST throw TemplateVariableTypeError
+- **FR-017**: System MUST detect template variables (merge tags) using react-email-editor's native merge tag feature
+- **FR-017a**: System MUST configure template variables dynamically using `setMergeTags()` method called in `onReady` callback
+- **FR-017b**: System MUST load existing template variable metadata from database and configure them in the editor via `setMergeTags()`
+- **FR-018**: System MUST allow users to define variable types (string, number, boolean, date) and fallback values for template variables
+- **FR-019**: System MUST include variable metadata in template exports
+- **FR-020**: System MUST validate template names and prevent duplicates
+- **FR-021**: System MUST sanitize template names to prevent SQL injection and ensure database compatibility
+- **FR-022**: System MUST read all environment variables with POSTCRAFT_ prefix for configuration
+- **FR-022a**: System MUST use POSTCRAFT_DATABASE_URL environment variable for PostgreSQL connection string
+- **FR-022b**: System MUST use POSTCRAFT_PORT environment variable for preferred server port (default: 3579 if not set)
+- **FR-022c**: System MUST support optional POSTCRAFT_SDK_* prefixed variables for SDK-specific configuration
+- **FR-022d**: System MUST provide a .env.sample file documenting all supported POSTCRAFT_ environment variables with example values
+- **FR-023**: System MUST handle database connection failures gracefully with clear error messages
+- **FR-024**: System MUST use Drizzle ORM for all database operations with type-safe queries
+- **FR-025**: System MUST use Drizzle Kit to generate and run database migrations automatically
+- **FR-026**: System MUST use a two-table database schema: `templates` table and `template_variables` table
+- **FR-027**: System MUST define foreign key relationship from template_variables.template_id to templates.id
+- **FR-028**: System MUST enforce referential integrity (cascade delete variables when template is deleted)
+- **FR-029**: System MUST store template name with unique constraint in templates table
+- **FR-030**: System MUST store react-email-editor JSON content in templates.content column
+- **FR-031**: System MUST generate HTML on-demand using `exportHtml()` method rather than storing pre-rendered HTML in database
+- **FR-031a**: System MUST use client-side exportHtml() for UI-based template export functionality
+- **FR-031b**: System MUST use server-side HTML renderer (lib/sdk/html-renderer.ts) for SDK template.render() method
+- **FR-032**: System MUST store variable metadata (key, type as string/number/boolean/date, fallback, is_required) in template_variables table
+- **FR-033**: System MUST enforce single-editor lock per template (only one browser tab can edit at a time)
+- **FR-034**: System MUST display read-only mode with notification when template is being edited in another tab
+- **FR-035**: System MUST display loading states during async operations (loading templates, saving, exporting)
+- **FR-036**: System MUST display error states with actionable messages when operations fail
+- **FR-036a**: System MUST preserve editor state in memory when save operations fail
+- **FR-036b**: System MUST display a retry button with detailed error information for failed saves
+- **FR-036c**: System MUST maintain unsaved changes state after failed save attempts until successful save or explicit user navigation
+- **FR-037**: System MUST support keyboard navigation for all primary actions
+- **FR-038**: System MUST warn users about unsaved changes before navigation
+- **FR-038a**: System MUST NOT implement auto-save functionality - all saves are manual and user-initiated
+- **FR-038b**: System MUST track unsaved changes state and prevent data loss through warning dialogs only
+- **FR-039**: System MUST implement offset-based pagination with page numbers for template lists using LIMIT/OFFSET queries
+- **FR-040**: System MUST display pagination controls (previous, next, page numbers) when template count exceeds page size
+- **FR-041**: System MUST use a default page size of 20 templates per page for optimal performance
+- **FR-042**: System MUST provide visual feedback for all user actions (success, error, loading)
+- **FR-043**: System MUST follow WCAG 2.1 AA accessibility standards
 
 ### UI/UX Design Requirements
 
@@ -435,7 +438,7 @@ As a developer, I want to use the PostCraft SDK to programmatically render templ
 - **SC-007**: All interactive elements are accessible via keyboard navigation with no mouse required
 - **SC-008**: Loading states appear within 100ms of user action initiation
 - **SC-009**: Error messages provide clear, actionable guidance that resolves the issue without external documentation
-- **SC-010**: Template variable detection correctly identifies 100% of merge tags created via react-email-editor's merge tag feature
+- **SC-010**: Template variable detection correctly identifies 100% of template variables created via react-email-editor's merge tag feature
 - **SC-011**: The dashboard maintains consistent shadcn/ui design patterns across all pages and components
 - **SC-012**: Unsaved changes are protected via clear warnings before navigation, preventing accidental data loss 100% of the time when warnings are heeded
 

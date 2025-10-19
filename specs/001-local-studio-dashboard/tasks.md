@@ -61,7 +61,7 @@
 - [ ] T016 [P] Install core shadcn/ui components: button, card, dialog, input, skeleton, alert, toast, pagination
 - [ ] T017 Create root layout in app/layout.tsx with TailwindCSS global styles and font configuration
 - [ ] T018 [P] Implement validation utilities in lib/utils/validation.ts for template name sanitization per FR-019
-- [ ] T019 [P] Implement merge tag utilities in lib/utils/merge-tags.ts for variable substitution per research.md lines 162-195
+- [ ] T019 [P] Implement template variable utilities in lib/utils/merge-tags.ts for variable substitution per research.md lines 162-195
 
 **Checkpoint**: Foundation ready - database schema created, shadcn/ui installed, utilities available
 
@@ -121,9 +121,10 @@
 ### Implementation for User Story 8
 
 - [ ] T037 [P] [US8] Create PostCraft SDK class in lib/sdk/postcraft.ts with constructor accepting PostCraftConfig per contracts/sdk-postcraft.ts lines 76-97
-- [ ] T038 [P] [US8] Implement templates.render() method in lib/sdk/postcraft.ts with database query and merge tag substitution per contracts/sdk-postcraft.ts lines 102-131
+- [ ] T038 [P] [US8] Implement templates.render() method in lib/sdk/postcraft.ts with database query and template variable substitution per contracts/sdk-postcraft.ts lines 102-131
 - [ ] T038a [P] [US8] Create lib/sdk/html-renderer.ts implementing server-side HTML generation from react-email-editor design JSON per research.md section 8
 - [ ] T038b [US8] Research react-email-editor design JSON structure and implement HTML generation algorithm in lib/sdk/html-renderer.ts
+- [ ] T038c [US8] Implement template variable replacement algorithm in lib/sdk/html-renderer.ts supporting {{VARIABLE}} syntax with fallback value handling per FR-016e
 - [ ] T039 [US8] Add database connection logic to PostCraft constructor using POSTCRAFT_DATABASE_URL environment variable
 - [ ] T040 [US8] Implement error classes in lib/sdk/postcraft.ts: TemplateNotFoundError, TemplateVariableTypeError, RequiredVariableMissingError, DatabaseConnectionError per contracts/sdk-postcraft.ts lines 36-70
 - [ ] T041 [US8] Add variable type validation in templates.render() method checking provided values against template variable metadata types
@@ -148,7 +149,7 @@
 - [ ] T047 [P] [US3] Implement template creation transaction in app/api/templates/route.ts: INSERT template, INSERT variables, handle unique constraint violations
 - [ ] T048 [P] [US3] Create new template page in app/(studio)/templates/new/page.tsx with client-side editor component
 - [ ] T049 [US3] Implement TemplateEditor component in components/template-editor.tsx wrapping react-email-editor with all features enabled per FR-006a
-- [ ] T050 [US3] Configure react-email-editor in components/template-editor.tsx with merge tags enabled and full tools unlocked per research.md lines 143-205
+- [ ] T050 [US3] Configure react-email-editor in components/template-editor.tsx with template variables (merge tags) enabled and full tools unlocked per research.md lines 143-205
 - [ ] T051 [US3] Add template name input to app/(studio)/templates/new/page.tsx using shadcn/ui Input with validation
 - [ ] T052 [US3] Implement save handler in app/(studio)/templates/new/page.tsx calling saveDesign() to get design JSON and POST /api/templates
 - [ ] T053 [US3] Add loading state during save using shadcn/ui Toast for "Saving..." notification
@@ -173,7 +174,11 @@
 - [ ] T059 [P] [US4] Create PUT /api/templates/[id] route in app/api/templates/[id]/route.ts implementing UpdateTemplateRequest/Response per contracts/api-templates.ts lines 208-267
 - [ ] T060 [P] [US4] Implement update transaction in app/api/templates/[id]/route.ts: UPDATE template, DELETE old variables, INSERT new variables per data-model.md lines 177-188
 - [ ] T061 [P] [US4] Create edit template page in app/(studio)/templates/[id]/edit/page.tsx loading template data server-side
+- [ ] T061a [US4] Implement template lock mechanism in database using a template_locks table or lock_acquired_at timestamp column per FR-033
+- [ ] T061b [US4] Add lock acquisition logic in GET /api/templates/[id] route to check and set edit lock with session identifier
+- [ ] T061c [US4] Add lock release logic on page unload using beforeunload event and API call to release lock
 - [ ] T062 [US4] Load template content into TemplateEditor component using editor.loadDesign() method with template.content JSON
+- [ ] T062a [US4] Detect if template is locked by another session and display read-only mode with shadcn/ui Alert notification per FR-034
 - [ ] T063 [US4] Implement save handler in app/(studio)/templates/[id]/edit/page.tsx calling PUT /api/templates/[id]
 - [ ] T064 [US4] Add loading state for template fetch using shadcn/ui Skeleton while template data loads
 - [ ] T065 [US4] Add error handling for template not found (404) using shadcn/ui Alert with link back to /templates
@@ -214,7 +219,7 @@
 
 ### Implementation for User Story 7
 
-- [ ] T077 [P] [US7] Implement merge tag detection in components/template-editor.tsx by calling exportHtml() and parsing with regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
+- [ ] T077 [P] [US7] Implement template variable detection in components/template-editor.tsx by calling exportHtml() and parsing with regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
 - [ ] T078 [P] [US7] Create VariableManager component in components/variable-manager.tsx for defining variable metadata
 - [ ] T079 [US7] Add variable metadata form to components/variable-manager.tsx with fields: key (read-only), type (Select), fallbackValue (Input), isRequired (Checkbox)
 - [ ] T080 [US7] Implement type selection dropdown in components/variable-manager.tsx using shadcn/ui Select with options: string, number, boolean, date
@@ -242,7 +247,7 @@
 - [ ] T089 [US6] Add copy-to-clipboard functionality using navigator.clipboard.writeText() with success feedback via shadcn/ui Toast
 - [ ] T090 [US6] Add download functionality creating Blob with HTML content and triggering download with anchor element
 - [ ] T091 [US6] Add loading state during export using shadcn/ui Skeleton while fetching template data
-- [ ] T092 [US6] Verify merge tags preserved in exported HTML in format {{VARIABLE_NAME}} per FR-011
+- [ ] T092 [US6] Verify template variables preserved in exported HTML in format {{VARIABLE_NAME}} per FR-013
 - [ ] T093 [US6] Add empty template warning when exporting template with no content using shadcn/ui Alert with confirmation
 - [ ] T094 [US6] Add error handling for export failures using shadcn/ui Alert with retry option
 
