@@ -476,7 +476,7 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
 
             // Add event listener for design changes
             if (editorRef.current?.editor) {
-                (editorRef.current.editor as any).addEventListener('design:updated', () => {
+                (editorRef.current.editor as any).addEventListener("design:updated", () => {
                     // Call onChange callback when design changes
                     if (onChangeRef.current) {
                         onChangeRef.current();
@@ -505,13 +505,17 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         useEffect(() => {
             // Listen for script errors
             const handleError = (event: ErrorEvent) => {
-                console.error("TemplateEditor: Script error detected:", event.message, event.filename);
+                console.error(
+                    "TemplateEditor: Script error detected:",
+                    event.message,
+                    event.filename,
+                );
             };
 
-            window.addEventListener('error', handleError);
+            window.addEventListener("error", handleError);
 
             return () => {
-                window.removeEventListener('error', handleError);
+                window.removeEventListener("error", handleError);
             };
         }, []);
 
@@ -524,17 +528,24 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
                 // Configure merge tags support
                 // Users can define merge tags in the editor
             },
+            appearance: {
+                panels: {
+                    tools: {
+                        dock: "left",
+                    },
+                },
+            },
         };
 
         return (
-            <div className="h-full w-full" style={{ minHeight: '100%' }}>
+            // <div>
                 <EmailEditor
                     ref={editorRef}
                     onReady={handleReady}
                     options={editorOptions}
                     minHeight="100%"
                 />
-            </div>
+            // </div>
         );
     },
 );

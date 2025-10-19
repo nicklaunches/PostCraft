@@ -179,7 +179,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
       <div className="flex h-screen flex-col">
         {/* Header Skeleton */}
         <div className="border-b bg-background p-4">
-          <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div className="mx-auto flex items-center justify-between">
             <div className="flex-1">
               <Skeleton className="mb-2 h-8 w-64" />
               <Skeleton className="h-4 w-96" />
@@ -265,7 +265,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
     <div className="flex h-screen flex-col">
       {/* Header */}
       <div className="border-b bg-background p-4">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="mx-auto flex items-center justify-between">
           <div className="flex-1">
             <h1 className="text-2xl font-bold">
               {mode === "create" ? "Create New Template" : "Edit Template"}
