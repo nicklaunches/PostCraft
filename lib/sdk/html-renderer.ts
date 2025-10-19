@@ -62,6 +62,36 @@ import {
 
 /**
  * Validates that a provided variable value matches the expected type
+ *
+ * Performs type checking for template variables against their declared metadata types.
+ * Supports four type categories: string, number, boolean, and date. Follows strict
+ * type validation rules (no implicit type coercion).
+ *
+ * Type Validation Rules:
+ * - **string**: Any JavaScript string is valid
+ * - **number**: Must be JavaScript number type, must not be NaN
+ * - **boolean**: Must be JavaScript boolean type (true/false), not 1/0
+ * - **date**: Must be Date object or valid date string, and represent valid date
+ *
+ * @internal Used internally by substituteMergeTags for variable validation
+ *
+ * @param {any} value - The value to validate. Can be any JavaScript type.
+ * @param {string} expectedType - Expected type name: 'string', 'number', 'boolean', or 'date'
+ *
+ * @returns {boolean} True if value matches expected type, false if type mismatch.
+ *   Returns false for unknown/unsupported types.
+ *
+ * @example
+ * ```typescript
+ * validateVariableType('hello', 'string')    // → true
+ * validateVariableType(30, 'number')         // → true (valid number)
+ * validateVariableType('30', 'number')       // → false (string, not number)
+ * validateVariableType(NaN, 'number')        // → false (NaN is invalid)
+ * validateVariableType(true, 'boolean')      // → true
+ * validateVariableType('true', 'boolean')    // → false (string, not boolean)
+ * validateVariableType(new Date(), 'date')   // → true
+ * validateVariableType('2025-01-15', 'date') // → true (valid date string)
+ * ```
  */
 function validateVariableType(value: any, expectedType: string): boolean {
   switch (expectedType) {
@@ -82,7 +112,39 @@ function validateVariableType(value: any, expectedType: string): boolean {
 }
 
 /**
- * Formats a variable value according to its type
+ * Formats a variable value to string according to its type
+ *
+ * Converts typed values to their string representation for HTML merge tag substitution.
+ * Different types require different formatting to maintain semantic meaning in HTML:
+ * - Numbers: Convert directly to string
+ * - Booleans: Convert to string ('true'/'false')
+ * - Dates: Format as localized date string for readability
+ * - Strings: Pass through as-is
+ *
+ * This function is called after type validation, so input is guaranteed to match type.
+ *
+ * @internal Used internally by substituteMergeTags after type validation
+ *
+ * @param {any} value - The value to format. Should be valid for given type.
+ * @param {string} type - Type of the value: 'string', 'number', 'boolean', or 'date'.
+ *   Defaults to 'string' for unknown types.
+ *
+ * @returns {string} String representation of value suitable for HTML substitution.
+ *   Format depends on type:
+ *   - number: "123" (standard string representation)
+ *   - boolean: "true" or "false"
+ *   - date: Localized date like "1/15/2025" (varies by browser locale)
+ *   - string: Original string unchanged
+ *
+ * @example
+ * ```typescript
+ * formatVariableValue(123, 'number')                    // → "123"
+ * formatVariableValue(true, 'boolean')                  // → "true"
+ * formatVariableValue(false, 'boolean')                 // → "false"
+ * formatVariableValue(new Date('2025-01-15'), 'date')   // → "1/15/2025" (US locale)
+ * formatVariableValue('hello', 'string')                // → "hello"
+ * formatVariableValue('value', 'unknown')               // → "value" (defaults to string)
+ * ```
  */
 function formatVariableValue(value: any, type: string): string {
   switch (type) {
@@ -414,9 +476,46 @@ export function renderDesignToHtml(designJson: any): string {
 }
 
 /**
- * Extracts body content from design JSON
- * This is a placeholder implementation that should be expanded based on
- * actual react-email-editor JSON structure
+ * Extracts HTML body content from react-email-editor design JSON
+ *
+ * Attempts to extract meaningful HTML content from the design JSON structure
+ * to build the email body. Tries multiple fallback strategies in order:
+ * 1. Extract from design.body if present (structured layout data)
+ * 2. Use design.html if present (pre-rendered HTML)
+ * 3. Fallback to minimal content if neither available
+ *
+ * Note: This is a simplified implementation. In production, consider:
+ * - Using Puppeteer/Playwright to render react-email-editor in headless browser
+ * - Pre-rendering HTML in studio UI and storing alongside design JSON
+ * - Full parsing of react-email-editor's complete design JSON structure
+ *
+ * @internal Used internally by renderDesignToHtml during HTML generation
+ *
+ * @param {any} designJson - Parsed react-email-editor design JSON. Expected to have
+ *   structure with optional 'body' and 'html' fields.
+ *
+ * @returns {string} HTML body content (not wrapped in body tags, just the content).
+ *   Always returns valid HTML suitable for email clients.
+ *   Format: HTML string ready to be wrapped in email template structure.
+ *
+ * @example
+ * ```typescript
+ * // With body structure
+ * extractBodyContent({
+ *   body: { rows: [{ columns: [{ elements: [...] }] }] }
+ * })
+ * // → '<div>{JSON stringified body}</div>'
+ *
+ * // With pre-rendered HTML
+ * extractBodyContent({
+ *   html: '<div style="...">Content</div>'
+ * })
+ * // → '<div style="...">Content</div>'
+ *
+ * // Empty design
+ * extractBodyContent({})
+ * // → '<div style="padding: 20px;"><p>Template content will appear here</p></div>'
+ * ```
  */
 function extractBodyContent(designJson: any): string {
   // react-email-editor typically stores the design in a 'body' or 'rows' structure

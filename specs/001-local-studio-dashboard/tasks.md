@@ -315,9 +315,9 @@
 - [x] T108 Code cleanup: remove unused imports, add comments for complex logic, ensure consistent formatting
 - [x] T109 [P] Verify all TypeScript files have file-level JSDoc comments per Principle VIII
 - [x] T110 [P] Verify all public exports (functions, classes, interfaces) have JSDoc with @param, @returns, @throws per Principle VIII
-- [ ] T111 [P] Verify all SDK methods and public APIs have @example blocks in JSDoc per Principle VIII
-- [ ] T112 [P] Add JSDoc to complex internal functions with branching complexity >3 per Principle VIII
-- [ ] T113 Conduct JSDoc documentation audit across all files ensuring compliance with Principle VIII
+- [x] T111 [P] Verify all SDK methods and public APIs have @example blocks in JSDoc per Principle VIII
+- [x] T112 [P] Add JSDoc to complex internal functions with branching complexity >3 per Principle VIII
+- [x] T113 Conduct JSDoc documentation audit across all files ensuring compliance with Principle VIII
 
 **Checkpoint**: All polish tasks complete, JSDoc documentation comprehensive, application ready for production use
 
