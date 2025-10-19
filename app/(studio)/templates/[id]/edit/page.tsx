@@ -1,3 +1,58 @@
+/**
+ * @fileoverview Template editing page component for the PostCraft local studio.
+ *
+ * Provides a full-featured email template editor allowing users to modify existing
+ * template designs using react-email-editor and sync changes back to the database.
+ *
+ * **Key Features**:
+ * - Loads template content (react-email-editor JSON design) from database via GET /api/templates/[id]
+ * - Renders visual email editor with full design tools
+ * - Automatically detects merge tag variables ({{NAME}}, {{ORDER_ID}}, etc.) from design
+ * - Saves template changes with atomic transaction: content + variables
+ * - Unsaved changes warning prevents accidental navigation without saving
+ * - Keyboard shortcut (Cmd+S / Ctrl+S) for quick save
+ * - Error recovery with retry button on failed saves
+ * - Loading and error states with user-friendly feedback
+ *
+ * **Data Flow**:
+ * 1. Page mounts → Fetch template by ID via GET /api/templates/[id]
+ * 2. Editor loads → Pass template.content to editor.loadDesign()
+ * 3. User edits → Track hasUnsavedChanges state
+ * 4. User saves (Save button or Cmd+S) → Call editor.saveDesign() to get design JSON
+ * 5. Export HTML → Call editor.exportHtml() to get HTML with merge tags
+ * 6. Parse variables → Use regex to detect {{VARIABLE}} patterns in HTML
+ * 7. Send to API → PUT /api/templates/[id] with content + variables
+ * 8. Update UI → Refresh template data, show success toast, update updatedAt timestamp
+ *
+ * **Error Handling**:
+ * - 404 Template Not Found: Show error alert with link to /templates
+ * - Network errors: Show error toast with retry button
+ * - Editor not ready: Prevent saves until editor fully loads
+ * - Unsaved changes: Browser warning prevents data loss on accidental navigation
+ *
+ * **Accessibility**:
+ * - All interactive elements have aria-labels for screen readers
+ * - Keyboard navigation with Tab key through save/cancel buttons
+ * - Keyboard shortcut hints displayed at bottom of page
+ * - Error messages announced to screen readers via Alert component
+ *
+ * @example
+ * // User journey:
+ * 1. Navigate to /templates/5/edit
+ * 2. Template loads with design shown in editor
+ * 3. User modifies design, adds merge tags like {{CUSTOMER_NAME}}
+ * 4. User presses Cmd+S or clicks "Save Changes"
+ * 5. Toast shows "Saving template..."
+ * 6. Variables are detected from HTML
+ * 7. PUT request sent with new content and variables
+ * 8. Success toast shows "Template saved!"
+ * 9. updatedAt timestamp updated on page
+ * 10. hasUnsavedChanges cleared (unsaved indicator disappears)
+ *
+ * @see components/template-editor.tsx - React Email Editor wrapper component
+ * @see app/api/templates/[id]/route.ts - PUT endpoint for saving templates
+ * @see lib/db/schema.ts - Template and TemplateVariable database schemas
+ */
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
@@ -12,6 +67,10 @@ import { toast } from "sonner";
 import { AlertCircle, Info } from "lucide-react";
 import Link from "next/link";
 
+/**
+ * Template data structure returned from GET /api/templates/[id]
+ * Includes template metadata and all associated merge tag variables
+ */
 interface TemplateData {
   id: number;
   name: string;

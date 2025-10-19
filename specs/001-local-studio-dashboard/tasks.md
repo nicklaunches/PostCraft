@@ -218,11 +218,11 @@
 - [x] T066 [US4] Implement unsaved changes tracking and warning using beforeunload event per FR-025
 - [x] T067 [US4] Preserve editor state in memory on failed save per FR-023a with retry button using shadcn/ui Alert
 - [x] T068 [US4] Add keyboard shortcuts for save (Cmd+S / Ctrl+S) using keydown event handler
-- [ ] T068a [P] [US4] Add file-level JSDoc to app/api/templates/[id]/route.ts describing template CRUD operations per Principle VIII
-- [ ] T068b [P] [US4] Add JSDoc to GET, PUT handlers in app/api/templates/[id]/route.ts with @param, @returns, @throws per Principle VIII
-- [ ] T068c [P] [US4] Add file-level JSDoc to app/(studio)/templates/[id]/edit/page.tsx describing template editing page per Principle VIII
+- [x] T068a [P] [US4] Add file-level JSDoc to app/api/templates/[id]/route.ts describing template CRUD operations per Principle VIII
+- [x] T068b [P] [US4] Add JSDoc to GET, PUT handlers in app/api/templates/[id]/route.ts with @param, @returns, @throws per Principle VIII
+- [x] T068c [P] [US4] Add file-level JSDoc to app/(studio)/templates/[id]/edit/page.tsx describing template editing page per Principle VIII
 
-**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection ✅ COMPLETE (locking features deferred, JSDoc pending)
+**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection ✅ COMPLETE (locking features deferred, JSDoc complete)
 
 ---
 

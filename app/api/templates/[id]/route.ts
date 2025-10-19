@@ -1,3 +1,48 @@
+/**
+ * @fileoverview API route handler for individual template CRUD operations.
+ *
+ * Provides HTTP endpoints for retrieving and updating individual email templates.
+ * Implements the Template API contracts for GET and PUT operations:
+ * - GET /api/templates/[id]: Retrieve single template with all associated variables
+ * - PUT /api/templates/[id]: Update template content and variables in atomic transaction
+ *
+ * **Database Operations**:
+ * - GET uses Drizzle relational query API to fetch template with eager-loaded variables
+ * - PUT implements atomic transaction: UPDATE template → DELETE old variables → INSERT new variables
+ * - Transaction ensures data consistency if any operation fails (automatic rollback)
+ *
+ * **Error Handling**:
+ * - Validates template ID is numeric before database queries
+ * - Returns 404 when template not found (no cascade delete on missing template)
+ * - Returns 400 for invalid request body (missing required fields)
+ * - Returns 500 for database connection errors with error details
+ *
+ * **Type Safety**:
+ * - Uses TypeScript interfaces from @/specs/001-local-studio-dashboard/contracts/api-templates.ts
+ * - Request/response bodies validated against typed interfaces at runtime
+ *
+ * @example
+ * // Get a template for editing
+ * const response = await fetch('/api/templates/5');
+ * const { template } = await response.json();
+ * console.log(template.content); // react-email-editor JSON
+ *
+ * @example
+ * // Update a template with new design and variables
+ * const response = await fetch('/api/templates/5', {
+ *   method: 'PUT',
+ *   body: JSON.stringify({
+ *     content: { body: { rows: [...] } },
+ *     variables: [
+ *       { key: 'NAME', type: 'string', fallbackValue: 'User', isRequired: false }
+ *     ]
+ *   })
+ * });
+ * const { template } = await response.json();
+ *
+ * @see lib/db/schema.ts - Templates and TemplateVariables table schemas
+ * @see contracts/api-templates.ts - Request/response type definitions
+ */
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { templates, templateVariables } from "@/lib/db/schema";
@@ -5,7 +50,27 @@ import { eq } from "drizzle-orm";
 
 /**
  * GET /api/templates/[id] - Get Single Template with Variables
- * Returns a single template with all associated variables
+ *
+ * Retrieves a single email template with all associated merge tag variables.
+ * Uses Drizzle's relational query API to fetch template and variables in a single query.
+ *
+ * @param {NextRequest} _request - Incoming HTTP request (unused for GET)
+ * @param {Object} params - Dynamic route parameters
+ * @param {string} params.params.id - Template ID from URL path (e.g., "5" in /api/templates/5)
+ *
+ * @returns {Promise<NextResponse>} JSON response with template data or error
+ *
+ * @throws {400} Invalid template ID (not numeric)
+ * @throws {404} Template not found (no template with given ID exists)
+ * @throws {500} Database query error or connection failure
+ *
+ * @example
+ * GET /api/templates/5
+ * // Response (200): { template: { id: 5, name: "password-reset", content: {...}, variables: [...] } }
+ *
+ * @example
+ * GET /api/templates/999
+ * // Response (404): { error: "Template not found", details: "No template with id 999 exists" }
  */
 export async function GET(
   _request: NextRequest,
@@ -53,7 +118,45 @@ export async function GET(
 
 /**
  * PUT /api/templates/[id] - Update Template
- * Updates template content and variables in a transaction
+ *
+ * Updates an existing email template's design and merge tag variables in an atomic transaction.
+ * Implements the update flow: UPDATE template content → DELETE old variables → INSERT new variables.
+ *
+ * **Transaction Atomicity**:
+ * This route uses database transactions to ensure consistency:
+ * - If any step fails (validation, database error), entire transaction rolls back
+ * - Prevents partial updates where content is saved but variables are not
+ * - Ensures updatedAt timestamp is only set on successful completion
+ *
+ * **Variable Management**:
+ * - Automatically detects new merge tags ({{VARIABLE}} format) from the design JSON
+ * - Removes old variables not present in new design (cleanup on save)
+ * - Allows updating variable metadata (type, fallback value, required flag)
+ *
+ * @param {NextRequest} request - Incoming HTTP request with JSON body
+ * @param {Object} params - Dynamic route parameters
+ * @param {string} params.params.id - Template ID from URL path (e.g., "5" in /api/templates/5)
+ *
+ * @returns {Promise<NextResponse>} JSON response with updated template or error details
+ *
+ * @throws {400} Invalid request (missing content, non-object content, invalid template ID)
+ * @throws {404} Template not found (no template with given ID exists)
+ * @throws {500} Database transaction error, connection failure, or unexpected error
+ *
+ * @example
+ * PUT /api/templates/5
+ * {
+ *   "content": { "body": { "rows": [...] } },
+ *   "variables": [
+ *     { key: "NAME", type: "string", fallbackValue: "Customer", isRequired: false },
+ *     { key: "ORDER_ID", type: "string", fallbackValue: null, isRequired: true }
+ *   ]
+ * }
+ * // Response (200): { template: { id: 5, content: {...}, variables: [...], updatedAt: "..." } }
+ *
+ * @example
+ * PUT /api/templates/999
+ * // Response (404): { error: "Template not found" }
  */
 export async function PUT(
   request: NextRequest,
