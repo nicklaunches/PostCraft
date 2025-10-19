@@ -141,7 +141,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle, Plus } from "lucide-react";
+import { AlertTriangle, Plus, RefreshCw } from "lucide-react";
 import {
     validateFallbackValue,
     VariableType,
@@ -283,6 +283,12 @@ interface VariableManagerProps {
      * Default: true
      */
     showEmpty?: boolean;
+
+    /**
+     * Optional: Callback to refresh/re-detect variables from template.
+     * When provided, shows a refresh button in the header.
+     */
+    onRefresh?: () => void;
 }
 
 /**
@@ -380,8 +386,10 @@ export function VariableManager({
     detectedVariables = [],
     label = "Template Variables",
     showEmpty = true,
+    onRefresh,
 }: VariableManagerProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     // Get variables that are detected but not yet configured
     const unconfiguredVariables = detectedVariables.filter(
@@ -495,23 +503,52 @@ export function VariableManager({
         [variables, onChange]
     );
 
+    /**
+     * Handle refresh button click.
+     * Calls the onRefresh callback if provided.
+     */
+    const handleRefresh = useCallback(async () => {
+        if (!onRefresh) return;
+
+        setIsRefreshing(true);
+        try {
+            await onRefresh();
+        } finally {
+            // Small delay to show the animation
+            setTimeout(() => setIsRefreshing(false), 500);
+        }
+    }, [onRefresh]);
+
     return (
         <div className="space-y-6">
             {/* Section Header */}
-            <div>
-                <h3 className="text-lg font-semibold">{label}</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                    Configure metadata for variables detected in your template. Define types,
-                    fallback values, and whether variables are required.
-                </p>
+            <div className="flex items-start justify-between">
+                <div className="flex-1">
+                    <h3 className="text-lg font-semibold">{label}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        Configure metadata for variables detected in your template. Define types,
+                        fallback values, and whether variables are required.
+                    </p>
+                </div>
+                {onRefresh && (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRefresh}
+                        disabled={isRefreshing}
+                        className="ml-4"
+                        title="Re-detect variables from template"
+                    >
+                        <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    </Button>
+                )}
             </div>
 
             {/* Unconfigured Variables List */}
             {unconfiguredVariables.length > 0 && (
                 <Alert>
-                    <AlertTriangle className="h-4 w-4" />
                     <AlertDescription>
-                        <p className="font-medium mb-2">Detected but not configured:</p>
+                        <p className="font-medium mb-2 flex items-center"><AlertTriangle className="h-4 w-4 mr-2" /> Detected but not configured:</p>
                         <div className="flex flex-wrap gap-2">
                             {unconfiguredVariables.map((varKey) => (
                                 <div

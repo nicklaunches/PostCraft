@@ -414,7 +414,8 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         // Store callbacks in refs to avoid re-running effects when they change
         const onReadyRef = useRef(onReady);
         const onLoadRef = useRef(onLoad);
-        const callbacksCalledRef = useRef(false);
+        const isEditorInitialized = useRef(false);
+        const hasLoadedDesign = useRef(false);
 
         // Update callback refs when props change
         useEffect(() => {
@@ -423,37 +424,59 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         }, [onReady, onLoad]);
 
         // Expose the editor ref to parent using useImperativeHandle
-        useImperativeHandle(ref, () => editorRef.current as EditorRef, []);
+        // Don't use dependency array to ensure it always returns the latest editorRef.current
+        useImperativeHandle(ref, () => editorRef.current as EditorRef);
+
+        // Load design when editor is ready and initialDesign is available
+        useEffect(() => {
+            if (
+                isEditorInitialized.current &&
+                initialDesign &&
+                !hasLoadedDesign.current &&
+                editorRef.current?.editor
+            ) {
+                console.log("TemplateEditor: Loading initial design");
+                editorRef.current.editor.loadDesign(initialDesign as any);
+                hasLoadedDesign.current = true;
+
+                // Call onLoad callback after design is loaded
+                if (onLoadRef.current) {
+                    console.log("TemplateEditor: Calling onLoad callback");
+                    onLoadRef.current();
+                }
+            }
+        }, [initialDesign]);
 
         const handleReady = () => {
-            // Prevent calling callbacks multiple times
-            if (callbacksCalledRef.current) {
+            // Only initialize once
+            if (isEditorInitialized.current) {
                 return;
             }
 
-            // console.log("TemplateEditor: handleReady callback invoked");
-            // console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
-            // console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
+            console.log("TemplateEditor: handleReady callback invoked");
+            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
+            console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
+
+            isEditorInitialized.current = true;
 
             // Load initial design if provided
             if (initialDesign && editorRef.current?.editor) {
                 console.log("TemplateEditor: Loading initial design");
                 editorRef.current.editor.loadDesign(initialDesign as any);
+                hasLoadedDesign.current = true;
+
+                // Call onLoad callback after design is loaded
+                if (onLoadRef.current) {
+                    console.log("TemplateEditor: Calling onLoad callback");
+                    onLoadRef.current();
+                }
             }
 
-            // Call onReady callback immediately
+            // Call onReady callback
             if (onReadyRef.current) {
                 console.log("TemplateEditor: Calling onReady callback");
                 onReadyRef.current();
             }
-
-            // Call onLoad callback immediately (design is loaded synchronously above)
-            if (onLoadRef.current) {
-                console.log("TemplateEditor: Calling onLoad callback");
-                onLoadRef.current();
-            }
-
-            callbacksCalledRef.current = true;
         };        // Check if Unlayer script loads
         useEffect(() => {
             // console.log("TemplateEditor: Checking for Unlayer global");

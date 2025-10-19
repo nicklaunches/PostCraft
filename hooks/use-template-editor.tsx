@@ -61,8 +61,17 @@ export function useTemplateEditor(options: UseTemplateEditorOptions) {
 
   // Handle editor ready
   const handleEditorReady = useCallback(() => {
-    console.log("useTemplateEditor: Editor is ready");
+    console.log("useTemplateEditor: handleEditorReady called");
+    console.log("useTemplateEditor: Setting isEditorReady to true");
+    console.log("useTemplateEditor: editorRef.current before set:", editorRef.current);
     setIsEditorReady(true);
+    console.log("useTemplateEditor: isEditorReady state updated");
+    
+    // Log the editor ref after a small delay to see if it's populated
+    setTimeout(() => {
+      console.log("useTemplateEditor: editorRef.current after 100ms:", editorRef.current);
+      console.log("useTemplateEditor: editorRef.current?.editor after 100ms:", editorRef.current?.editor);
+    }, 100);
   }, []);
 
   // Initialize variables from template data
@@ -85,6 +94,11 @@ export function useTemplateEditor(options: UseTemplateEditorOptions) {
 
   // Save template
   const handleSave = useCallback(async () => {
+    console.log("useTemplateEditor: handleSave called");
+    console.log("useTemplateEditor: isEditorReady =", isEditorReady);
+    console.log("useTemplateEditor: editorRef.current =", editorRef.current);
+    console.log("useTemplateEditor: editorRef.current?.editor =", editorRef.current?.editor);
+
     // Validate template name (only for create mode)
     if (mode === "create") {
       const validation = validateTemplateName(templateName);
@@ -99,7 +113,24 @@ export function useTemplateEditor(options: UseTemplateEditorOptions) {
     }
 
     // Ensure editor is ready
-    if (!isEditorReady || !editorRef.current?.editor) {
+    if (!isEditorReady) {
+      console.error("useTemplateEditor: isEditorReady is false");
+      toast.error("Editor not ready", {
+        description: "Please wait for the editor to load",
+      });
+      return;
+    }
+
+    if (!editorRef.current) {
+      console.error("useTemplateEditor: editorRef.current is null");
+      toast.error("Editor not ready", {
+        description: "Please wait for the editor to load",
+      });
+      return;
+    }
+
+    if (!editorRef.current.editor) {
+      console.error("useTemplateEditor: editorRef.current.editor is null");
       toast.error("Editor not ready", {
         description: "Please wait for the editor to load",
       });
