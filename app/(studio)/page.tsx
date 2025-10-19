@@ -24,7 +24,7 @@
  * Quick Start:
  * 1. Navigate to Templates to view all your email templates
  * 2. Create a new template or edit existing ones
- * 3. Use the SDK to render templates with variable substitution
+ * 3. Use the SDK to render templates
  */
 
 import Link from "next/link";
@@ -69,7 +69,7 @@ export default function StudioHome() {
             </li>
             <li className="flex items-start">
               <span className="text-blue-600 font-bold mr-3">3.</span>
-              <span>Use the SDK to render templates with variable substitution</span>
+              <span>Use the SDK to render templates</span>
             </li>
           </ul>
         </div>

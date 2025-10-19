@@ -176,7 +176,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
   // Loading state (edit mode)
   if (isLoading) {
     return (
-      <div className="flex h-screen flex-col">
+      <div className="flex flex-1 flex-col">
         {/* Header Skeleton */}
         <div className="border-b bg-background p-4">
           <div className="mx-auto flex items-center justify-between">
@@ -218,7 +218,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
   // Error state (edit mode)
   if (loadError) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center p-4">
+      <div className="flex flex-1 flex-col items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-2xl">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error Loading Template</AlertTitle>
@@ -244,7 +244,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
   // Template not found (edit mode, should be caught by loadError)
   if (mode === "edit" && !template) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center p-4">
+      <div className="flex flex-1 flex-col items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-2xl">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Template Not Found</AlertTitle>
@@ -262,7 +262,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex flex-1 flex-col">
       {/* Header */}
       <div className="border-b bg-background p-4">
         <div className="mx-auto flex items-center justify-between">
