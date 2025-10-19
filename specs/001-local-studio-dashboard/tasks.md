@@ -49,7 +49,7 @@
 - [x] T005 [P] Install react-email-editor package for visual email editing
 - [x] T006 Configure TailwindCSS in tailwind.config.ts with shadcn/ui theme variables
 - [x] T007 Create .env.sample file documenting POSTCRAFT_DATABASE_URL and POSTCRAFT_PORT variables per research.md lines 281-296
-- [x] T008 [P] Add npm scripts to package.json: "studio" (next dev -H 127.0.0.1 -p 3579), "db:push", "db:generate"
+- [x] T008 [P] Add npm scripts to package.json: "postcraft" (next dev -H 127.0.0.1 -p 3579), "postcraft:db:push", "postcraft:db:generate", "postcraft:db:studio"
 - [x] T009 [P] Configure ESLint and Prettier for code formatting and linting
 - [x] T010 Create project directory structure: app/, components/ui/, lib/db/, lib/sdk/, lib/utils/
 

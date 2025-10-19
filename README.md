@@ -75,6 +75,27 @@ Visit [localhost:3579](http://localhost:3579) to:
 - Set fallback values for optional variables
 - Preview rendered templates
 
+### 4. Database Management Commands
+
+PostCraft provides CLI commands to manage the database schema from your project directory:
+
+**Push schema changes to database (development)**
+```bash
+npx postcraft db:push
+```
+
+**Generate migration files (production)**
+```bash
+npx postcraft db:generate
+```
+
+**Open Drizzle Studio to view/edit data**
+```bash
+npx postcraft db:studio
+```
+
+These commands use your project's `POSTCRAFT_DATABASE_URL` environment variable, so you can manage the PostCraft database from any project that has postcraft installed.
+
 ## Usage Example in Your Codebase
 
 ```typescript

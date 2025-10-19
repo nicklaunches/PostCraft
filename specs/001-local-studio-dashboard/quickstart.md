@@ -46,9 +46,11 @@ POSTCRAFT_PORT=3579
 Initialize the database schema:
 
 ```bash
-npm run db:migrate
+npm run postcraft:db:push
 # or
-yarn db:migrate
+yarn postcraft:db:push
+# or use npx directly
+npx postcraft db:push
 ```
 
 This creates the `templates` and `template_variables` tables in your PostgreSQL database.

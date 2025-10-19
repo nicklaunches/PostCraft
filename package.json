@@ -39,9 +39,9 @@
     "build:lib": "tsup",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "drizzle-kit push:pg",
-    "db:generate": "drizzle-kit generate:pg",
-    "db:studio": "drizzle-kit studio"
+    "postcraft:db:push": "drizzle-kit push:pg",
+    "postcraft:db:generate": "drizzle-kit generate:pg",
+    "postcraft:db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
