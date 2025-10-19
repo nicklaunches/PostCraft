@@ -105,7 +105,7 @@
  * Pure function, no side effects, safe to call from multiple contexts
  *
  * @param html - HTML string to scan for merge tags
- * @returns Array of unique variable names in order of first appearance
+ * @returns {string[]} Array of unique variable names in order of first appearance
  *
  * @throws Never throws - handles empty strings and malformed input gracefully
  *
@@ -163,7 +163,7 @@ export function detectVariables(html: string): string[] {
  * multiple sources.
  *
  * @param variables - Array of variable names (may contain duplicates)
- * @returns Array of unique variable names in order of first appearance
+ * @returns {string[]} Array of unique variable names in order of first appearance
  *
  * @example
  * ```typescript

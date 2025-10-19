@@ -41,7 +41,11 @@ export interface DetectedVariable {
  * Looks for {{VARIABLE_NAME}} format (uppercase)
  *
  * @param htmlContent - The HTML content to scan for merge tags
- * @returns Array of detected variables with their keys and occurrence count
+ * @returns {DetectedVariable[]} Array of detected variables with their keys and occurrence count
+ *
+ * @example
+ * const vars = detectMergeTags('<p>Hi {{NAME}}, your ID is {{ID}}</p>');
+ * // Returns: [{ key: 'NAME', count: 1 }, { key: 'ID', count: 1 }]
  */
 export function detectMergeTags(htmlContent: string): DetectedVariable[] {
   const mergeTagRegex = /\{\{([A-Z_]+)\}\}/g;
@@ -65,8 +69,16 @@ export function detectMergeTags(htmlContent: string): DetectedVariable[] {
  *
  * @param htmlContent - The HTML content with merge tags
  * @param variables - Map of variable key to replacement value
- * @param fallbacks - Map of variable key to fallback value
- * @returns HTML content with variables replaced
+ * @param fallbacks - Map of variable key to fallback value (defaults to empty object)
+ * @returns {string} HTML content with variables replaced
+ *
+ * @example
+ * const result = replaceMergeTags(
+ *   '<p>Hi {{NAME}}</p>',
+ *   { NAME: 'John' },
+ *   { NAME: 'Guest' }
+ * );
+ * // Returns: '<p>Hi John</p>'
  */
 export function replaceMergeTags(
   htmlContent: string,
@@ -96,7 +108,14 @@ export function replaceMergeTags(
  *
  * @param requiredVariables - Array of required variable keys
  * @param providedVariables - Map of provided variable key to value
- * @returns Object with isValid boolean and missing variable keys
+ * @returns {{isValid: boolean, missing: string[]}} Validation result with missing variable keys
+ *
+ * @example
+ * const result = validateRequiredVariables(
+ *   ['EMAIL', 'NAME'],
+ *   { EMAIL: 'user@example.com' }
+ * );
+ * // Returns: { isValid: false, missing: ['NAME'] }
  */
 export function validateRequiredVariables(
   requiredVariables: string[],
@@ -116,7 +135,12 @@ export function validateRequiredVariables(
  *
  * @param value - The value to format
  * @param type - The expected type ('string', 'number', 'boolean', 'date')
- * @returns Formatted value as string
+ * @returns {string} Formatted value as string
+ *
+ * @example
+ * formatVariableValue(true, 'boolean') // => 'true'
+ * formatVariableValue(42, 'number') // => '42'
+ * formatVariableValue(new Date('2025-01-01'), 'date') // => '2025-01-01T00:00:00.000Z'
  */
 export function formatVariableValue(
   value: unknown,

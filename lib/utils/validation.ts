@@ -37,7 +37,13 @@ const TEMPLATE_NAME_REGEX = /^[a-zA-Z0-9_-]{1,100}$/;
  * - No special characters or spaces
  *
  * @param name - The template name to validate
- * @returns Object with isValid boolean and sanitized name
+ * @returns {{isValid: boolean, sanitized: string, error?: string}} Validation result with sanitized name
+ *
+ * @example
+ * const result = validateTemplateName('my-template');
+ * if (result.isValid) {
+ *   console.log(result.sanitized); // 'my-template'
+ * }
  */
 export function validateTemplateName(
   name: string
@@ -81,7 +87,10 @@ export function validateTemplateName(
  * and converting to lowercase
  *
  * @param name - The template name to sanitize
- * @returns Sanitized name (lowercase, no special characters)
+ * @returns {string} Sanitized name (lowercase, no special characters)
+ *
+ * @example
+ * sanitizeTemplateName('My Email!') // => 'my-email'
  */
 export function sanitizeTemplateName(name: string): string {
   return name

@@ -199,15 +199,12 @@ function formatVariableValue(value: any, type: string): string {
  * @returns {string} HTML with merge tags replaced by actual values or fallbacks.
  *   If a merge tag has no value and no fallback, it remains unreplaced (e.g., {{UNKNOWN}}).
  *   Format: Same as input HTML, only merge tags modified.
- *   @example '<html><body><p>Hello Alice, your code is ABC-123</p></body></html>'
  *
  * @throws {TemplateVariableTypeError} If provided variable type does not match metadata.
  *   Example: Providing string "123" when number type expected for {{AGE}}.
- *   @example throw new TemplateVariableTypeError('AGE', 'number', 'string')
  *
  * @throws {RequiredVariableMissingError} If required variable not provided and no fallback.
  *   Example: {{ORDER_ID}} is required but not provided or fallback.
- *   @example throw new RequiredVariableMissingError('ORDER_ID')
  *
  * @example
  * ```typescript
@@ -335,14 +332,12 @@ export function substituteMergeTags(
  *   Expected structure contains design metadata, layout, content, and styling.
  *   Should be a JavaScript object (not string). If string, convert with JSON.parse() first.
  *   Can be null/undefined - will return minimal HTML.
- *   @example { body: { rows: [...] }, html: '<html>...</html>' }
  *
  * @returns {string} Valid HTML5 document string suitable for email clients.
  *   Always includes DOCTYPE, html, head (with meta tags), and body.
  *   All merge tags ({{VARIABLE}}) preserved as-is for later substitution.
  *   All styles are inlined in element style attributes.
  *   Ready to send via email service providers.
- *   @example '<!DOCTYPE html>\n<html>...</html>'
  *
  * @example
  * ```typescript

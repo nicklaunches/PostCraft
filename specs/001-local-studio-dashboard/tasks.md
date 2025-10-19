@@ -313,8 +313,8 @@
 - [x] T105 Verify localhost-only binding to 127.0.0.1 rejecting external connections per FR-001a
 - [x] T106 Run through quickstart.md validation: install, setup, create template, edit, delete, SDK usage
 - [x] T108 Code cleanup: remove unused imports, add comments for complex logic, ensure consistent formatting
-- [ ] T109 [P] Verify all TypeScript files have file-level JSDoc comments per Principle VIII
-- [ ] T110 [P] Verify all public exports (functions, classes, interfaces) have JSDoc with @param, @returns, @throws per Principle VIII
+- [x] T109 [P] Verify all TypeScript files have file-level JSDoc comments per Principle VIII
+- [x] T110 [P] Verify all public exports (functions, classes, interfaces) have JSDoc with @param, @returns, @throws per Principle VIII
 - [ ] T111 [P] Verify all SDK methods and public APIs have @example blocks in JSDoc per Principle VIII
 - [ ] T112 [P] Add JSDoc to complex internal functions with branching complexity >3 per Principle VIII
 - [ ] T113 Conduct JSDoc documentation audit across all files ensuring compliance with Principle VIII

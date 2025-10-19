@@ -106,9 +106,9 @@ export type VariableType = 'string' | 'number' | 'boolean' | 'date';
  * @param value - Value to validate
  * @param type - Expected variable type
  * @param variableName - Optional name for error message context
- * @returns true if valid
+ * @returns {boolean} true if valid
  *
- * @throws TypeError if value doesn't match type
+ * @throws {TypeError} if value doesn't match type
  *
  * @example
  * ```typescript
@@ -231,10 +231,10 @@ export function validateType(value: any, type: VariableType, variableName?: stri
  * @param type - Variable type the fallback must match
  * @param isRequired - Whether variable is required (if true, fallback must be null)
  * @param variableName - Optional name for error message context
- * @returns true if valid
+ * @returns {boolean} true if valid
  *
- * @throws Error if required variable has fallback
- * @throws TypeError if fallback value doesn't match type
+ * @throws {Error} if required variable has fallback
+ * @throws {TypeError} if fallback value doesn't match type
  *
  * @example
  * ```typescript
@@ -305,9 +305,9 @@ export function validateFallbackValue(
  *
  * @param key - Variable key to validate
  * @param variableName - Optional name for error message (usually same as key)
- * @returns true if valid
+ * @returns {boolean} true if valid
  *
- * @throws Error if key format invalid
+ * @throws {Error} if key format invalid
  *
  * @example
  * ```typescript
@@ -347,9 +347,9 @@ export function validateVariableKey(key: string): boolean {
  * @param value - Fallback value stored as string
  * @param type - Target type to convert to
  * @param variableName - Optional name for error context
- * @returns Converted value in proper type
+ * @returns {any} Converted value in proper type
  *
- * @throws TypeError if conversion fails
+ * @throws {TypeError} if conversion fails
  *
  * @example
  * ```typescript
