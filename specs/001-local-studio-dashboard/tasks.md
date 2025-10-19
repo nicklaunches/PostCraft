@@ -5,6 +5,12 @@
 
 **Last Updated**: 2025-10-18 - Updated for database schema optimization (no HTML column storage)
 
+**Recent Corrections**: 2025-10-18 - Re-implemented T015 and Phase 3 (T020-T026) with proper shadcn/ui sidebar-07
+- ⚠️ **T015 Re-executed**: Properly installed shadcn/ui sidebar-07 template via `npx shadcn@latest add sidebar-07`
+- ⚠️ **Phase 3 Corrected**: Replaced custom sidebar implementation with proper shadcn/ui AppSidebar component
+- ✅ **Principle II Compliance**: Now using shadcn/ui components exclusively (NON-NEGOTIABLE requirement)
+- 🗑️ **Cleanup**: Removed custom sidebar.tsx and unused sample components (nav-projects, nav-user, team-switcher)
+
 **Key Design Changes**:
 - ✅ **Database Optimization**: templates table does NOT store html column (FR-038)
 - ✅ **On-Demand HTML Generation**: Use exportHtml() in studio UI and server-side HTML renderer in SDK
