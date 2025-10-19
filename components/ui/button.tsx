@@ -13,6 +13,7 @@ interface ButtonProps
     | "outline"
     | "ghost";
   size?: "sm" | "md" | "lg";
+  disabled?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

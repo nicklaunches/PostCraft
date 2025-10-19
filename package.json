@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "drizzle-kit push",
-    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push:pg",
+    "db:generate": "drizzle-kit generate:pg",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.6",
-    "drizzle-orm": "^0.28.0",
+    "drizzle-orm": "^0.30.0",
     "postgres": "^3.4.0",
     "dotenv": "^16.3.1"
   },
