@@ -55,19 +55,16 @@
  */
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { EditorRef } from "react-email-editor";
+import React, { useState, useEffect } from "react";
 import { TemplateEditor } from "@/components/template-editor";
-import { VariableManager, VariableMetadata } from "@/components/variable-manager";
+import { VariableManager } from "@/components/variable-manager";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
 import { AlertCircle, Info } from "lucide-react";
 import Link from "next/link";
-import { detectVariables } from "@/lib/utils/variable-detection";
+import { useTemplateEditor } from "@/hooks/use-template-editor";
 
 /**
  * Template data structure returned from GET /api/templates/[id]
@@ -91,211 +88,86 @@ interface TemplateData {
 }
 
 export default function EditTemplatePage({ params }: { params: { id: string } }) {
-  const router = useRouter();
-  const editorRef = useRef<EditorRef>(null);
   const [template, setTemplate] = useState<TemplateData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [isEditorReady, setIsEditorReady] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [variables, setVariables] = useState<VariableMetadata[]>([]);
-  const [detectedVariables, setDetectedVariables] = useState<string[]>([]);
+
+  // Use the template editor hook
+  const {
+    editorRef,
+    isEditorReady,
+    isSaving,
+    hasUnsavedChanges,
+    variables,
+    setVariables,
+    detectedVariables,
+    handleEditorReady,
+    handleSave: hookHandleSave,
+    handleCancel,
+    initializeVariables,
+  } = useTemplateEditor({
+    mode: "edit",
+    templateId: params.id,
+    onSaveSuccess: () => {
+      // Refresh template data after save
+      fetchTemplate();
+      setSaveError(null);
+    },
+  });
 
   // Fetch template data
-  useEffect(() => {
-    const fetchTemplate = async () => {
-      try {
-        setIsLoading(true);
-        setLoadError(null);
+  const fetchTemplate = async () => {
+    try {
+      setIsLoading(true);
+      setLoadError(null);
 
-        const response = await fetch(`/api/templates/${params.id}`);
+      const response = await fetch(`/api/templates/${params.id}`);
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            setLoadError("Template not found");
-          } else {
-            const error = await response.json();
-            setLoadError(error.error || "Failed to load template");
-          }
-          return;
+      if (!response.ok) {
+        if (response.status === 404) {
+          setLoadError("Template not found");
+        } else {
+          const error = await response.json();
+          setLoadError(error.error || "Failed to load template");
         }
-
-        const data = await response.json();
-        setTemplate(data.template);
-      } catch (error) {
-        console.error("Error fetching template:", error);
-        setLoadError(
-          error instanceof Error ? error.message : "Failed to load template"
-        );
-      } finally {
-        setIsLoading(false);
+        return;
       }
-    };
 
-    fetchTemplate();
-  }, [params.id]);
+      const data = await response.json();
+      setTemplate(data.template);
 
-  // Handle unsaved changes warning
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (hasUnsavedChanges) {
-        e.preventDefault();
-        e.returnValue = "";
+      // Initialize variables when template is loaded
+      if (data.template.variables) {
+        console.log("EditTemplatePage: Initializing variables from template data");
+        initializeVariables(data.template.variables);
       }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [hasUnsavedChanges]);
-
-  // Track changes when editor is modified
-  const handleEditorReady = () => {
-    setIsEditorReady(true);
-
-    // Load template design into editor
-    if (template?.content && editorRef.current?.editor) {
-      editorRef.current.editor.loadDesign(template.content as any);
-
-      // Initialize variables from template
-      if (template.variables) {
-        const vars: VariableMetadata[] = template.variables.map((v) => ({
-          key: v.key,
-          type: (v.type as VariableType) || "string",
-          fallbackValue: v.fallbackValue,
-          isRequired: v.isRequired,
-        }));
-        setVariables(vars);
-
-        // Also set detected variables to current template variables
-        setDetectedVariables(vars.map((v) => v.key));
-      }
+    } catch (error) {
+      console.error("Error fetching template:", error);
+      setLoadError(
+        error instanceof Error ? error.message : "Failed to load template"
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  type VariableType = "string" | "number" | "boolean" | "date";
-
-  // Keyboard shortcut for save (Cmd+S / Ctrl+S)
+  // Fetch template on mount
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
-        e.preventDefault();
-        if (isEditorReady && !isSaving) {
-          handleSave();
-        }
-      }
-    };
+    fetchTemplate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isEditorReady, isSaving, hasUnsavedChanges]);
-
+  // Wrapper for handleSave to catch errors and update UI
   const handleSave = async () => {
-    // Ensure editor is ready
-    if (!isEditorReady || !editorRef.current?.editor || !template) {
-      toast.error("Editor not ready", {
-        description: "Please wait for the editor to load",
-      });
-      return;
-    }
-
-    setIsSaving(true);
-    setSaveError(null);
-    const savingToast = toast.loading("Saving template...");
-
     try {
-      // Export design from editor
-      editorRef.current.editor.saveDesign((design: object) => {
-        // Export HTML with merge tags
-        editorRef.current?.editor?.exportHtml((data: { html: string }) => {
-          const html = data.html;
-
-          // Detect variables from HTML
-          const detectedVars = detectVariables(html);
-          setDetectedVariables(detectedVars);
-
-          // Use configured variables, but filter to only include detected ones
-          // and add any newly detected variables with defaults
-          const finalVariables = variables.filter((v) =>
-            detectedVars.includes(v.key)
-          );
-
-          // Add any newly detected variables
-          const newVars = detectedVars
-            .filter((key) => !finalVariables.some((v) => v.key === key))
-            .map(
-              (key): VariableMetadata => ({
-                key,
-                type: "string",
-                fallbackValue: null,
-                isRequired: false,
-              })
-            );
-
-          const allVariables = [...finalVariables, ...newVars];
-
-          // Send to API
-          fetch(`/api/templates/${params.id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              content: design,
-              variables: allVariables,
-            }),
-          })
-            .then(async (response) => {
-              if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || "Failed to update template");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              toast.dismiss(savingToast);
-              toast.success("Template saved!", {
-                description: `Template "${template.name}" has been updated successfully.`,
-              });
-              setHasUnsavedChanges(false);
-              setSaveError(null);
-              // Update local template data
-              setTemplate(data.template);
-            })
-            .catch((error) => {
-              toast.dismiss(savingToast);
-              const errorMessage = error.message || "An unknown error occurred";
-              setSaveError(errorMessage);
-              toast.error("Failed to save template", {
-                description: errorMessage,
-              });
-            })
-            .finally(() => {
-              setIsSaving(false);
-            });
-        });
-      });
+      setSaveError(null);
+      await hookHandleSave();
     } catch (error) {
-      toast.dismiss(savingToast);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
       setSaveError(errorMessage);
-      toast.error("Failed to save template", {
-        description: errorMessage,
-      });
-      setIsSaving(false);
     }
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges) {
-      const confirm = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
-      );
-      if (!confirm) return;
-    }
-    router.push("/templates");
   };
 
   // Loading state

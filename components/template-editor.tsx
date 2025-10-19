@@ -147,7 +147,7 @@
 
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useImperativeHandle } from "react";
 import EmailEditor, { EditorRef, EmailEditorProps } from "react-email-editor";
 
 interface TemplateEditorProps {
@@ -410,43 +410,54 @@ interface TemplateEditorProps {
 export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
     ({ onReady, onLoad, initialDesign }, ref) => {
         const editorRef = useRef<EditorRef>(null);
-        const [isEditorInitialized, setIsEditorInitialized] = useState(false);
 
-        // Expose the editor ref to parent
+        // Store callbacks in refs to avoid re-running effects when they change
+        const onReadyRef = useRef(onReady);
+        const onLoadRef = useRef(onLoad);
+        const callbacksCalledRef = useRef(false);
+
+        // Update callback refs when props change
         useEffect(() => {
-            console.log("TemplateEditor: useEffect - exposing ref to parent");
-            console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
-            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
-            if (ref && editorRef.current) {
-                console.log("TemplateEditor: Setting ref");
-                if (typeof ref === "function") {
-                    ref(editorRef.current);
-                } else {
-                    ref.current = editorRef.current;
-                }
-            }
-        }, [ref, isEditorInitialized]);
+            onReadyRef.current = onReady;
+            onLoadRef.current = onLoad;
+        }, [onReady, onLoad]);
 
-        const handleReady = (unlayer: any) => {
-            console.log("TemplateEditor: handleReady callback invoked");
-            console.log("TemplateEditor: unlayer argument:", unlayer);
-            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
-            console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
-            // Editor is ready when this callback is invoked
-            // The editor instance should be available via the ref
-            setIsEditorInitialized(true);
+        // Expose the editor ref to parent using useImperativeHandle
+        useImperativeHandle(ref, () => editorRef.current as EditorRef, []);
+
+        const handleReady = () => {
+            // Prevent calling callbacks multiple times
+            if (callbacksCalledRef.current) {
+                return;
+            }
+
+            // console.log("TemplateEditor: handleReady callback invoked");
+            // console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
+            // console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
 
             // Load initial design if provided
             if (initialDesign && editorRef.current?.editor) {
                 console.log("TemplateEditor: Loading initial design");
                 editorRef.current.editor.loadDesign(initialDesign as any);
             }
-        };
 
-        // Check if Unlayer script loads
+            // Call onReady callback immediately
+            if (onReadyRef.current) {
+                console.log("TemplateEditor: Calling onReady callback");
+                onReadyRef.current();
+            }
+
+            // Call onLoad callback immediately (design is loaded synchronously above)
+            if (onLoadRef.current) {
+                console.log("TemplateEditor: Calling onLoad callback");
+                onLoadRef.current();
+            }
+
+            callbacksCalledRef.current = true;
+        };        // Check if Unlayer script loads
         useEffect(() => {
-            console.log("TemplateEditor: Checking for Unlayer global");
-            console.log("TemplateEditor: window.unlayer exists?", !!(typeof window !== 'undefined' && (window as any).unlayer));
+            // console.log("TemplateEditor: Checking for Unlayer global");
+            // console.log("TemplateEditor: window.unlayer exists?", !!(typeof window !== 'undefined' && (window as any).unlayer));
 
             // Listen for script errors
             const handleError = (event: ErrorEvent) => {
@@ -460,27 +471,6 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
             };
         }, []);
 
-        // Call onReady and onLoad callbacks after editor is fully initialized
-        useEffect(() => {
-            console.log("TemplateEditor: useEffect - callbacks effect");
-            console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
-            console.log("TemplateEditor: editor exists?", !!editorRef.current?.editor);
-            console.log("TemplateEditor: onReady callback exists?", !!onReady);
-            console.log("TemplateEditor: onLoad callback exists?", !!onLoad);
-
-            if (isEditorInitialized && editorRef.current?.editor) {
-                console.log("TemplateEditor: Calling onReady callback");
-                if (onReady) {
-                    onReady();
-                }
-
-                console.log("TemplateEditor: Calling onLoad callback");
-                if (onLoad) {
-                    onLoad();
-                }
-            }
-        }, [isEditorInitialized, onReady, onLoad]);
-
         const editorOptions: EmailEditorProps["options"] = {
             projectId: Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID),
             tools: {
@@ -492,20 +482,20 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
             },
         };
 
-        console.log("TemplateEditor: Rendering component");
-        console.log("TemplateEditor: POSTCRAFT_UNLAYER_PROJECT_ID?", !!process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
-        console.log("TemplateEditor: projectId value:", process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
-        console.log("TemplateEditor: projectId as number:", Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID));
-        console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
-        console.log("TemplateEditor: editorOptions:", editorOptions);
+        // console.log("TemplateEditor: Rendering component");
+        // console.log("TemplateEditor: POSTCRAFT_UNLAYER_PROJECT_ID?", !!process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
+        // console.log("TemplateEditor: projectId value:", process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
+        // console.log("TemplateEditor: projectId as number:", Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID));
+        // console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
+        // console.log("TemplateEditor: editorOptions:", editorOptions);
 
         return (
-            <div className="h-full w-full" style={{ minHeight: '600px' }}>
+            <div className="h-full w-full" style={{ minHeight: '100%' }}>
                 <EmailEditor
                     ref={editorRef}
                     onReady={handleReady}
                     options={editorOptions}
-                    minHeight="600px"
+                    minHeight="100%"
                 />
             </div>
         );

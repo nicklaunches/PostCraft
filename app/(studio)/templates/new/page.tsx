@@ -111,174 +111,31 @@
 
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { EditorRef } from "react-email-editor";
+import React from "react";
 import { TemplateEditor } from "@/components/template-editor";
-import { VariableManager, VariableMetadata } from "@/components/variable-manager";
+import { VariableManager } from "@/components/variable-manager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-import { validateTemplateName } from "@/lib/utils/validation";
-import { detectVariables } from "@/lib/utils/variable-detection";
+import { useTemplateEditor } from "@/hooks/use-template-editor";
 
 export default function NewTemplatePage() {
-    const router = useRouter();
-    const editorRef = useRef<EditorRef>(null);
-    const [templateName, setTemplateName] = useState("");
-    const [nameError, setNameError] = useState("");
-    const [isSaving, setIsSaving] = useState(false);
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [isEditorReady, setIsEditorReady] = useState(false);
-    const [variables, setVariables] = useState<VariableMetadata[]>([]);
-    const [detectedVariables, setDetectedVariables] = useState<string[]>([]);
-
-    // Handle unsaved changes warning
-    useEffect(() => {
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (hasUnsavedChanges) {
-                e.preventDefault();
-                e.returnValue = "";
-            }
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-    }, [hasUnsavedChanges]);
-
-    // Track changes in the editor
-    const handleEditorReady = () => {
-        setIsEditorReady(true);
-    };
-
-    // Track changes in name or editor
-    useEffect(() => {
-        if (templateName || isEditorReady) {
-            setHasUnsavedChanges(true);
-        }
-    }, [templateName, isEditorReady]);
-
-    // Detect variables from editor and update state
-    const handleSave = async () => {
-        // Validate template name
-        const validation = validateTemplateName(templateName);
-        if (!validation.isValid) {
-            setNameError(validation.error || "Invalid template name");
-            toast.error("Invalid template name", {
-                description: validation.error,
-            });
-            return;
-        }
-        setNameError("");
-
-        // Ensure editor is ready
-        if (!isEditorReady || !editorRef.current?.editor) {
-            toast.error("Editor not ready", {
-                description: "Please wait for the editor to load",
-            });
-            return;
-        }
-
-        setIsSaving(true);
-        const savingToast = toast.loading("Saving template...");
-
-        try {
-            // Export design from editor
-            editorRef.current.editor.saveDesign((design: object) => {
-                // Export HTML with merge tags
-                editorRef.current?.editor?.exportHtml((data: { html: string }) => {
-                    const html = data.html;
-
-                    // Detect variables from HTML
-                    const detectedVars = detectVariables(html);
-                    setDetectedVariables(detectedVars);
-
-                    // Use configured variables, but filter to only include detected ones
-                    // and add any newly detected variables with defaults
-                    const finalVariables = variables.filter((v) => detectedVars.includes(v.key));
-
-                    // Add any newly detected variables
-                    const newVars = detectedVars
-                        .filter((key) => !finalVariables.some((v) => v.key === key))
-                        .map(
-                            (key): VariableMetadata => ({
-                                key,
-                                type: "string",
-                                fallbackValue: null,
-                                isRequired: false,
-                            }),
-                        );
-
-                    const allVariables = [...finalVariables, ...newVars];
-
-                    // Send to API
-                    fetch("/api/templates", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            name: validation.sanitized,
-                            content: design,
-                            variables: allVariables,
-                        }),
-                    })
-                        .then(async (response) => {
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.error || "Failed to create template");
-                            }
-                            return response.json();
-                        })
-                        .then(() => {
-                            toast.dismiss(savingToast);
-                            toast.success("Template created!", {
-                                description: `Template "${validation.sanitized}" has been created successfully.`,
-                            });
-                            setHasUnsavedChanges(false);
-                            // Redirect to templates list
-                            setTimeout(() => {
-                                router.push("/templates");
-                            }, 500);
-                        })
-                        .catch((error) => {
-                            toast.dismiss(savingToast);
-
-                            // Handle duplicate name error
-                            if (error.message.includes("already exists")) {
-                                setNameError("Template name already exists");
-                                toast.error("Template name already exists", {
-                                    description:
-                                        "Please choose a different name for your template.",
-                                });
-                            } else {
-                                toast.error("Failed to save template", {
-                                    description: error.message || "An unknown error occurred",
-                                });
-                            }
-                            setIsSaving(false);
-                        });
-                });
-            });
-        } catch (error) {
-            toast.dismiss(savingToast);
-            toast.error("Failed to save template", {
-                description: error instanceof Error ? error.message : "An unknown error occurred",
-            });
-            setIsSaving(false);
-        }
-    };
-
-    const handleCancel = () => {
-        if (hasUnsavedChanges) {
-            const confirm = window.confirm(
-                "You have unsaved changes. Are you sure you want to leave?",
-            );
-            if (!confirm) return;
-        }
-        router.push("/templates");
-    };
+    const {
+        editorRef,
+        templateName,
+        setTemplateName,
+        nameError,
+        isEditorReady,
+        isSaving,
+        variables,
+        setVariables,
+        detectedVariables,
+        handleEditorReady,
+        handleSave,
+        handleCancel,
+    } = useTemplateEditor({
+        mode: "create",
+    });
 
     return (
         <div className="flex h-screen flex-col">
