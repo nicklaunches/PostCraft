@@ -311,8 +311,8 @@
 - [x] T103 Verify performance budgets: dashboard load <2s, template list <1s, API p95 <200ms per plan.md SC-001, SC-003
 - [x] T104 Test edge cases: port conflict (3579 occupied), database connection failure, corrupted template JSON
 - [x] T105 Verify localhost-only binding to 127.0.0.1 rejecting external connections per FR-001a
-- [ ] T106 Run through quickstart.md validation: install, setup, create template, edit, delete, SDK usage
-- [ ] T108 Code cleanup: remove unused imports, add comments for complex logic, ensure consistent formatting
+- [x] T106 Run through quickstart.md validation: install, setup, create template, edit, delete, SDK usage
+- [x] T108 Code cleanup: remove unused imports, add comments for complex logic, ensure consistent formatting
 - [ ] T109 [P] Verify all TypeScript files have file-level JSDoc comments per Principle VIII
 - [ ] T110 [P] Verify all public exports (functions, classes, interfaces) have JSDoc with @param, @returns, @throws per Principle VIII
 - [ ] T111 [P] Verify all SDK methods and public APIs have @example blocks in JSDoc per Principle VIII

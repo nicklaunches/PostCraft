@@ -276,7 +276,7 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
     console.log('[TemplateExport] useEffect triggered for templateId:', templateId)
     console.log('[TemplateExport] Calling fetchTemplate from useEffect')
     fetchTemplate()
-  }, [templateId])
+  }, [templateId, fetchTemplate])
 
   // Loading state
   if (loading) {
@@ -405,7 +405,7 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
 
           {!generating && !html && !error && (
             <div className="text-center py-6 text-muted-foreground">
-              Click "Generate HTML" to create the HTML file from your template design
+              Click &quot;Generate HTML&quot; to create the HTML file from your template design
             </div>
           )}
 

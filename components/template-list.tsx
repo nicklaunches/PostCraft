@@ -288,7 +288,7 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
           <DialogHeader>
             <DialogTitle>Delete Template</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the template "{deleteTargetTemplate?.name}"? This action cannot be undone.
+              Are you sure you want to delete the template &quot;{deleteTargetTemplate?.name}&quot;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
 

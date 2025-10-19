@@ -250,7 +250,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
           <AlertTitle>Template Not Found</AlertTitle>
           <AlertDescription className="mt-2">
             <p className="mb-4">
-              The template you're looking for doesn't exist or has been deleted.
+              The template you&apos;re looking for doesn&apos;t exist or has been deleted.
             </p>
             <Button variant="outline" asChild>
               <Link href="/templates">Back to Templates</Link>
