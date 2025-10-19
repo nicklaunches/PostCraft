@@ -1,24 +1,21 @@
 import Image from "next/image";
-import { PostCraft, TemplateNotFoundError } from "postcraft";
+import { PostCraft, TemplateNotFoundError, RequiredVariableMissingError } from "postcraft";
 import { TemplateError } from "./template-error";
 
 export default async function Home() {
     const postcraft = new PostCraft();
 
     let html: string | null = null;
-    let templateError: string | null = null;
+    let templateError: Error | null = null;
 
     try {
         // Render template with variables
         html = await postcraft.templates.render("welcome-email", {
-            NAME: "John Doe",
+            USER: "John Doe",
         });
     } catch (error) {
-        if (error instanceof TemplateNotFoundError) {
-            templateError = "Template not found. Please create it in PostCraft Studio.";
-        } else {
-            templateError = "An error occurred while rendering the template.";
-        }
+        console.log("Error rendering template:", error);
+        templateError = error instanceof Error ? error : new Error('An unknown error occurred');
     }
 
     return (
@@ -31,7 +28,7 @@ export default async function Home() {
 
                 {/* Email Preview Block */}
                 {templateError ? (
-                    <TemplateError />
+                    <TemplateError error={templateError} />
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {/* Main Email Display */}
@@ -47,7 +44,7 @@ export default async function Home() {
                                 <div className="p-4 sm:p-6 md:p-8 max-h-96 sm:max-h-[500px] overflow-y-auto">
                                     {html && (
                                         <div
-                                            className="prose prose-sm sm:prose dark:prose-invert max-w-none"
+                                            className=""
                                             dangerouslySetInnerHTML={{ __html: html }}
                                         />
                                     )}
@@ -67,12 +64,8 @@ export default async function Home() {
                                     <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Variables</h4>
                                     <div className="space-y-2 text-sm">
                                         <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
-                                            <span className="font-mono text-blue-600 dark:text-blue-400">NAME:</span>
+                                            <span className="font-mono text-blue-600 dark:text-blue-400">USER:</span>
                                             <span className="text-slate-700 dark:text-slate-300 ml-2">John Doe</span>
-                                        </div>
-                                        <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
-                                            <span className="font-mono text-blue-600 dark:text-blue-400">VERIFICATION_URL:</span>
-                                            <span className="text-slate-700 dark:text-slate-300 ml-2 break-all">https://example.com/verify/abc123</span>
                                         </div>
                                     </div>
                                 </div>

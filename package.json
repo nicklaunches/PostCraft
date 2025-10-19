@@ -33,6 +33,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:lib": "tsup --watch",
     "postcraft": "next dev -H 127.0.0.1 -p 3579",
     "build": "tsup && next build",
     "build:lib": "tsup",

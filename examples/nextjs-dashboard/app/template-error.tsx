@@ -1,10 +1,17 @@
 'use client';
 
-export function TemplateError() {
+interface TemplateErrorProps {
+    error: Error;
+}
+
+export function TemplateError({ error }: TemplateErrorProps) {
     const handleRefresh = (e: React.FormEvent) => {
         e.preventDefault();
         window.location.reload();
     };
+
+    const errorMessage = error.message || 'An unknown error occurred';
+    const isTemplateNotFound = error.constructor.name === 'TemplateNotFoundError';
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -14,12 +21,20 @@ export function TemplateError() {
                     {/* Error Header */}
                     <div className="bg-gradient-to-r from-red-500 to-red-600 px-4 sm:px-6 py-4 sm:py-6">
                         <h3 className="text-lg sm:text-xl font-semibold text-white">Template Error</h3>
-                        <p className="text-red-100 text-sm mt-1">Template not found. Please create it in PostCraft Studio.</p>
+                        <p className="text-red-100 text-sm mt-1">{errorMessage}</p>
                     </div>
 
                     {/* Error Content */}
                     <div className="p-4 sm:p-6 md:p-8 space-y-6">
                         <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4 space-y-4">
+                            <div>
+                                <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">Error Details:</h4>
+                                <p className="text-red-800 dark:text-red-200 text-sm mb-4">
+                                    <span className="font-semibold">Type:</span> {error.constructor.name}
+                                </p>
+                            </div>
+
+                            {isTemplateNotFound && (
                             <div>
                                 <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">Setup Instructions:</h4>
                                 <ol className="list-decimal list-inside space-y-2 text-red-800 dark:text-red-200 text-sm">
@@ -39,6 +54,7 @@ export function TemplateError() {
                                     <li>Refresh this page</li>
                                 </ol>
                             </div>
+                            )}
                         </div>
 
                         <div className="pt-4">

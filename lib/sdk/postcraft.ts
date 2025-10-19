@@ -15,9 +15,10 @@
  *
  * Architecture:
  * - PostCraft SDK communicates with PostgreSQL database storing template metadata
- * - Each template stores: name, design JSON from react-email-editor, and variable metadata
- * - Rendering pipeline: (1) Load template, (2) Generate HTML from design JSON, (3) Substitute merge tags
+ * - Each template stores: name, design JSON from react-email-editor, pre-exported HTML, and variable metadata
+ * - Rendering pipeline: (1) Load template with HTML, (2) Substitute merge tags with variable values
  * - Merge tags use {{VARIABLE_NAME}} syntax, matching react-email-editor's merge tag format
+ * - HTML is always exported from react-email-editor in the studio and saved with the template
  *
  * Usage Patterns:
  *
@@ -107,7 +108,7 @@ import {
   TemplateVariableTypeError,
   RequiredVariableMissingError,
 } from "./errors";
-import { renderDesignToHtml, substituteMergeTags } from "./html-renderer";
+import { substituteMergeTags } from "./html-renderer";
 
 /**
  * Configuration options for the PostCraft SDK
@@ -278,13 +279,12 @@ export class PostCraft {
      *
      * Rendering Process:
      * 1. Query database for template by name (case-sensitive)
-     * 2. Load template's react-email-editor design JSON and variable metadata
-     * 3. Generate production HTML from design JSON with inline styles
-     * 4. Extract merge tags ({{VARIABLE_NAME}}) from HTML
-     * 5. Validate provided variables against metadata (type checking)
-     * 6. Apply fallback values for missing optional variables
-     * 7. Check for required variables and raise errors if missing
-     * 8. Return fully rendered HTML with all merge tags replaced
+     * 2. Load template's pre-exported HTML and variable metadata
+     * 3. Validate provided variables against metadata (type checking)
+     * 4. Apply fallback values for missing optional variables
+     * 5. Check for required variables and raise errors if missing
+     * 6. Substitute merge tags ({{VARIABLE_NAME}}) in HTML with actual values
+     * 7. Return fully rendered HTML with all merge tags replaced
      *
      * @param {string} name - Template name as defined in PostCraft studio.
      *   Case-sensitive matching. E.g., 'welcome-email', 'order-confirmation'
@@ -389,12 +389,16 @@ export class PostCraft {
           throw new TemplateNotFoundError(name);
         }
 
-        // Generate HTML from design JSON
-        const html = renderDesignToHtml(template.content);
+        // HTML is always saved with the template
+        if (!template.html || typeof template.html !== 'string') {
+          throw new DatabaseConnectionError(
+            `Template "${name}" has no HTML content. Templates must have HTML exported and saved.`
+          );
+        }
 
         // Substitute merge tags with provided variables
         const renderedHtml = substituteMergeTags(
-          html,
+          template.html,
           variables || {},
           template.variables || []
         );

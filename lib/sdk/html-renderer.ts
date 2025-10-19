@@ -1,64 +1,24 @@
 /**
- * HTML Renderer for react-email-editor Design JSON
+ * HTML Renderer for Email Templates
  *
- * This module implements server-side HTML generation from react-email-editor's design JSON format.
- * It converts the drag-and-drop email design into production-ready HTML with inline styles
- * suitable for email clients, while preserving merge tags as {{VARIABLE_NAME}} for later substitution.
+ * This module handles merge tag substitution for email templates. HTML is always pre-exported
+ * from react-email-editor in the PostCraft studio and stored in the database. This module
+ * focuses solely on replacing {{VARIABLE_NAME}} merge tags with actual values.
  *
  * Architecture:
- * - **Design JSON Input**: React-email-editor stores email designs in a structured JSON format
- *   containing layout, styles, content, and component metadata
- * - **HTML Generation**: Parses design JSON and generates semantic HTML with inline CSS
- *   (required for email client compatibility - CSS stylesheets not supported by most email clients)
- * - **Merge Tag Preservation**: Detects and preserves {{VARIABLE_NAME}} tags for later substitution
+ * - **HTML Input**: Pre-exported HTML from react-email-editor's exportHtml() method
+ * - **Merge Tag Substitution**: Replaces {{VARIABLE_NAME}} tags with provided values
  * - **Type Validation**: Validates variable values against metadata (string, number, boolean, date)
  * - **Fallback Handling**: Applies fallback values for optional variables not provided at render time
  * - **Required Variables**: Enforces required variables, throwing errors if missing and no fallback
  *
- * Implementation Notes:
- * This implementation handles the core rendering pipeline. For production-grade support of all
- * react-email-editor features, consider these enhancements:
- *
- * **Option 1: Headless Browser (Recommended for guaranteed compatibility)**
- * - Use Puppeteer or Playwright to load react-email-editor in headless browser
- * - Call exportHtml() method server-side exactly as client does
- * - Guaranteed parity with client-side export
- * - Trade-off: Higher resource usage, slower, requires browser runtime
- *
- * **Option 2: Full JSON Parser (Best for performance)**
- * - Reverse engineer complete react-email-editor design JSON structure
- * - Implement renderers for all element types: text, image, button, columns, divider, etc.
- * - Generate email-optimized HTML with inline styles
- * - Trade-off: Requires maintenance as Unlayer updates react-email-editor
- *
- * **Option 3: Hybrid Approach (Pragmatic balance)**
- * - Pre-generate HTML on client using react-email-editor's exportHtml()
- * - Store HTML alongside design JSON in database
- * - Use stored HTML for SDK rendering (with merge tag substitution only)
- * - Regenerate HTML only when template edited
- * - Trade-off: More storage, but excellent performance and full Unlayer compatibility
- *
- * Current Implementation:
- * This module uses Option 2 (partial parser) with fallbacks. It handles:
- * - Merge tag extraction and substitution
- * - Variable type validation
- * - Fallback value application
- * - Basic HTML structure generation
- *
- * For the complete react-email-editor JSON structure and advanced rendering,
- * refer to Unlayer documentation: https://react-email-editor.readthedocs.io/
- *
  * @module html-renderer
  * @requires TemplateVariable type from database schema
- * @exports renderDesignToHtml - Convert design JSON to HTML
  * @exports substituteMergeTags - Replace merge tags with variable values
  */
 
 import type { TemplateVariable } from "@/lib/db/schema";
-import {
-  TemplateVariableTypeError,
-  RequiredVariableMissingError,
-} from "./errors";
+import { TemplateVariableTypeError, RequiredVariableMissingError } from "./errors";
 
 /**
  * Validates that a provided variable value matches the expected type
@@ -94,21 +54,21 @@ import {
  * ```
  */
 function validateVariableType(value: any, expectedType: string): boolean {
-  switch (expectedType) {
-    case "string":
-      return typeof value === "string";
-    case "number":
-      return typeof value === "number" && !isNaN(value);
-    case "boolean":
-      return typeof value === "boolean";
-    case "date":
-      // Accept Date objects or valid date strings
-      if (value instanceof Date) return !isNaN(value.getTime());
-      const parsed = new Date(value);
-      return !isNaN(parsed.getTime());
-    default:
-      return false;
-  }
+    switch (expectedType) {
+        case "string":
+            return typeof value === "string";
+        case "number":
+            return typeof value === "number" && !isNaN(value);
+        case "boolean":
+            return typeof value === "boolean";
+        case "date":
+            // Accept Date objects or valid date strings
+            if (value instanceof Date) return !isNaN(value.getTime());
+            const parsed = new Date(value);
+            return !isNaN(parsed.getTime());
+        default:
+            return false;
+    }
 }
 
 /**
@@ -147,18 +107,18 @@ function validateVariableType(value: any, expectedType: string): boolean {
  * ```
  */
 function formatVariableValue(value: any, type: string): string {
-  switch (type) {
-    case "number":
-      return String(value);
-    case "boolean":
-      return String(value);
-    case "date":
-      const date = value instanceof Date ? value : new Date(value);
-      return date.toLocaleDateString();
-    case "string":
-    default:
-      return String(value);
-  }
+    switch (type) {
+        case "number":
+            return String(value);
+        case "boolean":
+            return String(value);
+        case "date":
+            const date = value instanceof Date ? value : new Date(value);
+            return date.toLocaleDateString();
+        case "string":
+        default:
+            return String(value);
+    }
 }
 
 /**
@@ -285,275 +245,35 @@ function formatVariableValue(value: any, type: string): string {
  * ```
  */
 export function substituteMergeTags(
-  html: string,
-  variables: Record<string, any> = {},
-  metadata: TemplateVariable[] = []
+    html: string,
+    variables: Record<string, any> = {},
+    metadata: TemplateVariable[] = [],
 ): string {
-  return html.replace(/\{\{([A-Z_][A-Z0-9_]*)\}\}/g, (match, key) => {
-    const meta = metadata.find((m) => m.key === key);
+    return html.replace(/\{\{([A-Z_][A-Z0-9_]*)\}\}/g, (match, key) => {
+        const meta = metadata.find((m) => m.key === key);
 
-    // If variable is provided, validate and use it
-    if (variables[key] !== undefined && variables[key] !== null) {
-      // Validate type if metadata exists
-      if (meta && !validateVariableType(variables[key], meta.type)) {
-        throw new TemplateVariableTypeError(
-          key,
-          meta.type,
-          typeof variables[key]
-        );
-      }
+        // If variable is provided, validate and use it
+        if (variables[key] !== undefined && variables[key] !== null) {
+            // Validate type if metadata exists
+            if (meta && !validateVariableType(variables[key], meta.type)) {
+                throw new TemplateVariableTypeError(key, meta.type, typeof variables[key]);
+            }
 
-      // Format and return the value
-      return formatVariableValue(
-        variables[key],
-        meta?.type || "string"
-      );
-    }
+            // Format and return the value
+            return formatVariableValue(variables[key], meta?.type || "string");
+        }
 
-    // Variable not provided - check for fallback
-    if (meta?.fallbackValue !== null && meta?.fallbackValue !== undefined) {
-      return meta.fallbackValue;
-    }
+        // Variable not provided - check for fallback
+        if (meta?.fallbackValue !== null && meta?.fallbackValue !== undefined) {
+            return meta.fallbackValue;
+        }
 
-    // No value and no fallback - check if required
-    if (meta?.isRequired) {
-      throw new RequiredVariableMissingError(key);
-    }
+        // No value and no fallback - check if required
+        if (meta?.isRequired) {
+            throw new RequiredVariableMissingError(key);
+        }
 
-    // Optional variable with no value and no fallback - leave unreplaced
-    return match;
-  });
+        // Optional variable with no value and no fallback - leave unreplaced
+        return match;
+    });
 }
-
-/**
- * Renders react-email-editor design JSON to production-ready HTML
- *
- * This function converts a react-email-editor design (saved via saveDesign()) into
- * email-client-compatible HTML with inline styles. It preserves all merge tags
- * ({{VARIABLE_NAME}}) for later substitution via substituteMergeTags().
- *
- * Input Format:
- * The design parameter is JSON saved by react-email-editor's saveDesign() method.
- * Structure (simplified):
- * ```typescript
- * {
- *   body?: {
- *     rows?: Array<{ columns: Array<{ elements: any[] }> }>
- *   },
- *   html?: string,
- *   // ... other metadata
- * }
- * ```
- *
- * Output Format:
- * Returns valid HTML5 document with:
- * - DOCTYPE declaration for compatibility
- * - Proper head section with charset and viewport meta tags
- * - All CSS inlined to body and elements (required for email clients)
- * - Semantic HTML structure for accessibility
- * - All merge tags ({{VARIABLE}}) preserved as-is
- *
- * Implementation Strategy:
- * This implementation uses a fallback-based approach:
- * 1. If design.body exists: Extract and render body structure
- * 2. Else if design.html exists: Use pre-exported HTML
- * 3. Else: Generate minimal HTML structure with placeholder content
- *
- * Production Recommendations:
- * For 100% compatibility with all react-email-editor features, consider:
- *
- * **Headless Browser (Recommended)**
- * - Use Puppeteer or Playwright headless browser
- * - Load react-email-editor in headless environment
- * - Call exportHtml() programmatically
- * - Pros: Perfect compatibility, guaranteed parity with client
- * - Cons: Higher memory usage, slower, requires browser runtime
- * ```typescript
- * import puppeteer from 'puppeteer'
- * const browser = await puppeteer.launch()
- * const page = await browser.newPage()
- * const html = await page.evaluate((design) => {
- *   return unlayerEditor.exportHtml().html
- * }, designJson)
- * ```
- *
- * **Pre-Export Strategy**
- * - Generate HTML on client in studio using exportHtml()
- * - Store both design JSON and exported HTML in database
- * - Use stored HTML for SDK rendering
- * - Regenerate only on template edits
- * - Pros: Excellent performance, simple implementation
- * - Cons: Additional storage, must regenerate on edits
- *
- * Error Handling:
- * - If designJson is null/undefined/not object: Returns minimal HTML with message
- * - If HTML structure is malformed: Still generates valid HTML (graceful fallback)
- * - Merge tags are always preserved regardless of conversion issues
- *
- * @param {any} designJson - react-email-editor design JSON from saveDesign() method.
- *   Expected structure contains design metadata, layout, content, and styling.
- *   Should be a JavaScript object (not string). If string, convert with JSON.parse() first.
- *   Can be null/undefined - will return minimal HTML.
- *
- * @returns {string} Valid HTML5 document string suitable for email clients.
- *   Always includes DOCTYPE, html, head (with meta tags), and body.
- *   All merge tags ({{VARIABLE}}) preserved as-is for later substitution.
- *   All styles are inlined in element style attributes.
- *   Ready to send via email service providers.
- *
- * @example
- * ```typescript
- * import { renderDesignToHtml } from './html-renderer'
- *
- * // Design from react-email-editor's saveDesign()
- * const design = {
- *   body: {
- *     rows: [
- *       {
- *         columns: [
- *           {
- *             elements: [
- *               {
- *                 type: 'text',
- *                 content: 'Hello {{USER_NAME}}, welcome!'
- *               }
- *             ]
- *           }
- *         ]
- *       }
- *     ]
- *   }
- * }
- *
- * const html = renderDesignToHtml(design)
- * // → '<html><head>...</head><body>Hello {{USER_NAME}}, welcome!</body></html>'
- * ```
- *
- * @example
- * ```typescript
- * // With pre-exported HTML
- * const design = {
- *   html: '<html>...<p>Hello {{NAME}}</p>...</html>'
- * }
- *
- * const html = renderDesignToHtml(design)
- * // → '<html>...</html>'  (returns as-is if html field exists)
- * ```
- *
- * @example
- * ```typescript
- * // Fallback for empty/invalid design
- * const html = renderDesignToHtml(null)
- * // → '<html><body><p>Empty template</p></body></html>'
- * ```
- */
-export function renderDesignToHtml(designJson: any): string {
-  // react-email-editor stores design in a structured JSON format
-  // This is a simplified implementation - actual structure may vary
-
-  if (!designJson || typeof designJson !== 'object') {
-    return '<html><body><p>Empty template</p></body></html>';
-  }
-
-  // TODO: Implement full design JSON parsing
-  // For now, we'll handle the basic structure
-  // In production, consider using Puppeteer/Playwright to run exportHtml() server-side
-
-  // Simplified fallback: Extract text content if available
-  const bodyContent = extractBodyContent(designJson);
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Template</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
-  ${bodyContent}
-</body>
-</html>`;
-}
-
-/**
- * Extracts HTML body content from react-email-editor design JSON
- *
- * Attempts to extract meaningful HTML content from the design JSON structure
- * to build the email body. Tries multiple fallback strategies in order:
- * 1. Extract from design.body if present (structured layout data)
- * 2. Use design.html if present (pre-rendered HTML)
- * 3. Fallback to minimal content if neither available
- *
- * Note: This is a simplified implementation. In production, consider:
- * - Using Puppeteer/Playwright to render react-email-editor in headless browser
- * - Pre-rendering HTML in studio UI and storing alongside design JSON
- * - Full parsing of react-email-editor's complete design JSON structure
- *
- * @internal Used internally by renderDesignToHtml during HTML generation
- *
- * @param {any} designJson - Parsed react-email-editor design JSON. Expected to have
- *   structure with optional 'body' and 'html' fields.
- *
- * @returns {string} HTML body content (not wrapped in body tags, just the content).
- *   Always returns valid HTML suitable for email clients.
- *   Format: HTML string ready to be wrapped in email template structure.
- *
- * @example
- * ```typescript
- * // With body structure
- * extractBodyContent({
- *   body: { rows: [{ columns: [{ elements: [...] }] }] }
- * })
- * // → '<div>{JSON stringified body}</div>'
- *
- * // With pre-rendered HTML
- * extractBodyContent({
- *   html: '<div style="...">Content</div>'
- * })
- * // → '<div style="...">Content</div>'
- *
- * // Empty design
- * extractBodyContent({})
- * // → '<div style="padding: 20px;"><p>Template content will appear here</p></div>'
- * ```
- */
-function extractBodyContent(designJson: any): string {
-  // react-email-editor typically stores the design in a 'body' or 'rows' structure
-  // This needs to be reverse-engineered from actual design JSON samples
-
-  if (designJson.body) {
-    return `<div>${JSON.stringify(designJson.body)}</div>`;
-  }
-
-  if (designJson.html) {
-    return designJson.html;
-  }
-
-  // Fallback: basic content
-  return '<div style="padding: 20px;"><p>Template content will appear here</p></div>';
-}
-
-/**
- * IMPORTANT NOTE FOR PRODUCTION:
- *
- * This is a simplified implementation of server-side HTML rendering.
- * For production use, consider one of these approaches:
- *
- * 1. Headless Browser (Recommended):
- *    - Use Puppeteer or Playwright to load react-email-editor in a headless browser
- *    - Call exportHtml() method just like in the browser
- *    - Guaranteed parity with client-side export
- *    - Higher resource usage but 100% compatible
- *
- * 2. Full Design JSON Parser:
- *    - Reverse engineer react-email-editor's complete design JSON structure
- *    - Implement renderer for all element types (text, image, button, columns, etc.)
- *    - Generate email-compatible HTML with inline CSS
- *    - Lower resource usage but requires maintenance for Unlayer updates
- *
- * 3. Hybrid Approach:
- *    - Pre-generate HTML in the studio UI using exportHtml()
- *    - Store HTML alongside design JSON in database
- *    - Use stored HTML for SDK rendering (with merge tag substitution)
- *    - Regenerate HTML only when template is edited
- */
