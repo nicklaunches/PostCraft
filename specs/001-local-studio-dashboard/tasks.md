@@ -153,14 +153,14 @@
 - [x] T043 [US8] Add required variable validation throwing RequiredVariableMissingError when required variables missing with no fallback
 - [x] T044 [US8] Update package.json exports to expose PostCraft SDK: "exports": { ".": "./lib/sdk/postcraft.ts" }
 - [x] T045 [US8] Test SDK with sample template: create template in database, call render(), verify HTML output with substituted variables
-- [ ] T045a [P] [US8] Add comprehensive file-level JSDoc to lib/sdk/postcraft.ts describing SDK purpose and usage patterns with @example per Principle VIII
-- [ ] T045b [P] [US8] Add JSDoc to PostCraft class constructor with @param for config and @throws for connection errors with @example per Principle VIII
-- [ ] T045c [P] [US8] Add JSDoc to templates.render() method with @param, @returns, @throws, and @example showing variable substitution per Principle VIII
-- [ ] T045d [P] [US8] Add JSDoc to PostCraftConfig interface documenting all configuration options per Principle VIII
-- [ ] T045e [P] [US8] Add file-level JSDoc to lib/sdk/html-renderer.ts describing HTML rendering algorithm and design JSON processing per Principle VIII
-- [ ] T045f [P] [US8] Add JSDoc to renderDesignToHtml() and substituteMergeTags() functions with @param, @returns, and @example per Principle VIII
-- [ ] T045g [P] [US8] Add file-level JSDoc to lib/sdk/errors.ts describing error classes and their usage per Principle VIII
-- [ ] T045h [P] [US8] Add JSDoc to each error class with @example showing when each error is thrown per Principle VIII
+- [x] T045a [P] [US8] Add comprehensive file-level JSDoc to lib/sdk/postcraft.ts describing SDK purpose and usage patterns with @example per Principle VIII
+- [x] T045b [P] [US8] Add JSDoc to PostCraft class constructor with @param for config and @throws for connection errors with @example per Principle VIII
+- [x] T045c [P] [US8] Add JSDoc to templates.render() method with @param, @returns, @throws, and @example showing variable substitution per Principle VIII
+- [x] T045d [P] [US8] Add JSDoc to PostCraftConfig interface documenting all configuration options per Principle VIII
+- [x] T045e [P] [US8] Add file-level JSDoc to lib/sdk/html-renderer.ts describing HTML rendering algorithm and design JSON processing per Principle VIII
+- [x] T045f [P] [US8] Add JSDoc to renderDesignToHtml() and substituteMergeTags() functions with @param, @returns, and @example per Principle VIII
+- [x] T045g [P] [US8] Add file-level JSDoc to lib/sdk/errors.ts describing error classes and their usage per Principle VIII
+- [x] T045h [P] [US8] Add JSDoc to each error class with @example showing when each error is thrown per Principle VIII
 
 **Checkpoint**: PostCraft SDK functional with comprehensive JSDoc documentation ✅ COMPLETE (JSDoc pending)
 
@@ -186,10 +186,10 @@
 - [x] T055 [US3] Implement unsaved changes warning using browser beforeunload event per FR-025
 - [x] T056 [US3] Add validation for template name (1-100 chars, alphanumeric + hyphens/underscores) using lib/utils/validation.ts
 - [x] T057 [US3] Handle duplicate name error from API showing shadcn/ui Alert with field-specific error per contracts/api-templates.ts lines 162-167
-- [ ] T057a [P] [US3] Add JSDoc to POST handler in app/api/templates/route.ts documenting request/response with @example per Principle VIII
-- [ ] T057b [P] [US3] Add file-level JSDoc to app/(studio)/templates/new/page.tsx describing template creation page per Principle VIII
-- [ ] T057c [P] [US3] Add file-level JSDoc to components/template-editor.tsx describing react-email-editor wrapper and configuration per Principle VIII
-- [ ] T057d [P] [US3] Add JSDoc to TemplateEditor component props and public methods with @example per Principle VIII
+- [x] T057a [P] [US3] Add JSDoc to POST handler in app/api/templates/route.ts documenting request/response with @example per Principle VIII
+- [x] T057b [P] [US3] Add file-level JSDoc to app/(studio)/templates/new/page.tsx describing template creation page per Principle VIII
+- [x] T057c [P] [US3] Add file-level JSDoc to components/template-editor.tsx describing react-email-editor wrapper and configuration per Principle VIII
+- [x] T057d [P] [US3] Add JSDoc to TemplateEditor component props and public methods with @example per Principle VIII
 
 **Checkpoint**: Template creation functional with react-email-editor, validation, and error handling ✅ COMPLETE (JSDoc pending)
 

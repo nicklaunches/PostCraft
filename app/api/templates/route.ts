@@ -147,41 +147,209 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/templates
  *
- * Creates a new email template with optional merge tag variables.
+ * Creates a new email template with design JSON and optional merge tag variables.
  *
- * Request Body:
+ * This endpoint is used by the template creation UI (app/(studio)/templates/new/page.tsx)
+ * to persist newly designed email templates to the database. It validates the template
+ * name, persists the react-email-editor design JSON, and records any detected merge tag
+ * variables with their metadata.
+ *
+ * **Request Body Schema:**
  * ```json
  * {
  *   "name": "welcome-email",
- *   "content": { /* react-email-editor design JSON * /},
+ *   "content": {
+ *     "body": { "rows": [...] },
+ *     "design": { ... }
+ *   },
  *   "variables": [
- *     { "key": "NAME", "type": "string", "isRequired": true },
- *     { "key": "DISCOUNT", "type": "number", "fallbackValue": "0", "isRequired": false }
+ *     {
+ *       "key": "FIRST_NAME",
+ *       "type": "string",
+ *       "fallbackValue": null,
+ *       "isRequired": true
+ *     },
+ *     {
+ *       "key": "DISCOUNT_AMOUNT",
+ *       "type": "number",
+ *       "fallbackValue": "0",
+ *       "isRequired": false
+ *     }
  *   ]
  * }
  * ```
  *
- * Response (201 Created):
+ * **Field Descriptions:**
+ * - name: Template name (1-100 chars, alphanumeric + hyphens/underscores, case-insensitive)
+ * - content: react-email-editor design JSON from saveDesign() method
+ * - variables: Array of merge tag variable definitions (optional)
+ *   - key: Variable name matching {{KEY}} in template (uppercase, required)
+ *   - type: Variable type for validation: 'string', 'number', 'boolean', 'date'
+ *   - fallbackValue: Value used when variable not provided at render time (string or null)
+ *   - isRequired: Whether variable must be provided at render time
+ *
+ * **Response (201 Created):**
+ * Returns the created template object with all fields populated:
  * ```json
  * {
  *   "id": 1,
  *   "name": "welcome-email",
- *   "content": { ... },
- *   "createdAt": "2025-10-18T00:00:00Z",
- *   "updatedAt": "2025-10-18T00:00:00Z",
+ *   "content": { "body": { ... } },
+ *   "createdAt": "2025-10-18T12:34:56.789Z",
+ *   "updatedAt": "2025-10-18T12:34:56.789Z",
  *   "variables": [
- *     { "id": 1, "templateId": 1, "key": "NAME", "type": "string", "isRequired": true, ... }
+ *     {
+ *       "id": 1,
+ *       "templateId": 1,
+ *       "key": "FIRST_NAME",
+ *       "type": "string",
+ *       "fallbackValue": null,
+ *       "isRequired": true
+ *     },
+ *     {
+ *       "id": 2,
+ *       "templateId": 1,
+ *       "key": "DISCOUNT_AMOUNT",
+ *       "type": "number",
+ *       "fallbackValue": "0",
+ *       "isRequired": false
+ *     }
  *   ]
  * }
  * ```
  *
- * Error Responses:
- * - 400 Bad Request: Invalid template name or missing content
- * - 409 Conflict: Template name already exists
- * - 500 Server Error: Database error
+ * **Error Responses:**
  *
- * @param request - NextRequest with JSON body
- * @returns NextResponse with created template or error
+ * **400 Bad Request** - Invalid input data:
+ * ```json
+ * {
+ *   "error": "Template name must be 1-100 characters"
+ * }
+ * ```
+ *
+ * **409 Conflict** - Template name already exists (unique constraint):
+ * ```json
+ * {
+ *   "error": "Template name already exists"
+ * }
+ * ```
+ *
+ * **500 Server Error** - Database or server error:
+ * ```json
+ * {
+ *   "error": "Failed to create template",
+ *   "details": "Connection timeout"
+ * }
+ * ```
+ *
+ * **Validation Rules:**
+ * - Template name: 1-100 characters, alphanumeric + hyphens/underscores only
+ * - Template name: Must be unique across all templates (case-insensitive)
+ * - Content: Must be valid JSON object (from react-email-editor)
+ * - Variables: Optional, but if provided must have valid key names and types
+ *
+ * **Transaction Behavior:**
+ * - Creates template and variables atomically
+ * - If variable insertion fails, entire transaction rolls back
+ * - Ensures template always has consistent variable metadata
+ *
+ * **Performance:**
+ * - Single database round-trip for template creation
+ * - Single database round-trip for variable insertion
+ * - Total p95 response time: <200ms per performance budgets
+ *
+ * **Usage Examples:**
+ *
+ * @example
+ * ```typescript
+ * // Create template with required and optional variables
+ * const response = await fetch('/api/templates', {
+ *   method: 'POST',
+ *   headers: { 'Content-Type': 'application/json' },
+ *   body: JSON.stringify({
+ *     name: 'welcome-email',
+ *     content: {
+ *       body: { rows: [...] },
+ *       design: { palette: [...] }
+ *     },
+ *     variables: [
+ *       { key: 'USER_EMAIL', type: 'string', isRequired: true },
+ *       { key: 'DISCOUNT', type: 'number', fallbackValue: '0', isRequired: false }
+ *     ]
+ *   })
+ * });
+ *
+ * if (response.ok) {
+ *   const template = await response.json();
+ *   console.log('Created template:', template.id);
+ *   // Redirect to template list or edit page
+ * } else {
+ *   const error = await response.json();
+ *   console.error('Failed:', error.error);
+ * }
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Handle duplicate name error
+ * try {
+ *   const response = await fetch('/api/templates', {
+ *     method: 'POST',
+ *     headers: { 'Content-Type': 'application/json' },
+ *     body: JSON.stringify({
+ *       name: 'existing-template',  // Already exists
+ *       content: { ... },
+ *       variables: []
+ *     })
+ *   });
+ *
+ *   if (response.status === 409) {
+ *     // Template name already exists - prompt user for different name
+ *     showError('Template name already exists. Please choose a different name.');
+ *   } else if (!response.ok) {
+ *     throw new Error('Failed to create template');
+ *   }
+ * } catch (error) {
+ *   console.error('Template creation error:', error);
+ * }
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Extract variables from react-email-editor export
+ * editor.exportHtml((data) => {
+ *   const html = data.html;
+ *   // Find all {{VARIABLE}} merge tags
+ *   const variables = [];
+ *   const regex = /\{\{([A-Z_][A-Z0-9_]*)\}\}/g;
+ *   for (const match of html.matchAll(regex)) {
+ *     variables.push({
+ *       key: match[1],
+ *       type: 'string',
+ *       fallbackValue: null,
+ *       isRequired: false
+ *     });
+ *   }
+ *
+ *   // Remove duplicates
+ *   const unique = [...new Set(variables.map(v => v.key))].map(
+ *     key => variables.find(v => v.key === key)
+ *   );
+ *
+ *   // Create template with variables
+ *   fetch('/api/templates', {
+ *     method: 'POST',
+ *     body: JSON.stringify({
+ *       name: templateName,
+ *       content: editor.exportDesign(),
+ *       variables: unique
+ *     })
+ *   });
+ * });
+ * ```
+ *
+ * @param request - NextRequest with JSON body containing name, content, and variables
+ * @returns NextResponse with created template (201) or error response
  */
 export async function POST(request: NextRequest) {
   try {

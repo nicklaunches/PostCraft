@@ -1,3 +1,114 @@
+/**
+ * Template Creation Page - Create New Email Template
+ *
+ * This page provides the UI for creating new email templates using react-email-editor.
+ * Users design email templates visually, name them, and the system auto-detects merge tags
+ * to create variable metadata. Upon save, the template design and variables are persisted
+ * via POST /api/templates.
+ *
+ * **User Journey:**
+ * 1. User navigates to /templates/new (from template list "Create New" button)
+ * 2. Editor loads with blank canvas (react-email-editor Unlayer)
+ * 3. User enters template name (validated: 1-100 chars, alphanumeric + hyphens/underscores)
+ * 4. User designs email using visual editor
+ * 5. User clicks "Save Template" button
+ * 6. System exports design JSON and HTML from editor
+ * 7. System extracts merge tags ({{VARIABLE}}) from HTML using regex
+ * 8. System POSTs to /api/templates with name, design, and variables
+ * 9. On success: Shows toast notification and redirects to /templates
+ * 10. On error: Shows error toast and keeps user on page with design preserved
+ *
+ * **Key Features:**
+ * - Unsaved changes warning using beforeunload event (per FR-025)
+ * - Real-time template name validation with instant feedback
+ * - Automatic merge tag detection from exported HTML
+ * - Loading state during save with toast notification
+ * - Error handling for duplicate names, invalid names, server errors
+ * - Editor ready state tracking to prevent premature save
+ * - Keyboard accessibility with proper aria labels and form controls
+ *
+ * **Form Validation:**
+ * - Template name: 1-100 characters (enforced by validateTemplateName)
+ * - Template name: Alphanumeric, hyphens, underscores only
+ * - Template name: Unique across all templates (server-side check returns 409)
+ * - Template content: Must be valid JSON from react-email-editor
+ *
+ * **Merge Tag Detection:**
+ * - Regex pattern: /\{\{([A-Z_][A-Z0-9_]*)\}\}/g
+ * - Extracts uppercase variables from HTML (e.g., {{USER_NAME}})
+ * - Auto-detects variable names from editor content
+ * - Removes duplicates before API call
+ * - Each variable defaults to: type='string', fallbackValue=null, isRequired=false
+ *
+ * **State Management:**
+ * - templateName: Template name input value
+ * - nameError: Validation error message for template name
+ * - isSaving: Indicates save in progress (disables buttons)
+ * - hasUnsavedChanges: Tracks if user has made changes (for beforeunload)
+ * - isEditorReady: Tracks when react-email-editor is fully loaded
+ *
+ * **Error Handling:**
+ * - 400 Bad Request: Invalid template name → Show name error + toast
+ * - 409 Conflict: Template name exists → Show name error + toast
+ * - 500 Server Error: Database error → Show error toast
+ * - Network error: Save fails → Show error toast, keep design
+ *
+ * **Performance:**
+ * - Editor lazy-loads via react-email-editor library
+ * - Design JSON exported once on save (not continuously)
+ * - HTML export happens after design export (nested callbacks)
+ * - API call made after variable extraction
+ * - Redirect happens after success (500ms delay for UX)
+ *
+ * **Accessibility:**
+ * - Template name input: aria-invalid, aria-describedby for errors
+ * - Buttons: Disabled state during save
+ * - Error messages: Associated with inputs
+ * - Loading toast: Provides feedback during save
+ * - Unsaved warning: Browser beforeunload dialog
+ *
+ * **Layout:**
+ * - Header: "Create New Template" title + Save/Cancel buttons
+ * - Name input: Template name field with helper text
+ * - Editor: Full-height react-email-editor component
+ * - Loading state: Centered card while editor loads
+ *
+ * **Related Components:**
+ * - TemplateEditor: React-email-editor wrapper component
+ * - Button: shadcn/ui button component
+ * - Input: shadcn/ui input component
+ * - Card: shadcn/ui card for loading state
+ * - Sonner: Toast notifications library
+ *
+ * **Related API Routes:**
+ * - POST /api/templates: Create template endpoint
+ *
+ * **Related Utilities:**
+ * - validateTemplateName: Validates template name format
+ *
+ * @module app/(studio)/templates/new/page
+ * @requires react - React hooks (useRef, useState, useEffect)
+ * @requires next/navigation - useRouter for navigation
+ * @requires react-email-editor - Email editor component and types
+ * @requires @/components/template-editor - TemplateEditor wrapper component
+ * @requires @/components/ui/button - Button component
+ * @requires @/components/ui/input - Input component
+ * @requires @/components/ui/card - Card component
+ * @requires sonner - Toast notifications
+ * @requires @/lib/utils/validation - validateTemplateName utility
+ *
+ * @example
+ * ```typescript
+ * // User navigates to create new template
+ * // Page loads with empty editor
+ * // User enters "welcome-email" as name
+ * // User designs email with {{USER_NAME}} and {{DISCOUNT}} merge tags
+ * // User clicks "Save Template"
+ * // System extracts variables and creates template
+ * // User redirected to /templates with success notification
+ * ```
+ */
+
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
