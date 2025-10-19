@@ -1,9 +1,23 @@
 {
   "name": "postcraft",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "Email Studio for Developers - Local studio dashboard, visual email builder, and SDK for rendering templates",
   "main": "./lib/sdk/index.ts",
   "types": "./lib/sdk/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicklaunches/PostCraft.git"
+  },
+  "homepage": "https://github.com/nicklaunches/PostCraft",
+  "files": [
+    "lib",
+    "components",
+    "hooks",
+    "app/api",
+    "postcss.config.mjs",
+    "tailwind.config.ts"
+  ],
   "exports": {
     ".": {
       "import": "./lib/sdk/index.ts",

@@ -1,0 +1,11 @@
+examples/
+specs/
+.next/
+.env.local
+node_modules/
+*.test.ts
+*.test.tsx
+.git
+.gitignore
+README.md
+CLAUDE.md
