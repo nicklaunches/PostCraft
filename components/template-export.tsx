@@ -38,6 +38,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Copy, Download, AlertCircle, CheckCircle } from 'lucide-react'
+import { TemplateEditor } from '@/components/template-editor'
 
 interface TemplateExportProps {
   templateId: number
@@ -173,13 +174,13 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
       setError(null)
 
       // Use editor instance to load design and export HTML
-      if (editorRef.current) {
+      if (editorRef.current?.editor) {
         console.log('[TemplateExport] Loading design into editor')
-        editorRef.current.loadDesign(template.content)
+        editorRef.current.editor.loadDesign(template.content)
 
         // Export HTML - this is an async operation
         console.log('[TemplateExport] Exporting HTML from editor')
-        editorRef.current.exportHtml((data: { html: string }) => {
+        editorRef.current.editor.exportHtml((data: { html: string }) => {
           console.log('[TemplateExport] exportHtml callback received:', data)
           if (data && data.html) {
             console.log('[TemplateExport] HTML export successful, length:', data.html.length)
@@ -189,16 +190,17 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
             console.error('[TemplateExport] exportHtml returned invalid data:', data)
             setError('Failed to generate HTML from template design')
           }
+          setGenerating(false)
         })
       } else {
-        console.error('[TemplateExport] editorRef.current is not available')
+        console.error('[TemplateExport] editorRef.current?.editor is not available')
         setError('Editor not initialized. Please try again.')
+        setGenerating(false)
       }
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'An error occurred while generating HTML'
       console.error('[TemplateExport] generateHtml error:', errorMsg, err)
       setError(errorMsg)
-    } finally {
       setGenerating(false)
     }
   }, [template])
@@ -347,82 +349,94 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
   // Main export state
   console.log('[TemplateExport] Rendering main export dialog')
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Export Template as HTML</DialogTitle>
-          <DialogDescription>{templateName}</DialogDescription>
-        </DialogHeader>
+    <>
+      {/* Hidden editor for HTML generation */}
+      <div style={{ display: 'none', height: 0, width: 0 }}>
+        <TemplateEditor
+          ref={editorRef}
+          onReady={() => {
+            console.log('[TemplateExport] Editor ready')
+          }}
+        />
+      </div>
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription className="flex items-center justify-between">
-              <span>{error}</span>
-              <Button variant="outline" size="sm" onClick={() => generateHtml()}>
-                Retry
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Export Template as HTML</DialogTitle>
+            <DialogDescription>{templateName}</DialogDescription>
+          </DialogHeader>
 
-        {generating && (
-          <div className="space-y-4">
-            <Skeleton className="h-32 w-full" />
-            <p className="text-sm text-muted-foreground text-center">Generating HTML...</p>
-          </div>
-        )}
-
-        {exported && html && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded text-sm text-green-700">
-              <CheckCircle className="h-4 w-4 flex-shrink-0" />
-              <span>HTML generated successfully. Template variables preserved in {'{{VARIABLE}}'} format.</span>
-            </div>
-
-            {/* HTML Preview */}
-            <div className="border rounded bg-muted p-4 max-h-48 overflow-auto">
-              <pre className="text-xs whitespace-pre-wrap break-words">
-                {html.slice(0, 500)}...
-              </pre>
-            </div>
-          </div>
-        )}
-
-        {!generating && !html && !error && (
-          <div className="text-center py-6 text-muted-foreground">
-            Click "Generate HTML" to create the HTML file from your template design
-          </div>
-        )}
-
-        <DialogFooter className="flex gap-2">
-          {!exported ? (
-            <>
-              <Button variant="outline" onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button onClick={generateHtml} disabled={generating}>
-                {generating ? 'Generating...' : 'Generate HTML'}
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="outline" onClick={handleCopyToClipboard} className="gap-2">
-                <Copy className="h-4 w-4" />
-                Copy HTML
-              </Button>
-              <Button onClick={handleDownload} className="gap-2">
-                <Download className="h-4 w-4" />
-                Download
-              </Button>
-            </>
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription className="flex items-center justify-between">
+                <span>{error}</span>
+                <Button variant="outline" size="sm" onClick={() => generateHtml()}>
+                  Retry
+                </Button>
+              </AlertDescription>
+            </Alert>
           )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+
+          {generating && (
+            <div className="space-y-4">
+              <Skeleton className="h-32 w-full" />
+              <p className="text-sm text-muted-foreground text-center">Generating HTML...</p>
+            </div>
+          )}
+
+          {exported && html && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded text-sm text-green-700">
+                <CheckCircle className="h-4 w-4 flex-shrink-0" />
+                <span>HTML generated successfully. Template variables preserved in {'{{VARIABLE}}'} format.</span>
+              </div>
+
+              {/* HTML Preview */}
+              <div className="border rounded bg-muted p-4 max-h-48 overflow-auto">
+                <pre className="text-xs whitespace-pre-wrap break-words">
+                  {html.slice(0, 500)}...
+                </pre>
+              </div>
+            </div>
+          )}
+
+          {!generating && !html && !error && (
+            <div className="text-center py-6 text-muted-foreground">
+              Click "Generate HTML" to create the HTML file from your template design
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2">
+            {!exported ? (
+              <>
+                <Button variant="outline" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button onClick={generateHtml} disabled={generating}>
+                  {generating ? 'Generating...' : 'Generate HTML'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="outline" onClick={handleCopyToClipboard} className="gap-2">
+                  <Copy className="h-4 w-4" />
+                  Copy HTML
+                </Button>
+                <Button onClick={handleDownload} className="gap-2">
+                  <Download className="h-4 w-4" />
+                  Download
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
