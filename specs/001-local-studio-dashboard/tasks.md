@@ -174,23 +174,23 @@
 
 ### Implementation for User Story 4
 
-- [ ] T058 [P] [US4] Create GET /api/templates/[id] route in app/api/templates/[id]/route.ts implementing GetTemplateResponse per contracts/api-templates.ts lines 171-205
-- [ ] T059 [P] [US4] Create PUT /api/templates/[id] route in app/api/templates/[id]/route.ts implementing UpdateTemplateRequest/Response per contracts/api-templates.ts lines 208-267
-- [ ] T060 [P] [US4] Implement update transaction in app/api/templates/[id]/route.ts: UPDATE template, DELETE old variables, INSERT new variables per data-model.md lines 177-188
-- [ ] T061 [P] [US4] Create edit template page in app/(studio)/templates/[id]/edit/page.tsx loading template data server-side
-- [ ] T061a [US4] Implement template lock mechanism in database using a template_locks table or lock_acquired_at timestamp column per FR-033
-- [ ] T061b [US4] Add lock acquisition logic in GET /api/templates/[id] route to check and set edit lock with session identifier
-- [ ] T061c [US4] Add lock release logic on page unload using beforeunload event and API call to release lock
-- [ ] T062 [US4] Load template content into TemplateEditor component using editor.loadDesign() method with template.content JSON
-- [ ] T062a [US4] Detect if template is locked by another session and display read-only mode with shadcn/ui Alert notification per FR-034
-- [ ] T063 [US4] Implement save handler in app/(studio)/templates/[id]/edit/page.tsx calling PUT /api/templates/[id]
-- [ ] T064 [US4] Add loading state for template fetch using shadcn/ui Skeleton while template data loads
-- [ ] T065 [US4] Add error handling for template not found (404) using shadcn/ui Alert with link back to /templates
-- [ ] T066 [US4] Implement unsaved changes tracking and warning using beforeunload event per FR-025
-- [ ] T067 [US4] Preserve editor state in memory on failed save per FR-023a with retry button using shadcn/ui Alert
-- [ ] T068 [US4] Add keyboard shortcuts for save (Cmd+S / Ctrl+S) using keydown event handler
+- [x] T058 [P] [US4] Create GET /api/templates/[id] route in app/api/templates/[id]/route.ts implementing GetTemplateResponse per contracts/api-templates.ts lines 171-205
+- [x] T059 [P] [US4] Create PUT /api/templates/[id] route in app/api/templates/[id]/route.ts implementing UpdateTemplateRequest/Response per contracts/api-templates.ts lines 208-267
+- [x] T060 [P] [US4] Implement update transaction in app/api/templates/[id]/route.ts: UPDATE template, DELETE old variables, INSERT new variables per data-model.md lines 177-188
+- [x] T061 [P] [US4] Create edit template page in app/(studio)/templates/[id]/edit/page.tsx loading template data server-side
+- [ ] T061a [US4] Implement template lock mechanism in database using a template_locks table or lock_acquired_at timestamp column per FR-033 [DEFERRED - Advanced feature]
+- [ ] T061b [US4] Add lock acquisition logic in GET /api/templates/[id] route to check and set edit lock with session identifier [DEFERRED - Requires T061a]
+- [ ] T061c [US4] Add lock release logic on page unload using beforeunload event and API call to release lock [DEFERRED - Requires T061a]
+- [x] T062 [US4] Load template content into TemplateEditor component using editor.loadDesign() method with template.content JSON
+- [ ] T062a [US4] Detect if template is locked by another session and display read-only mode with shadcn/ui Alert notification per FR-034 [DEFERRED - Requires T061a]
+- [x] T063 [US4] Implement save handler in app/(studio)/templates/[id]/edit/page.tsx calling PUT /api/templates/[id]
+- [x] T064 [US4] Add loading state for template fetch using shadcn/ui Skeleton while template data loads
+- [x] T065 [US4] Add error handling for template not found (404) using shadcn/ui Alert with link back to /templates
+- [x] T066 [US4] Implement unsaved changes tracking and warning using beforeunload event per FR-025
+- [x] T067 [US4] Preserve editor state in memory on failed save per FR-023a with retry button using shadcn/ui Alert
+- [x] T068 [US4] Add keyboard shortcuts for save (Cmd+S / Ctrl+S) using keydown event handler
 
-**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection
+**Checkpoint**: Template editing functional with proper loading, error states, and unsaved changes protection ✅ COMPLETE (locking features deferred)
 
 ---
 
