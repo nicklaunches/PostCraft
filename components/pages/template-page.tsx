@@ -285,7 +285,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
               <Button
                 variant="outline"
                 onClick={() => setShowExport(true)}
-                disabled={isSaving}
+                disabled={isSaving || !isEditorReady}
               >
                 Export
               </Button>

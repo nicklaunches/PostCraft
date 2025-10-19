@@ -32,7 +32,7 @@
 
 'use client'
 
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -124,18 +124,25 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
    */
   const fetchTemplate = useCallback(async () => {
     try {
+      console.log('[TemplateExport] fetchTemplate started for templateId:', templateId)
       setLoading(true)
       setError(null)
       const response = await fetch(`/api/templates/${templateId}`)
+      console.log('[TemplateExport] fetch response status:', response.status)
 
       if (!response.ok) {
-        throw new Error(response.status === 404 ? 'Template not found' : 'Failed to fetch template')
+        const errorMsg = response.status === 404 ? 'Template not found' : 'Failed to fetch template'
+        console.error('[TemplateExport] fetch failed:', errorMsg)
+        throw new Error(errorMsg)
       }
 
       const data = await response.json()
-      setTemplate(data)
+      console.log('[TemplateExport] template data received:', data)
+      setTemplate(data.template)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      const errorMsg = err instanceof Error ? err.message : 'An error occurred'
+      console.error('[TemplateExport] fetchTemplate error:', errorMsg, err)
+      setError(errorMsg)
     } finally {
       setLoading(false)
     }
@@ -152,7 +159,14 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
    * @throws Error if HTML generation fails
    */
   const generateHtml = useCallback(async () => {
-    if (!template?.content) return
+    console.log('[TemplateExport] generateHtml called')
+    console.log('[TemplateExport] template:', template)
+    console.log('[TemplateExport] editorRef.current:', editorRef.current)
+
+    if (!template?.content) {
+      console.warn('[TemplateExport] No template or content available')
+      return
+    }
 
     try {
       setGenerating(true)
@@ -160,20 +174,30 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
 
       // Use editor instance to load design and export HTML
       if (editorRef.current) {
+        console.log('[TemplateExport] Loading design into editor')
         editorRef.current.loadDesign(template.content)
 
         // Export HTML - this is an async operation
+        console.log('[TemplateExport] Exporting HTML from editor')
         editorRef.current.exportHtml((data: { html: string }) => {
+          console.log('[TemplateExport] exportHtml callback received:', data)
           if (data && data.html) {
+            console.log('[TemplateExport] HTML export successful, length:', data.html.length)
             setHtml(data.html)
             setExported(true)
           } else {
+            console.error('[TemplateExport] exportHtml returned invalid data:', data)
             setError('Failed to generate HTML from template design')
           }
         })
+      } else {
+        console.error('[TemplateExport] editorRef.current is not available')
+        setError('Editor not initialized. Please try again.')
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while generating HTML')
+      const errorMsg = err instanceof Error ? err.message : 'An error occurred while generating HTML'
+      console.error('[TemplateExport] generateHtml error:', errorMsg, err)
+      setError(errorMsg)
     } finally {
       setGenerating(false)
     }
@@ -238,19 +262,23 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
    * Cleans up editor instance and calls onClose callback
    */
   const handleClose = useCallback(() => {
+    console.log('[TemplateExport] handleClose called')
     setOpen(false)
     // Cleanup editor ref
     editorRef.current = null
     onClose?.()
   }, [onClose])
 
-  // Fetch template on mount
-  if (!template && !loading && !error) {
+  // Fetch template on mount using useEffect to avoid render-time side effects
+  useEffect(() => {
+    console.log('[TemplateExport] useEffect triggered for templateId:', templateId)
+    console.log('[TemplateExport] Calling fetchTemplate from useEffect')
     fetchTemplate()
-  }
+  }, [templateId])
 
   // Loading state
   if (loading) {
+    console.log('[TemplateExport] Rendering loading state')
     return (
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-[500px]">
@@ -269,6 +297,7 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
 
   // Error state
   if (error && !template) {
+    console.log('[TemplateExport] Rendering error state:', error)
     return (
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-[500px]">
@@ -292,6 +321,7 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
 
   // Empty template warning
   if (template && !template.content) {
+    console.log('[TemplateExport] Rendering empty template warning')
     return (
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-[500px]">
@@ -315,6 +345,7 @@ export function TemplateExport({ templateId, templateName, onClose }: TemplateEx
   }
 
   // Main export state
+  console.log('[TemplateExport] Rendering main export dialog')
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px]">
