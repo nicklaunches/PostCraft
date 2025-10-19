@@ -29,6 +29,7 @@
 import React, { useState, useEffect } from "react";
 import { TemplateEditor } from "@/components/template-editor";
 import { VariableManager } from "@/components/variable-manager";
+import { TemplateExport } from "@/components/template-export";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,6 +70,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
   const [isLoading, setIsLoading] = useState(mode === "edit");
   const [loadError, setLoadError] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [showExport, setShowExport] = useState(false);
 
   // Use the template editor hook
   const {
@@ -279,6 +281,15 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
             </p>
           </div>
           <div className="flex gap-2">
+            {mode === "edit" && template && (
+              <Button
+                variant="outline"
+                onClick={() => setShowExport(true)}
+                disabled={isSaving}
+              >
+                Export
+              </Button>
+            )}
             <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
               Cancel
             </Button>
@@ -429,6 +440,15 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
           </p>
         </div>
       </div>
+
+      {/* Export Dialog */}
+      {showExport && template && (
+        <TemplateExport
+          templateId={template.id}
+          templateName={template.name}
+          onClose={() => setShowExport(false)}
+        />
+      )}
     </div>
   );
 }
