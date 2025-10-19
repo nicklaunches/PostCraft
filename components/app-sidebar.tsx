@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Application sidebar navigation component
+ *
+ * Provides the main navigation sidebar for PostCraft studio with collapsible
+ * functionality. Displays navigation items (Dashboard, Templates) and an adaptive
+ * logo that hides when sidebar is collapsed.
+ *
+ * @module components/app-sidebar
+ */
+
 "use client"
 
 import * as React from "react"
@@ -32,6 +42,15 @@ const data = {
   ],
 }
 
+/**
+ * Main application sidebar component
+ *
+ * Renders a collapsible sidebar with navigation items and logo.
+ * Automatically marks the current page as active based on pathname.
+ *
+ * @param props - Sidebar component props
+ * @returns {JSX.Element} The sidebar component
+ */
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
 
@@ -56,6 +75,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   )
 }
 
+/**
+ * Sidebar logo component with conditional visibility
+ *
+ * Displays the PostCraft logo (Mail icon + text) in the expanded state.
+ * Hides text when sidebar is collapsed to save space.
+ *
+ * @returns {JSX.Element} The logo component
+ */
 function SidebarLogo() {
   const { state } = useSidebar()
 

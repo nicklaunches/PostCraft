@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Main navigation menu component for sidebar
+ *
+ * Renders navigation items with support for both simple links and collapsible
+ * sub-menu sections. Highlights active items based on current page.
+ *
+ * @module components/nav-main
+ */
+
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
@@ -18,6 +27,38 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
+/**
+ * Navigation menu component
+ *
+ * Renders a list of navigation items in the sidebar. Supports:
+ * - Simple navigation links with optional icons
+ * - Collapsible sections with sub-items
+ * - Active state indication
+ * - Animated chevron rotation on expand/collapse
+ *
+ * @param props - Component props
+ * @param props.items - Array of navigation items with optional sub-items
+ * @returns {JSX.Element} The navigation menu
+ *
+ * @example
+ * const items = [
+ *   {
+ *     title: "Dashboard",
+ *     url: "/",
+ *     icon: Home,
+ *     isActive: true
+ *   },
+ *   {
+ *     title: "Content",
+ *     icon: BookOpen,
+ *     items: [
+ *       { title: "Posts", url: "/posts" },
+ *       { title: "Pages", url: "/pages" }
+ *     ]
+ *   }
+ * ];
+ * <NavMain items={items} />
+ */
 export function NavMain({
   items,
 }: {
