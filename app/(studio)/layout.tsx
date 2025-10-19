@@ -37,6 +37,8 @@
  * }
  */
 
+"use client";
+
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   SidebarInset,
@@ -44,12 +46,19 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { usePathname } from "next/navigation";
 
 export default function StudioLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  // Remove padding for template editor pages (new/edit)
+  const isEditorPage = pathname?.includes("/templates/new") ||
+                       pathname?.match(/\/templates\/\d+\/edit/);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -60,7 +69,7 @@ export default function StudioLayout({
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className={`flex flex-1 flex-col gap-4 pt-0 ${isEditorPage ? "" : "p-4"}`}>
           {children}
         </div>
       </SidebarInset>
