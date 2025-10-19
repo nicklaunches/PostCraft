@@ -1,3 +1,42 @@
+/**
+ * @fileoverview Database schema for PostCraft email template studio
+ *
+ * Defines PostgreSQL tables and relationships for managing email templates
+ * and their merge tag variables. Uses Drizzle ORM for type-safe schema definition
+ * and query building.
+ *
+ * Tables:
+ * - `templates`: Core email template data with design JSON and metadata
+ * - `template_variables`: Merge tag metadata (type, fallback, required status)
+ *
+ * Relationships:
+ * - One template has many variables (one-to-many)
+ * - One variable belongs to one template (many-to-one)
+ * - Cascade delete: Deleting a template removes all its variables
+ *
+ * Indexes:
+ * - `templates_updated_at_idx`: Optimizes pagination queries (ORDER BY updated_at DESC)
+ * - `template_variables_template_id_key_idx`: Prevents duplicate merge tags per template
+ *
+ * @see {@link https://orm.drizzle.team/docs/postgresql-core} Drizzle PostgreSQL documentation
+ *
+ * @example
+ * // Query all templates with their variables
+ * const templates = await db.query.templates.findMany({
+ *   with: { variables: true }
+ * });
+ *
+ * @example
+ * // Create a new template with variables
+ * const result = await db
+ *   .insert(templates)
+ *   .values({
+ *     name: 'welcome-email',
+ *     content: { /* react-email-editor design JSON * / }
+ *   })
+ *   .returning();
+ */
+
 import {
   pgTable,
   serial,

@@ -72,10 +72,10 @@
 - [x] T017 Create root layout in app/layout.tsx with TailwindCSS global styles and font configuration
 - [x] T018 [P] Implement validation utilities in lib/utils/validation.ts for template name sanitization per FR-019
 - [x] T019 [P] Implement template variable utilities in lib/utils/merge-tags.ts for variable substitution per research.md lines 162-195
-- [ ] T019a [P] Add file-level JSDoc to lib/db/schema.ts describing database schema purpose and table relationships per Principle VIII
-- [ ] T019b [P] Add file-level JSDoc to lib/db/client.ts describing database client configuration and connection pooling per Principle VIII
-- [ ] T019c [P] Add file-level JSDoc to lib/utils/validation.ts describing validation utilities purpose per Principle VIII
-- [ ] T019d [P] Add file-level JSDoc to lib/utils/merge-tags.ts describing merge tag substitution utilities per Principle VIII
+- [x] T019a [P] Add file-level JSDoc to lib/db/schema.ts describing database schema purpose and table relationships per Principle VIII
+- [x] T019b [P] Add file-level JSDoc to lib/db/client.ts describing database client configuration and connection pooling per Principle VIII
+- [x] T019c [P] Add file-level JSDoc to lib/utils/validation.ts describing validation utilities purpose per Principle VIII
+- [x] T019d [P] Add file-level JSDoc to lib/utils/merge-tags.ts describing merge tag substitution utilities per Principle VIII
 
 **Checkpoint**: Foundation ready - database schema created, shadcn/ui installed, utilities available ✅ COMPLETE (JSDoc pending)
 
@@ -94,10 +94,10 @@
 - [x] T024 [US1] Implement error boundary in app/(studio)/error.tsx using shadcn/ui Alert for server errors
 - [x] T025 [US1] Add keyboard navigation support for sidebar using aria-labels and keyboard event handlers
 - [x] T026 [US1] Test server startup and verify dashboard loads at localhost:3579 with proper binding to 127.0.0.1
-- [ ] T026a [P] [US1] Add file-level JSDoc to app/(studio)/layout.tsx describing studio layout structure and sidebar configuration per Principle VIII
-- [ ] T026b [P] [US1] Add file-level JSDoc to app/(studio)/page.tsx describing dashboard home page purpose per Principle VIII
-- [ ] T026c [P] [US1] Add file-level JSDoc to app/(studio)/loading.tsx describing loading state component per Principle VIII
-- [ ] T026d [P] [US1] Add file-level JSDoc to app/(studio)/error.tsx describing error boundary component per Principle VIII
+- [x] T026a [P] [US1] Add file-level JSDoc to app/(studio)/layout.tsx describing studio layout structure and sidebar configuration per Principle VIII
+- [x] T026b [P] [US1] Add file-level JSDoc to app/(studio)/page.tsx describing dashboard home page purpose per Principle VIII
+- [x] T026c [P] [US1] Add file-level JSDoc to app/(studio)/loading.tsx describing loading state component per Principle VIII
+- [x] T026d [P] [US1] Add file-level JSDoc to app/(studio)/error.tsx describing error boundary component per Principle VIII
 
 **Checkpoint**: Dashboard accessible at localhost:3579 with functional sidebar navigation ✅ COMPLETE (JSDoc pending)
 
@@ -121,11 +121,11 @@
 - [x] T034 [US2] Add error state handling in components/template-list.tsx with retry button using shadcn/ui Alert
 - [x] T035 [US2] Add keyboard navigation for template cards using arrow key event handlers and focus management
 - [x] T036 [US2] Add quick action buttons (edit, delete, export) to template cards with hover effects
-- [ ] T036a [P] [US2] Add file-level JSDoc to app/api/templates/route.ts describing templates API endpoints and request/response contracts per Principle VIII
-- [ ] T036b [P] [US2] Add JSDoc to GET handler in app/api/templates/route.ts with @example showing pagination query parameters per Principle VIII
-- [ ] T036c [P] [US2] Add file-level JSDoc to app/(studio)/templates/page.tsx describing template list page purpose per Principle VIII
-- [ ] T036d [P] [US2] Add file-level JSDoc to components/template-list.tsx describing template list component and props per Principle VIII
-- [ ] T036e [P] [US2] Add JSDoc to public methods in components/template-list.tsx with parameter and return value documentation per Principle VIII
+- [x] T036a [P] [US2] Add file-level JSDoc to app/api/templates/route.ts describing templates API endpoints and request/response contracts per Principle VIII
+- [x] T036b [P] [US2] Add JSDoc to GET handler in app/api/templates/route.ts with @example showing pagination query parameters per Principle VIII
+- [x] T036c [P] [US2] Add file-level JSDoc to app/(studio)/templates/page.tsx describing template list page purpose per Principle VIII
+- [x] T036d [P] [US2] Add file-level JSDoc to components/template-list.tsx describing template list component and props per Principle VIII
+- [x] T036e [P] [US2] Add JSDoc to public methods in components/template-list.tsx with parameter and return value documentation per Principle VIII
 
 **Checkpoint**: Template list page functional with pagination, empty states, and loading states ✅ COMPLETE (JSDoc pending)
 

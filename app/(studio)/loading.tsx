@@ -1,3 +1,26 @@
+/**
+ * @fileoverview Loading state component for studio pages
+ *
+ * Displays placeholder skeleton loaders while studio page content is being
+ * fetched. Uses shadcn/ui Skeleton component for consistent loading UI
+ * across all studio routes.
+ *
+ * Loading States Supported:
+ * - Dashboard with header and content cards
+ * - Templates list with multiple placeholder cards
+ * - Template detail pages with form fields
+ *
+ * Features:
+ * - Responsive grid layout matching final content
+ * - Smooth animation during loading
+ * - Maintains layout stability (no cumulative layout shift)
+ * - Accessible skeleton components
+ *
+ * @example
+ * // Used automatically by Next.js for loading.tsx routes
+ * // Displays while StudioHome or other pages are being rendered
+ */
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function StudioLoading() {

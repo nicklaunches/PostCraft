@@ -1,3 +1,36 @@
+/**
+ * @fileoverview Template list client component for displaying paginated templates
+ *
+ * Client component that fetches and displays email templates from the API.
+ * Implements US2 (View Templates) with comprehensive state management for:
+ *
+ * Features:
+ * - Fetch templates from GET /api/templates with pagination
+ * - Display template grid with card-based UI (shadcn/ui Card)
+ * - Loading skeleton state during fetch
+ * - Error state with retry button
+ * - Empty state with create template call-to-action
+ * - Pagination controls (shadcn/ui Pagination)
+ * - Quick action buttons: Edit, Export, Delete
+ * - Keyboard navigation: Enter/Space to edit, arrow keys for navigation
+ * - Responsive grid: 1 column mobile, 2 columns tablet, 3 columns desktop
+ *
+ * Template Card Features:
+ * - Template name and metadata (created/updated dates)
+ * - Edit button linking to /templates/{id}/edit
+ * - Export button placeholder (Phase 10)
+ * - Delete button placeholder (Phase 8)
+ * - Keyboard focusable with tabIndex={0}
+ *
+ * @example
+ * // Usage in server component
+ * import { TemplateList } from '@/components/template-list';
+ * <TemplateList page="1" pageSize="20" />
+ *
+ * @see {@link /app/api/templates/route.ts} GET /api/templates endpoint
+ * @see {@link /app/(studio)/templates/page.tsx} Template list page
+ */
+
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
@@ -15,18 +48,44 @@ interface TemplateListProps {
   pageSize: string
 }
 
+/**
+ * TemplateList component
+ *
+ * Client component for displaying paginated email templates.
+ * Manages loading, error, empty, and success states.
+ *
+ * @param props - Component props
+ * @param props.page - Current page number (string, will be parsed to int)
+ * @param props.pageSize - Items per page (string, will be parsed to int)
+ *
+ * @returns React component with template grid and pagination
+ *
+ * @example
+ * <TemplateList page="1" pageSize="20" />
+ *
+ * States:
+ * - Loading: Shows animated skeleton loaders
+ * - Error: Shows error alert with retry button
+ * - Empty: Shows empty state with create template button
+ * - Success: Shows template grid with pagination
+ */
 export function TemplateList({ page, pageSize }: TemplateListProps) {
   const router = useRouter()
   const [data, setData] = useState<ListTemplatesResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
+  /**
+   * Fetches templates from the API
+   *
+   * @returns Promise that resolves when fetch completes
+   */
   const fetchTemplates = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
       const response = await fetch(`/api/templates?page=${page}&pageSize=${pageSize}`)
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch templates')
       }

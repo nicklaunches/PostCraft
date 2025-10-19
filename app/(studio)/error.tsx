@@ -1,3 +1,33 @@
+/**
+ * @fileoverview Error boundary component for studio pages
+ *
+ * Handles and displays errors that occur in studio pages or their child
+ * components. Uses Next.js error.tsx boundary to catch runtime errors and
+ * provides user-friendly error messages with recovery options.
+ *
+ * Error Handling:
+ * - Displays error alert with user-friendly message
+ * - Logs error details to console for debugging
+ * - Provides "Try Again" button to attempt recovery
+ * - Links back to home page as fallback navigation
+ * - Shows error ID in development mode for debugging
+ *
+ * Common Errors:
+ * - Database connection failures
+ * - Template not found (404)
+ * - Permission denied (403)
+ * - Internal server errors (500)
+ *
+ * @example
+ * // Error boundary automatically catches errors in all routes
+ * // Displays when StudioHome, TemplateList, or other pages throw
+ * if (error) {
+ *   return <StudioError error={error} reset={reset} />;
+ * }
+ *
+ * @see {@link https://nextjs.org/docs/app/building-your-application/routing/error-handling} Next.js error handling
+ */
+
 "use client";
 
 import { useEffect } from "react";
@@ -46,11 +76,11 @@ export default function StudioError({
             </li>
           </ul>
           <div className="flex gap-3">
-            <Button onClick={reset} variant="primary">
+            <Button onClick={reset} variant="default">
               Try Again
             </Button>
             <Link href="/">
-              <Button variant="secondary">
+              <Button variant="outline">
                 Go Home
               </Button>
             </Link>

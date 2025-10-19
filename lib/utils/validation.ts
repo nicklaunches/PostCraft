@@ -1,6 +1,30 @@
 /**
- * Validation utilities for template name sanitization
- * Ensures template names are safe for database storage and SDK usage
+ * @fileoverview Validation utilities for template management
+ *
+ * Provides template name validation, sanitization, and formatting functions
+ * ensuring template names are safe for database storage, URL routes, and SDK usage.
+ *
+ * Validation Rules (per FR-019):
+ * - Length: 1-100 characters
+ * - Allowed characters: alphanumeric (a-z, A-Z, 0-9), hyphens (-), underscores (_)
+ * - No spaces, special characters, or international characters
+ * - Applied to all template create/update operations
+ *
+ * Functions:
+ * - `validateTemplateName()`: Validates template name and returns sanitized version
+ * - `sanitizeTemplateName()`: Forcefully cleans template name (lowercase, remove invalid chars)
+ *
+ * @example
+ * // Validate template name from user input
+ * const { isValid, sanitized, error } = validateTemplateName(userInput);
+ * if (!isValid) {
+ *   throw new Error(error); // User-facing error message
+ * }
+ *
+ * @example
+ * // Sanitize a template name
+ * const clean = sanitizeTemplateName('My Email Template!');
+ * // Returns: 'my-email-template'
  */
 
 const TEMPLATE_NAME_REGEX = /^[a-zA-Z0-9_-]{1,100}$/;
@@ -66,3 +90,4 @@ export function sanitizeTemplateName(name: string): string {
     .replace(/-+/g, "-")
     .substring(0, 100);
 }
+

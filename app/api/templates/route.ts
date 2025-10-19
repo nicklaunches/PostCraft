@@ -1,9 +1,99 @@
+/**
+ * @fileoverview API endpoints for template list and creation operations
+ *
+ * Implements the templates API contract for US2 (View Templates) and US3 (Create Template):
+ *
+ * GET /api/templates
+ * - Returns paginated list of all email templates
+ * - Supports offset pagination with page and pageSize parameters
+ * - Sorts by updatedAt descending (most recent first)
+ * - Returns total count for pagination UI
+ *
+ * POST /api/templates
+ * - Creates new email template with design JSON and metadata
+ * - Validates template name (1-100 chars, alphanumeric + hyphens/underscores)
+ * - Supports optional merge tag variables with metadata
+ * - Returns created template with assigned ID
+ *
+ * Error Handling:
+ * - 400: Invalid template name or missing required fields
+ * - 409: Template name already exists (unique constraint violation)
+ * - 500: Database or server error
+ *
+ * @see {@link /specs/001-local-studio-dashboard/contracts/api-templates.ts} API contracts
+ * @see {@link /lib/utils/validation.ts} validateTemplateName function
+ *
+ * @example
+ * // Fetch templates with pagination
+ * const response = await fetch('/api/templates?page=1&pageSize=20');
+ * const { items, pagination } = await response.json();
+ *
+ * @example
+ * // Create new template with variables
+ * const response = await fetch('/api/templates', {
+ *   method: 'POST',
+ *   body: JSON.stringify({
+ *     name: 'welcome-email',
+ *     content: { /* react-email-editor design JSON * /},
+ *     variables: [
+ *       { key: 'FIRST_NAME', type: 'string', isRequired: true },
+ *       { key: 'DISCOUNT', type: 'number', fallbackValue: '0' }
+ *     ]
+ *   })
+ * });
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { templates, templateVariables } from "@/lib/db/schema";
 import { desc, eq, count } from "drizzle-orm";
 import { validateTemplateName } from "@/lib/utils/validation";
 
+/**
+ * GET /api/templates
+ *
+ * Retrieves paginated list of all email templates ordered by most recent first.
+ *
+ * Query Parameters:
+ * - page: Page number (1-indexed, default: 1, min: 1)
+ * - pageSize: Items per page (default: 20, min: 1, max: 100)
+ *
+ * Response (200 OK):
+ * ```json
+ * {
+ *   "items": [
+ *     {
+ *       "id": 1,
+ *       "name": "welcome-email",
+ *       "content": { ... },
+ *       "createdAt": "2025-10-18T00:00:00Z",
+ *       "updatedAt": "2025-10-18T00:00:00Z"
+ *     }
+ *   ],
+ *   "pagination": {
+ *     "page": 1,
+ *     "pageSize": 20,
+ *     "totalPages": 5,
+ *     "totalCount": 100
+ *   }
+ * }
+ * ```
+ *
+ * Error Response (500 Server Error):
+ * ```json
+ * {
+ *   "error": "Failed to fetch templates",
+ *   "details": "Connection timeout"
+ * }
+ * ```
+ *
+ * @param request - NextRequest containing query parameters
+ * @returns NextResponse with paginated template list or error
+ *
+ * @example
+ * // Fetch page 2 with 10 items per page
+ * fetch('/api/templates?page=2&pageSize=10')
+ */
 export async function GET(request: NextRequest) {
   try {
     // Get pagination params from query string
@@ -54,6 +144,45 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * POST /api/templates
+ *
+ * Creates a new email template with optional merge tag variables.
+ *
+ * Request Body:
+ * ```json
+ * {
+ *   "name": "welcome-email",
+ *   "content": { /* react-email-editor design JSON * /},
+ *   "variables": [
+ *     { "key": "NAME", "type": "string", "isRequired": true },
+ *     { "key": "DISCOUNT", "type": "number", "fallbackValue": "0", "isRequired": false }
+ *   ]
+ * }
+ * ```
+ *
+ * Response (201 Created):
+ * ```json
+ * {
+ *   "id": 1,
+ *   "name": "welcome-email",
+ *   "content": { ... },
+ *   "createdAt": "2025-10-18T00:00:00Z",
+ *   "updatedAt": "2025-10-18T00:00:00Z",
+ *   "variables": [
+ *     { "id": 1, "templateId": 1, "key": "NAME", "type": "string", "isRequired": true, ... }
+ *   ]
+ * }
+ * ```
+ *
+ * Error Responses:
+ * - 400 Bad Request: Invalid template name or missing content
+ * - 409 Conflict: Template name already exists
+ * - 500 Server Error: Database error
+ *
+ * @param request - NextRequest with JSON body
+ * @returns NextResponse with created template or error
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

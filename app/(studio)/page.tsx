@@ -1,3 +1,32 @@
+/**
+ * @fileoverview PostCraft Studio dashboard home page
+ *
+ * Main landing page for the PostCraft local studio at `/`. Provides
+ * a welcome interface with quick access to core features and getting started
+ * guidance for developers.
+ *
+ * Features:
+ * - Welcome heading and feature description
+ * - Quick action buttons: Browse Templates and Create New Template
+ * - Quick Start guide with 3-step instructions
+ * - Links to main user workflows
+ *
+ * Navigation:
+ * - "Browse Templates" button links to /templates (US2 - View Templates)
+ * - "Create New Template" button links to /templates/new (US3 - Create Template)
+ *
+ * @example
+ * // Dashboard greeting for first-time users
+ * Welcome to PostCraft Studio
+ * Design beautiful email templates with our visual editor
+ * [Browse Templates] [Create New Template]
+ *
+ * Quick Start:
+ * 1. Navigate to Templates to view all your email templates
+ * 2. Create a new template or edit existing ones
+ * 3. Use the SDK to render templates with variable substitution
+ */
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 

@@ -1,3 +1,42 @@
+/**
+ * @fileoverview Studio layout component for PostCraft dashboard
+ *
+ * Root layout for all studio pages at `/studio` route. Provides the shell layout
+ * with shadcn/ui sidebar-07 template featuring:
+ *
+ * Layout Structure:
+ * - Collapsible sidebar with navigation items (built by AppSidebar component)
+ * - Header with sidebar trigger button and separator
+ * - Content inset area for page-specific content
+ * - Responsive design: collapses on mobile, expands on desktop
+ *
+ * Sidebar Configuration:
+ * - Uses shadcn/ui SidebarProvider for state management
+ * - AppSidebar component renders navigation items
+ * - SidebarTrigger button toggles collapsed state
+ * - Automatically adjusts header height when sidebar collapses
+ *
+ * Child Routes:
+ * - `/`: Dashboard home page
+ * - `/templates`: Template list page
+ * - `/templates/new`: Create new template page
+ * - `/templates/[id]/edit`: Edit template page
+ *
+ * @example
+ * // Studio layout with sidebar and content area
+ * export default function StudioLayout({ children }) {
+ *   return (
+ *     <SidebarProvider>
+ *       <AppSidebar />
+ *       <SidebarInset>
+ *         // Header with sidebar trigger
+ *         {children}
+ *       </SidebarInset>
+ *     </SidebarProvider>
+ *   );
+ * }
+ */
+
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   SidebarInset,

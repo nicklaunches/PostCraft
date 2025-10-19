@@ -1,7 +1,34 @@
 /**
- * Template variable utilities for merge tag detection and substitution
- * Detects variables like {{VARIABLE_NAME}} in HTML/template content
- * Supports type-aware variable replacement with fallback values
+ * @fileoverview Merge tag utilities for template variable detection and substitution
+ *
+ * Provides functions for detecting merge tag placeholders ({{VARIABLE_NAME}}) in
+ * HTML/template content and substituting them with actual values. Supports
+ * type-aware formatting and fallback values for missing variables.
+ *
+ * Merge Tag Format: {{VARIABLE_NAME}} (uppercase, uppercase alphanumeric and underscores)
+ *
+ * Features:
+ * - Auto-detect merge tags in HTML content
+ * - Type-aware value formatting (string, number, boolean, date)
+ * - Fallback value support for missing variables
+ * - Required variable validation
+ * - Preserves unknown merge tags in output
+ *
+ * @example
+ * // Detect variables in template
+ * const html = '<p>Hello {{FIRST_NAME}}, your balance is {{BALANCE}}</p>';
+ * const vars = detectMergeTags(html);
+ * // Returns: [{ key: 'FIRST_NAME', count: 1 }, { key: 'BALANCE', count: 1 }]
+ *
+ * @example
+ * // Replace variables with values
+ * const result = replaceMergeTags(html, { FIRST_NAME: 'John', BALANCE: 100 });
+ * // Returns: '<p>Hello John, your balance is 100</p>'
+ *
+ * @example
+ * // Use fallback values
+ * const result = replaceMergeTags(html, {}, { FIRST_NAME: 'Customer' });
+ * // Returns: '<p>Hello Customer, your balance is {{BALANCE}}</p>'
  */
 
 export interface DetectedVariable {
@@ -110,3 +137,4 @@ export function formatVariableValue(
       return String(value);
   }
 }
+
