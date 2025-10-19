@@ -427,8 +427,9 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
             }
         }, [ref, isEditorInitialized]);
 
-        const handleReady = () => {
+        const handleReady = (unlayer: any) => {
             console.log("TemplateEditor: handleReady callback invoked");
+            console.log("TemplateEditor: unlayer argument:", unlayer);
             console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
             console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
             // Editor is ready when this callback is invoked
@@ -441,6 +442,23 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
                 editorRef.current.editor.loadDesign(initialDesign as any);
             }
         };
+
+        // Check if Unlayer script loads
+        useEffect(() => {
+            console.log("TemplateEditor: Checking for Unlayer global");
+            console.log("TemplateEditor: window.unlayer exists?", !!(typeof window !== 'undefined' && (window as any).unlayer));
+
+            // Listen for script errors
+            const handleError = (event: ErrorEvent) => {
+                console.error("TemplateEditor: Script error detected:", event.message, event.filename);
+            };
+
+            window.addEventListener('error', handleError);
+
+            return () => {
+                window.removeEventListener('error', handleError);
+            };
+        }, []);
 
         // Call onReady and onLoad callbacks after editor is fully initialized
         useEffect(() => {
@@ -477,14 +495,17 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         console.log("TemplateEditor: Rendering component");
         console.log("TemplateEditor: POSTCRAFT_UNLAYER_PROJECT_ID?", !!process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
         console.log("TemplateEditor: projectId value:", process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
+        console.log("TemplateEditor: projectId as number:", Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID));
         console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
+        console.log("TemplateEditor: editorOptions:", editorOptions);
 
         return (
-            <div className="h-full w-full">
+            <div className="h-full w-full" style={{ minHeight: '600px' }}>
                 <EmailEditor
                     ref={editorRef}
                     onReady={handleReady}
                     options={editorOptions}
+                    minHeight="600px"
                 />
             </div>
         );
