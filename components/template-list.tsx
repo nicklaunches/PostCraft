@@ -97,12 +97,6 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
         <p className="text-sm text-muted-foreground">
           Showing {data.items.length} of {data.pagination.totalCount} templates
         </p>
-        <Link href="/templates/new">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Create New Template
-          </Button>
-        </Link>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

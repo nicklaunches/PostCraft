@@ -1,6 +1,9 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { TemplateList } from "@/components/template-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export const metadata = {
   title: "Templates - PostCraft Studio",
@@ -26,6 +29,12 @@ export default async function TemplatesPage({
             Create, edit, and manage your email templates
           </p>
         </div>
+        <Link href="/templates/new">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Create Template
+          </Button>
+        </Link>
       </div>
 
       <Suspense

@@ -149,20 +149,20 @@
 
 ### Implementation for User Story 3
 
-- [ ] T046 [P] [US3] Create POST /api/templates route in app/api/templates/route.ts implementing CreateTemplateRequest/Response per contracts/api-templates.ts lines 96-168
-- [ ] T047 [P] [US3] Implement template creation transaction in app/api/templates/route.ts: INSERT template, INSERT variables, handle unique constraint violations
-- [ ] T048 [P] [US3] Create new template page in app/(studio)/templates/new/page.tsx with client-side editor component
-- [ ] T049 [US3] Implement TemplateEditor component in components/template-editor.tsx wrapping react-email-editor with all features enabled per FR-006a
-- [ ] T050 [US3] Configure react-email-editor in components/template-editor.tsx with template variables (merge tags) enabled and full tools unlocked per research.md lines 143-205
-- [ ] T051 [US3] Add template name input to app/(studio)/templates/new/page.tsx using shadcn/ui Input with validation
-- [ ] T052 [US3] Implement save handler in app/(studio)/templates/new/page.tsx calling saveDesign() to get design JSON and POST /api/templates
-- [ ] T053 [US3] Add loading state during save using shadcn/ui Toast for "Saving..." notification
-- [ ] T054 [US3] Add success/error feedback after save using shadcn/ui Toast with redirect to /templates on success
-- [ ] T055 [US3] Implement unsaved changes warning using browser beforeunload event per FR-025
-- [ ] T056 [US3] Add validation for template name (1-100 chars, alphanumeric + hyphens/underscores) using lib/utils/validation.ts
-- [ ] T057 [US3] Handle duplicate name error from API showing shadcn/ui Alert with field-specific error per contracts/api-templates.ts lines 162-167
+- [x] T046 [P] [US3] Create POST /api/templates route in app/api/templates/route.ts implementing CreateTemplateRequest/Response per contracts/api-templates.ts lines 96-168
+- [x] T047 [P] [US3] Implement template creation transaction in app/api/templates/route.ts: INSERT template, INSERT variables, handle unique constraint violations
+- [x] T048 [P] [US3] Create new template page in app/(studio)/templates/new/page.tsx with client-side editor component
+- [x] T049 [US3] Implement TemplateEditor component in components/template-editor.tsx wrapping react-email-editor with all features enabled per FR-006a
+- [x] T050 [US3] Configure react-email-editor in components/template-editor.tsx with template variables (merge tags) enabled and full tools unlocked per research.md lines 143-205
+- [x] T051 [US3] Add template name input to app/(studio)/templates/new/page.tsx using shadcn/ui Input with validation
+- [x] T052 [US3] Implement save handler in app/(studio)/templates/new/page.tsx calling saveDesign() to get design JSON and POST /api/templates
+- [x] T053 [US3] Add loading state during save using shadcn/ui Toast for "Saving..." notification
+- [x] T054 [US3] Add success/error feedback after save using shadcn/ui Toast with redirect to /templates on success
+- [x] T055 [US3] Implement unsaved changes warning using browser beforeunload event per FR-025
+- [x] T056 [US3] Add validation for template name (1-100 chars, alphanumeric + hyphens/underscores) using lib/utils/validation.ts
+- [x] T057 [US3] Handle duplicate name error from API showing shadcn/ui Alert with field-specific error per contracts/api-templates.ts lines 162-167
 
-**Checkpoint**: Template creation functional with react-email-editor, validation, and error handling
+**Checkpoint**: Template creation functional with react-email-editor, validation, and error handling ✅ COMPLETE
 
 ---
 
