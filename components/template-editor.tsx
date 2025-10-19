@@ -4,79 +4,76 @@ import React, { useRef, useEffect, useState } from "react";
 import EmailEditor, { EditorRef, EmailEditorProps } from "react-email-editor";
 
 interface TemplateEditorProps {
-  onReady?: () => void;
-  onLoad?: () => void;
-  initialDesign?: object | null;
+    onReady?: () => void;
+    onLoad?: () => void;
+    initialDesign?: object | null;
 }
 
 export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
-  ({ onReady, onLoad, initialDesign }, ref) => {
-    const editorRef = useRef<EditorRef>(null);
-    const [isEditorInitialized, setIsEditorInitialized] = useState(false);
+    ({ onReady, onLoad, initialDesign }, ref) => {
+        const editorRef = useRef<EditorRef>(null);
+        const [isEditorInitialized, setIsEditorInitialized] = useState(false);
 
-    // Expose the editor ref to parent
-    useEffect(() => {
-      if (ref && editorRef.current) {
-        if (typeof ref === "function") {
-          ref(editorRef.current);
-        } else {
-          ref.current = editorRef.current;
-        }
-      }
-    }, [ref, isEditorInitialized]);
+        // Expose the editor ref to parent
+        useEffect(() => {
+            if (ref && editorRef.current) {
+                if (typeof ref === "function") {
+                    ref(editorRef.current);
+                } else {
+                    ref.current = editorRef.current;
+                }
+            }
+        }, [ref, isEditorInitialized]);
 
-    const handleReady = () => {
-      // Verify editor is truly ready before notifying parent
-      if (!editorRef.current?.editor) {
-        return;
-      }
+        const handleReady = () => {
+            // Verify editor is truly ready before notifying parent
+            if (!editorRef.current?.editor) {
+                return;
+            }
 
-      setIsEditorInitialized(true);
+            setIsEditorInitialized(true);
 
-      // Load initial design if provided
-      if (initialDesign && editorRef.current?.editor) {
-        editorRef.current.editor.loadDesign(initialDesign as any);
-      }
-    };
+            // Load initial design if provided
+            if (initialDesign && editorRef.current?.editor) {
+                editorRef.current.editor.loadDesign(initialDesign as any);
+            }
+        };
 
-    // Call onReady and onLoad callbacks after editor is fully initialized
-    useEffect(() => {
-      if (isEditorInitialized && editorRef.current?.editor) {
-        if (onReady) {
-          onReady();
-        }
+        // Call onReady and onLoad callbacks after editor is fully initialized
+        useEffect(() => {
+            if (isEditorInitialized && editorRef.current?.editor) {
+                if (onReady) {
+                    onReady();
+                }
 
-        if (onLoad) {
-          onLoad();
-        }
-      }
-    }, [isEditorInitialized, onReady, onLoad]);
+                if (onLoad) {
+                    onLoad();
+                }
+            }
+        }, [isEditorInitialized, onReady, onLoad]);
 
-    const editorOptions: EmailEditorProps["options"] = {
-      projectId: 280595,
-      appearance: {
-        theme: "light",
-      },
-      tools: {
-        // Enable all tools per FR-006a
-      },
-      mergeTags: {
-        // Configure merge tags support
-        // Users can define merge tags in the editor
-      },
-    };
+        const editorOptions: EmailEditorProps["options"] = {
+            projectId: Number(process.env.NEXT_PUBLIC_UNLAYER_PROJECT_ID),
+            tools: {
+                // Enable all tools per FR-006a
+            },
+            mergeTags: {
+                // Configure merge tags support
+                // Users can define merge tags in the editor
+            },
+        };
 
-    return (
-      <div className="h-full w-full">
-        <EmailEditor
-          ref={editorRef}
-          onReady={handleReady}
-          options={editorOptions}
-          minHeight="600px"
-        />
-      </div>
-    );
-  }
+        return (
+            <div className="h-full w-full">
+                <EmailEditor
+                    ref={editorRef}
+                    onReady={handleReady}
+                    options={editorOptions}
+                    minHeight="600px"
+                />
+            </div>
+        );
+    },
 );
 
 TemplateEditor.displayName = "TemplateEditor";
