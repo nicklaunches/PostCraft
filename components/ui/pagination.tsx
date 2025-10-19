@@ -61,7 +61,7 @@ const Pagination = ({
         ) : (
           <Button
             key={page}
-            variant={page === currentPage ? "primary" : "outline"}
+            variant={page === currentPage ? "default" : "outline"}
             size="sm"
             onClick={() => onPageChange(page)}
           >
