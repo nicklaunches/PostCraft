@@ -1,35 +1,44 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
+import { TemplateList } from "@/components/template-list";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata = {
   title: "Templates - PostCraft Studio",
   description: "Manage your email templates",
 };
 
-export default function TemplatesPage() {
+interface TemplatesPageProps {
+  searchParams: { page?: string; pageSize?: string };
+}
+
+export default async function TemplatesPage({
+  searchParams,
+}: TemplatesPageProps) {
+  const page = searchParams.page || "1";
+  const pageSize = searchParams.pageSize || "20";
+
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Email Templates</h1>
-        <Link href="/templates/new">
-          <Button variant="primary">Create New Template</Button>
-        </Link>
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Email Templates</h1>
+          <p className="text-muted-foreground">
+            Create, edit, and manage your email templates
+          </p>
+        </div>
       </div>
 
-      {/* Empty state - will be replaced with actual data */}
-      <div className="bg-white rounded-lg shadow-md p-12 text-center">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">
-          No templates yet
-        </h2>
-        <p className="text-gray-600 mb-6">
-          Create your first email template to get started
-        </p>
-        <Link href="/templates/new">
-          <Button variant="primary" size="lg">
-            Create Template
-          </Button>
-        </Link>
-      </div>
+      <Suspense
+        fallback={
+          <div className="space-y-4">
+            <Skeleton className="h-[200px] w-full" />
+            <Skeleton className="h-[200px] w-full" />
+            <Skeleton className="h-[200px] w-full" />
+          </div>
+        }
+      >
+        <TemplateList page={page} pageSize={pageSize} />
+      </Suspense>
     </div>
   );
 }

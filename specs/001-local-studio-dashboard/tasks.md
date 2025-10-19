@@ -99,16 +99,16 @@
 
 ### Implementation for User Story 2
 
-- [ ] T027 [P] [US2] Create GET /api/templates route in app/api/templates/route.ts implementing ListTemplatesResponse per contracts/api-templates.ts lines 45-92
-- [ ] T028 [P] [US2] Implement offset pagination query in app/api/templates/route.ts using LIMIT/OFFSET with pageSize=20 per data-model.md lines 219-253
-- [ ] T029 [P] [US2] Create templates list page in app/(studio)/templates/page.tsx with Server Component data fetching
-- [ ] T030 [US2] Implement TemplateList client component in components/template-list.tsx using shadcn/ui Card for template items
-- [ ] T031 [US2] Add empty state to components/template-list.tsx using shadcn/ui Alert with "Create New Template" call-to-action
-- [ ] T032 [US2] Add loading skeleton to app/(studio)/templates/loading.tsx using shadcn/ui Skeleton components
-- [ ] T033 [US2] Implement pagination controls in components/template-list.tsx using shadcn/ui Pagination component per UI-016
-- [ ] T034 [US2] Add error state handling in components/template-list.tsx with retry button using shadcn/ui Alert
-- [ ] T035 [US2] Add keyboard navigation for template cards using arrow key event handlers and focus management
-- [ ] T036 [US2] Add quick action buttons (edit, delete, export) to template cards with hover effects
+- [x] T027 [P] [US2] Create GET /api/templates route in app/api/templates/route.ts implementing ListTemplatesResponse per contracts/api-templates.ts lines 45-92
+- [x] T028 [P] [US2] Implement offset pagination query in app/api/templates/route.ts using LIMIT/OFFSET with pageSize=20 per data-model.md lines 219-253
+- [x] T029 [P] [US2] Create templates list page in app/(studio)/templates/page.tsx with Server Component data fetching
+- [x] T030 [US2] Implement TemplateList client component in components/template-list.tsx using shadcn/ui Card for template items
+- [x] T031 [US2] Add empty state to components/template-list.tsx using shadcn/ui Alert with "Create New Template" call-to-action
+- [x] T032 [US2] Add loading skeleton to app/(studio)/templates/loading.tsx using shadcn/ui Skeleton components
+- [x] T033 [US2] Implement pagination controls in components/template-list.tsx using shadcn/ui Pagination component per UI-016
+- [x] T034 [US2] Add error state handling in components/template-list.tsx with retry button using shadcn/ui Alert
+- [x] T035 [US2] Add keyboard navigation for template cards using arrow key event handlers and focus management
+- [x] T036 [US2] Add quick action buttons (edit, delete, export) to template cards with hover effects
 
 **Checkpoint**: Template list page functional with pagination, empty states, and loading states
 

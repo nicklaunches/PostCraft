@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { templates, templateVariables } from "@/lib/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, count } from "drizzle-orm";
 import { validateTemplateName } from "@/lib/utils/validation";
 
 export async function GET(request: NextRequest) {
@@ -16,11 +16,11 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * pageSize;
 
-    // Get total count
+    // Get total count using Drizzle count() function
     const countResult = await db
-      .select({ count: templates.id })
+      .select({ count: count() })
       .from(templates);
-    const totalCount = countResult.length;
+    const totalCount = countResult[0]?.count || 0;
 
     // Get paginated templates
     const items = await db
