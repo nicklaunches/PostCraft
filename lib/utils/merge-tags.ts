@@ -1,0 +1,112 @@
+/**
+ * Template variable utilities for merge tag detection and substitution
+ * Detects variables like {{VARIABLE_NAME}} in HTML/template content
+ * Supports type-aware variable replacement with fallback values
+ */
+
+export interface DetectedVariable {
+  key: string;
+  count: number; // How many times this variable appears in the template
+}
+
+/**
+ * Detects all merge tags in HTML content
+ * Looks for {{VARIABLE_NAME}} format (uppercase)
+ *
+ * @param htmlContent - The HTML content to scan for merge tags
+ * @returns Array of detected variables with their keys and occurrence count
+ */
+export function detectMergeTags(htmlContent: string): DetectedVariable[] {
+  const mergeTagRegex = /\{\{([A-Z_]+)\}\}/g;
+  const variables = new Map<string, number>();
+
+  let match;
+  while ((match = mergeTagRegex.exec(htmlContent)) !== null) {
+    const key = match[1];
+    variables.set(key, (variables.get(key) || 0) + 1);
+  }
+
+  return Array.from(variables.entries()).map(([key, count]) => ({
+    key,
+    count,
+  }));
+}
+
+/**
+ * Replaces merge tags with provided values
+ * Supports fallback values and type-aware formatting
+ *
+ * @param htmlContent - The HTML content with merge tags
+ * @param variables - Map of variable key to replacement value
+ * @param fallbacks - Map of variable key to fallback value
+ * @returns HTML content with variables replaced
+ */
+export function replaceMergeTags(
+  htmlContent: string,
+  variables: Record<string, string | number | boolean>,
+  fallbacks: Record<string, string> = {}
+): string {
+  const mergeTagRegex = /\{\{([A-Z_]+)\}\}/g;
+
+  return htmlContent.replace(mergeTagRegex, (match, key) => {
+    // Check if variable is provided
+    if (key in variables) {
+      return String(variables[key]);
+    }
+
+    // Fall back to fallback value if available
+    if (key in fallbacks) {
+      return fallbacks[key];
+    }
+
+    // Return original merge tag if no value found
+    return match;
+  });
+}
+
+/**
+ * Validates that required variables are provided
+ *
+ * @param requiredVariables - Array of required variable keys
+ * @param providedVariables - Map of provided variable key to value
+ * @returns Object with isValid boolean and missing variable keys
+ */
+export function validateRequiredVariables(
+  requiredVariables: string[],
+  providedVariables: Record<string, string | number | boolean>
+): { isValid: boolean; missing: string[] } {
+  const missing = requiredVariables.filter((key) => !(key in providedVariables));
+
+  return {
+    isValid: missing.length === 0,
+    missing,
+  };
+}
+
+/**
+ * Formats a value according to its type
+ * Used for type-aware variable substitution
+ *
+ * @param value - The value to format
+ * @param type - The expected type ('string', 'number', 'boolean', 'date')
+ * @returns Formatted value as string
+ */
+export function formatVariableValue(
+  value: unknown,
+  type: "string" | "number" | "boolean" | "date"
+): string {
+  switch (type) {
+    case "number":
+      return String(Number(value));
+    case "boolean":
+      return value === true || value === "true" ? "true" : "false";
+    case "date":
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return String(value);
+    case "string":
+    default:
+      return String(value);
+  }
+}
