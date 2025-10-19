@@ -1,14 +1,25 @@
 import Image from "next/image";
-import { PostCraft } from "postcraft";
+import { PostCraft, TemplateNotFoundError } from "postcraft";
+import { TemplateError } from "./template-error";
 
 export default async function Home() {
     const postcraft = new PostCraft();
 
-    // Render template with variables
-    const html = await postcraft.templates.render("welcome-email", {
-        NAME: "John Doe",
-        VERIFICATION_URL: "https://example.com/verify/abc123",
-    });
+    let html: string | null = null;
+    let templateError: string | null = null;
+
+    try {
+        // Render template with variables
+        html = await postcraft.templates.render("welcome-email", {
+            NAME: "John Doe",
+        });
+    } catch (error) {
+        if (error instanceof TemplateNotFoundError) {
+            templateError = "Template not found. Please create it in PostCraft Studio.";
+        } else {
+            templateError = "An error occurred while rendering the template.";
+        }
+    }
 
     return (
         <div className="font-sans flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -19,68 +30,75 @@ export default async function Home() {
                 </div>
 
                 {/* Email Preview Block */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Main Email Display */}
-                    <div className="lg:col-span-2">
-                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-                            {/* Email Header */}
-                            <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 sm:px-6 py-4 sm:py-6">
-                                <h3 className="text-lg sm:text-xl font-semibold text-white">Welcome Email Preview</h3>
-                                <p className="text-blue-100 text-sm mt-1">Template: welcome-email</p>
-                            </div>
+                {templateError ? (
+                    <TemplateError />
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Main Email Display */}
+                        <div className="lg:col-span-2">
+                            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                                {/* Email Header */}
+                                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 sm:px-6 py-4 sm:py-6">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-white">Welcome Email Preview</h3>
+                                    <p className="text-blue-100 text-sm mt-1">Template: welcome-email</p>
+                                </div>
 
-                            {/* Email Content */}
-                            <div className="p-4 sm:p-6 md:p-8 max-h-96 sm:max-h-[500px] overflow-y-auto">
-                                <div
-                                    className="prose prose-sm sm:prose dark:prose-invert max-w-none"
-                                    dangerouslySetInnerHTML={{ __html: html }}
-                                />
-                            </div>
+                                {/* Email Content */}
+                                <div className="p-4 sm:p-6 md:p-8 max-h-96 sm:max-h-[500px] overflow-y-auto">
+                                    {html && (
+                                        <div
+                                            className="prose prose-sm sm:prose dark:prose-invert max-w-none"
+                                            dangerouslySetInnerHTML={{ __html: html }}
+                                        />
+                                    )}
+                                </div>
 
-                            {/* Email Footer */}
-                            <div className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                                <p>This is a preview of the rendered email template</p>
+                                {/* Email Footer */}
+                                <div className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                                    <p>This is a preview of the rendered email template</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sidebar - Template Details */}
+                        <div className="lg:col-span-1">
+                            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4 sm:p-6 border border-slate-200 dark:border-slate-700 space-y-4">
+                                <div>
+                                    <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Variables</h4>
+                                    <div className="space-y-2 text-sm">
+                                        <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
+                                            <span className="font-mono text-blue-600 dark:text-blue-400">NAME:</span>
+                                            <span className="text-slate-700 dark:text-slate-300 ml-2">John Doe</span>
+                                        </div>
+                                        <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
+                                            <span className="font-mono text-blue-600 dark:text-blue-400">VERIFICATION_URL:</span>
+                                            <span className="text-slate-700 dark:text-slate-300 ml-2 break-all">https://example.com/verify/abc123</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+                                    <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Info</h4>
+                                    <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                                        <p><span className="font-medium">ID:</span> welcome-email</p>
+                                        <p><span className="font-medium">Type:</span> Email</p>
+                                        <p><span className="font-medium">Status:</span> <span className="text-green-600 dark:text-green-400">Active</span></p>
+                                    </div>
+                                </div>
+
+                                <a
+                                    href="https://github.com/nicklaunches/postcraft"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
+                                >
+                                    Learn More
+                                </a>
                             </div>
                         </div>
                     </div>
+                )}
 
-                    {/* Sidebar - Template Details */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4 sm:p-6 border border-slate-200 dark:border-slate-700 space-y-4">
-                            <div>
-                                <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Variables</h4>
-                                <div className="space-y-2 text-sm">
-                                    <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
-                                        <span className="font-mono text-blue-600 dark:text-blue-400">NAME:</span>
-                                        <span className="text-slate-700 dark:text-slate-300 ml-2">John Doe</span>
-                                    </div>
-                                    <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
-                                        <span className="font-mono text-blue-600 dark:text-blue-400">VERIFICATION_URL:</span>
-                                        <span className="text-slate-700 dark:text-slate-300 ml-2 break-all">https://example.com/verify/abc123</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Info</h4>
-                                <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
-                                    <p><span className="font-medium">ID:</span> welcome-email</p>
-                                    <p><span className="font-medium">Type:</span> Email</p>
-                                    <p><span className="font-medium">Status:</span> <span className="text-green-600 dark:text-green-400">Active</span></p>
-                                </div>
-                            </div>
-
-                            <a
-                                href="https://github.com/nicklaunches/postcraft"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
-                            >
-                                Learn More
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
                 <div className="flex gap-4 items-center flex-col sm:flex-row">
                     <a
@@ -96,7 +114,7 @@ export default async function Home() {
                             width={20}
                             height={20}
                         />
-                        View on GitHub
+                        Check PostCraft on GitHub
                     </a>
                 </div>
             </main>

@@ -46,10 +46,27 @@ POSTCRAFT_DATABASE_URL=postgresql://user:password@localhost:5432/postcraft
 
 ### 3. Start the PostCraft Studio
 
-In your PostCraft package directory:
+In your project directory, you can start the PostCraft Studio in two ways:
 
+**Option 1: Using npx (quickest)**
 ```bash
-npm run studio
+npx postcraft
+```
+
+**Option 2: Add to your package.json scripts**
+
+Add this to your `package.json`:
+```json
+{
+  "scripts": {
+    "postcraft": "postcraft"
+  }
+}
+```
+
+Then run:
+```bash
+npm run postcraft
 ```
 
 Visit [localhost:3579](http://localhost:3579) to:
