@@ -10,20 +10,24 @@ export default async function Home() {
 
     try {
         // Render template with variables
-        html = await postcraft.templates.render("welcome-email", {
+        const renderedHtml = await postcraft.templates.render("welcome-email", {
             USER: "John Doe",
         });
+
+        // Extract only the body content to avoid hydration issues with html/body tags
+        const bodyMatch = renderedHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+        html = bodyMatch ? bodyMatch[1] : renderedHtml;
     } catch (error) {
         console.log("Error rendering template:", error);
         templateError = error instanceof Error ? error : new Error('An unknown error occurred');
     }
 
     return (
-        <div className="font-sans flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <div className="font-sans flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-gray-950">
             <main className="flex-1 flex flex-col gap-8 p-4 sm:p-8 md:p-12 max-w-6xl mx-auto w-full">
                 <div className="space-y-2">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-50">PostCraft NextJS Demo</h2>
-                    <p className="text-slate-600 dark:text-slate-400">Rendered email template example</p>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white">PostCraft NextJS Demo</h2>
+                    <p className="text-gray-700 dark:text-gray-300">Rendered email template example</p>
                 </div>
 
                 {/* Email Preview Block */}
@@ -33,11 +37,11 @@ export default async function Home() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {/* Main Email Display */}
                         <div className="lg:col-span-2">
-                            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-800">
                                 {/* Email Header */}
-                                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 sm:px-6 py-4 sm:py-6">
+                                <div className="bg-black px-4 sm:px-6 py-4 sm:py-6">
                                     <h3 className="text-lg sm:text-xl font-semibold text-white">Welcome Email Preview</h3>
-                                    <p className="text-blue-100 text-sm mt-1">Template: welcome-email</p>
+                                    <p className="text-gray-300 text-sm mt-1">Template: welcome-email</p>
                                 </div>
 
                                 {/* Email Content */}
@@ -51,7 +55,7 @@ export default async function Home() {
                                 </div>
 
                                 {/* Email Footer */}
-                                <div className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                                <div className="bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                     <p>This is a preview of the rendered email template</p>
                                 </div>
                             </div>
@@ -59,20 +63,20 @@ export default async function Home() {
 
                         {/* Sidebar - Template Details */}
                         <div className="lg:col-span-1">
-                            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4 sm:p-6 border border-slate-200 dark:border-slate-700 space-y-4">
+                            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-800 space-y-4">
                                 <div>
-                                    <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Variables</h4>
+                                    <h4 className="font-semibold text-black dark:text-white mb-2">Template Variables</h4>
                                     <div className="space-y-2 text-sm">
-                                        <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded">
-                                            <span className="font-mono text-blue-600 dark:text-blue-400">USER:</span>
-                                            <span className="text-slate-700 dark:text-slate-300 ml-2">John Doe</span>
+                                        <div className="bg-gray-50 dark:bg-black p-2 rounded">
+                                            <span className="font-mono text-black dark:text-white">USER:</span>
+                                            <span className="text-gray-700 dark:text-gray-300 ml-2">John Doe</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                    <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Template Info</h4>
-                                    <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+                                    <h4 className="font-semibold text-black dark:text-white mb-2">Template Info</h4>
+                                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
                                         <p><span className="font-medium">ID:</span> welcome-email</p>
                                         <p><span className="font-medium">Type:</span> Email</p>
                                         <p><span className="font-medium">Status:</span> <span className="text-green-600 dark:text-green-400">Active</span></p>
@@ -83,7 +87,7 @@ export default async function Home() {
                                     href="https://github.com/nicklaunches/postcraft"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
+                                    className="block w-full text-center px-4 py-2 bg-black hover:bg-gray-800 text-white rounded font-medium transition-colors"
                                 >
                                     Learn More
                                 </a>
@@ -95,7 +99,7 @@ export default async function Home() {
 
                 <div className="flex gap-4 items-center flex-col sm:flex-row">
                     <a
-                        className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+                        className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-black hover:bg-gray-800 text-white gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
                         href="https://github.com/nicklaunches/postcraft"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -112,11 +116,11 @@ export default async function Home() {
                 </div>
             </main>
 
-            <footer className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 sm:px-8 md:px-12 py-6 sm:py-8">
+            <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-8 md:px-12 py-6 sm:py-8">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                         <a
-                            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
+                            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm"
                             href="https://nicklaunches.com"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -126,7 +130,7 @@ export default async function Home() {
                             <span className="sm:hidden">Website</span>
                         </a>
                         <a
-                            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
+                            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm"
                             href="https://x.com/nicklaunches"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -138,7 +142,7 @@ export default async function Home() {
                             <span className="sm:hidden">Twitter</span>
                         </a>
                         <a
-                            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
+                            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm"
                             href="https://github.com/nicklaunches"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -150,7 +154,7 @@ export default async function Home() {
                             <span className="sm:hidden">GitHub</span>
                         </a>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-500 text-center">
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 text-center">
                         © 2025 PostCraft. Built with Next.js and Tailwind CSS.
                     </p>
                 </div>
