@@ -59,6 +59,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { EditorRef } from "react-email-editor";
 import { TemplateEditor } from "@/components/template-editor";
+import { VariableManager, VariableMetadata } from "@/components/variable-manager";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -66,6 +67,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { AlertCircle, Info } from "lucide-react";
 import Link from "next/link";
+import { detectVariables } from "@/lib/utils/variable-detection";
 
 /**
  * Template data structure returned from GET /api/templates/[id]
@@ -98,6 +100,8 @@ export default function EditTemplatePage({ params }: { params: { id: string } })
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [variables, setVariables] = useState<VariableMetadata[]>([]);
+  const [detectedVariables, setDetectedVariables] = useState<string[]>([]);
 
   // Fetch template data
   useEffect(() => {
@@ -153,8 +157,24 @@ export default function EditTemplatePage({ params }: { params: { id: string } })
     // Load template design into editor
     if (template?.content && editorRef.current?.editor) {
       editorRef.current.editor.loadDesign(template.content as any);
+
+      // Initialize variables from template
+      if (template.variables) {
+        const vars: VariableMetadata[] = template.variables.map((v) => ({
+          key: v.key,
+          type: (v.type as VariableType) || "string",
+          fallbackValue: v.fallbackValue,
+          isRequired: v.isRequired,
+        }));
+        setVariables(vars);
+
+        // Also set detected variables to current template variables
+        setDetectedVariables(vars.map((v) => v.key));
+      }
     }
   };
+
+  type VariableType = "string" | "number" | "boolean" | "date";
 
   // Keyboard shortcut for save (Cmd+S / Ctrl+S)
   useEffect(() => {
@@ -191,19 +211,29 @@ export default function EditTemplatePage({ params }: { params: { id: string } })
         editorRef.current?.editor?.exportHtml((data: { html: string }) => {
           const html = data.html;
 
-          // Extract variables from HTML using regex
-          const variableMatches = html.matchAll(/\{\{([A-Z_]+)\}\}/g);
-          const variables = Array.from(variableMatches).map((match) => ({
-            key: match[1],
-            type: "string" as const,
-            fallbackValue: null,
-            isRequired: false,
-          }));
+          // Detect variables from HTML
+          const detectedVars = detectVariables(html);
+          setDetectedVariables(detectedVars);
 
-          // Remove duplicates
-          const uniqueVariables = variables.filter(
-            (v, i, arr) => arr.findIndex((t) => t.key === v.key) === i
+          // Use configured variables, but filter to only include detected ones
+          // and add any newly detected variables with defaults
+          const finalVariables = variables.filter((v) =>
+            detectedVars.includes(v.key)
           );
+
+          // Add any newly detected variables
+          const newVars = detectedVars
+            .filter((key) => !finalVariables.some((v) => v.key === key))
+            .map(
+              (key): VariableMetadata => ({
+                key,
+                type: "string",
+                fallbackValue: null,
+                isRequired: false,
+              })
+            );
+
+          const allVariables = [...finalVariables, ...newVars];
 
           // Send to API
           fetch(`/api/templates/${params.id}`, {
@@ -213,7 +243,7 @@ export default function EditTemplatePage({ params }: { params: { id: string } })
             },
             body: JSON.stringify({
               content: design,
-              variables: uniqueVariables,
+              variables: allVariables,
             }),
           })
             .then(async (response) => {
@@ -418,12 +448,27 @@ export default function EditTemplatePage({ params }: { params: { id: string } })
       )}
 
       {/* Editor */}
-      <div className="flex-1 overflow-hidden">
-        <TemplateEditor
-          ref={editorRef}
-          onReady={handleEditorReady}
-          initialDesign={template.content}
-        />
+      <div className="flex flex-1 overflow-hidden" style={{ height: "100%" }}>
+        <div className="flex-1 overflow-hidden">
+          <TemplateEditor
+            ref={editorRef}
+            onReady={handleEditorReady}
+            initialDesign={template.content}
+          />
+        </div>
+
+        {/* Variables Panel */}
+        <div className="w-96 border-l bg-card overflow-y-auto">
+          <div className="p-6">
+            <VariableManager
+              variables={variables}
+              onChange={setVariables}
+              detectedVariables={detectedVariables}
+              label="Email Variables"
+              showEmpty={true}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Editor Loading Overlay */}

@@ -115,11 +115,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { EditorRef } from "react-email-editor";
 import { TemplateEditor } from "@/components/template-editor";
+import { VariableManager, VariableMetadata } from "@/components/variable-manager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { validateTemplateName } from "@/lib/utils/validation";
+import { detectVariables } from "@/lib/utils/variable-detection";
 
 export default function NewTemplatePage() {
     const router = useRouter();
@@ -129,6 +131,8 @@ export default function NewTemplatePage() {
     const [isSaving, setIsSaving] = useState(false);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isEditorReady, setIsEditorReady] = useState(false);
+    const [variables, setVariables] = useState<VariableMetadata[]>([]);
+    const [detectedVariables, setDetectedVariables] = useState<string[]>([]);
 
     // Handle unsaved changes warning
     useEffect(() => {
@@ -155,6 +159,7 @@ export default function NewTemplatePage() {
         }
     }, [templateName, isEditorReady]);
 
+    // Detect variables from editor and update state
     const handleSave = async () => {
         // Validate template name
         const validation = validateTemplateName(templateName);
@@ -185,19 +190,27 @@ export default function NewTemplatePage() {
                 editorRef.current?.editor?.exportHtml((data: { html: string }) => {
                     const html = data.html;
 
-                    // Extract variables from HTML using regex
-                    const variableMatches = html.matchAll(/\{\{([A-Z_]+)\}\}/g);
-                    const variables = Array.from(variableMatches).map((match) => ({
-                        key: match[1],
-                        type: "string" as const,
-                        fallbackValue: null,
-                        isRequired: false,
-                    }));
+                    // Detect variables from HTML
+                    const detectedVars = detectVariables(html);
+                    setDetectedVariables(detectedVars);
 
-                    // Remove duplicates
-                    const uniqueVariables = variables.filter(
-                        (v, i, arr) => arr.findIndex((t) => t.key === v.key) === i,
-                    );
+                    // Use configured variables, but filter to only include detected ones
+                    // and add any newly detected variables with defaults
+                    const finalVariables = variables.filter((v) => detectedVars.includes(v.key));
+
+                    // Add any newly detected variables
+                    const newVars = detectedVars
+                        .filter((key) => !finalVariables.some((v) => v.key === key))
+                        .map(
+                            (key): VariableMetadata => ({
+                                key,
+                                type: "string",
+                                fallbackValue: null,
+                                isRequired: false,
+                            }),
+                        );
+
+                    const allVariables = [...finalVariables, ...newVars];
 
                     // Send to API
                     fetch("/api/templates", {
@@ -208,7 +221,7 @@ export default function NewTemplatePage() {
                         body: JSON.stringify({
                             name: validation.sanitized,
                             content: design,
-                            variables: uniqueVariables,
+                            variables: allVariables,
                         }),
                     })
                         .then(async (response) => {
@@ -322,9 +335,25 @@ export default function NewTemplatePage() {
                 </div>
             </div>
 
-            {/* Editor */}
-            <div className="flex-1 overflow-hidden">
-                <TemplateEditor ref={editorRef} onReady={handleEditorReady} />
+            {/* Main Content: Editor + Variables Panel */}
+            <div className="flex flex-1 overflow-hidden">
+                {/* Editor */}
+                <div className="flex-1 overflow-hidden">
+                    <TemplateEditor ref={editorRef} onReady={handleEditorReady} />
+                </div>
+
+                {/* Variables Panel */}
+                <div className="w-96 border-l bg-card overflow-y-auto">
+                    <div className="p-6">
+                        <VariableManager
+                            variables={variables}
+                            onChange={setVariables}
+                            detectedVariables={detectedVariables}
+                            label="Email Variables"
+                            showEmpty={true}
+                        />
+                    </div>
+                </div>
             </div>
 
             {/* Info Alert */}

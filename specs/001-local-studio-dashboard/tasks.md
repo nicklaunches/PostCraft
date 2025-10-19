@@ -256,17 +256,17 @@
 
 ### Implementation for User Story 7
 
-- [ ] T077 [P] [US7] Implement template variable detection in components/template-editor.tsx by calling exportHtml() and parsing with regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
-- [ ] T078 [P] [US7] Create VariableManager component in components/variable-manager.tsx for defining variable metadata
-- [ ] T079 [US7] Add variable metadata form to components/variable-manager.tsx with fields: key (read-only), type (Select), fallbackValue (Input), isRequired (Checkbox)
-- [ ] T080 [US7] Implement type selection dropdown in components/variable-manager.tsx using shadcn/ui Select with options: string, number, boolean, date
-- [ ] T081 [US7] Add variable metadata validation: required variables cannot have fallbacks, fallback values must match type format
-- [ ] T082 [US7] Update template save handlers (create and edit pages) to include variables array in POST/PUT request body
-- [ ] T083 [US7] Display detected variables in VariableManager during template creation/editing with real-time detection on editor changes
-- [ ] T084 [US7] Add variable removal detection comparing old and new merge tags, removing orphaned variables from metadata
-- [ ] T085 [US7] Test variable metadata persistence by creating template with variables, saving, reopening, and verifying metadata retained
-- [ ] T085a [P] [US7] Add file-level JSDoc to components/variable-manager.tsx describing variable metadata management per Principle VIII
-- [ ] T085b [P] [US7] Add JSDoc to VariableManager component props and methods documenting variable detection and validation per Principle VIII
+- [x] T077 [P] [US7] Implement template variable detection in components/template-editor.tsx by calling exportHtml() and parsing with regex /\{\{([A-Z_]+)\}\}/g per research.md lines 162-195
+- [x] T078 [P] [US7] Create VariableManager component in components/variable-manager.tsx for defining variable metadata
+- [x] T079 [US7] Add variable metadata form to components/variable-manager.tsx with fields: key (read-only), type (Select), fallbackValue (Input), isRequired (Checkbox)
+- [x] T080 [US7] Implement type selection dropdown in components/variable-manager.tsx using shadcn/ui Select with options: string, number, boolean, date
+- [x] T081 [US7] Add variable metadata validation: required variables cannot have fallbacks, fallback values must match type format
+- [x] T082 [US7] Update template save handlers (create and edit pages) to include variables array in POST/PUT request body
+- [x] T083 [US7] Display detected variables in VariableManager during template creation/editing with real-time detection on editor changes
+- [x] T084 [US7] Add variable removal detection comparing old and new merge tags, removing orphaned variables from metadata
+- [x] T085 [US7] Test variable metadata persistence by creating template with variables, saving, reopening, and verifying metadata retained
+- [x] T085a [P] [US7] Add file-level JSDoc to components/variable-manager.tsx describing variable metadata management per Principle VIII
+- [x] T085b [P] [US7] Add JSDoc to VariableManager component props and methods documenting variable detection and validation per Principle VIII
 
 **Checkpoint**: Variable management functional with type definitions, fallbacks, and validation
 
