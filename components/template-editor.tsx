@@ -14,7 +14,7 @@
  *
  * **React Email Editor Integration:**
  * - Uses react-email-editor from Unlayer (https://react-email-editor.readthedocs.io/)
- * - Requires NEXT_PUBLIC_UNLAYER_PROJECT_ID environment variable
+ * - Requires POSTCRAFT_UNLAYER_PROJECT_ID environment variable
  * - Supports all Unlayer editor features: design tools, templates, merge tags
  * - Exports designs as JSON via saveDesign() method
  * - Exports production HTML via exportHtml() method
@@ -91,7 +91,7 @@
  * **Error Handling:**
  * - onReady verifies editor.editor exists before proceeding
  * - Missing initialDesign handled gracefully (blank canvas)
- * - Missing NEXT_PUBLIC_UNLAYER_PROJECT_ID may cause Unlayer errors
+ * - Missing POSTCRAFT_UNLAYER_PROJECT_ID may cause Unlayer errors
  *
  * **Related Files:**
  * - app/(studio)/templates/new/page.tsx: Template creation flow
@@ -101,7 +101,7 @@
  * **External Dependencies:**
  * - react-email-editor: Email editor library
  * - Unlayer: Backend service for Unlayer editor
- * - NEXT_PUBLIC_UNLAYER_PROJECT_ID: Environment variable
+ * - POSTCRAFT_UNLAYER_PROJECT_ID: Environment variable
  *
  * @module components/template-editor
  * @requires react - React hooks, forwardRef
@@ -300,7 +300,7 @@ interface TemplateEditorProps {
  * Refer to react-email-editor documentation for complete API.
  *
  * **Configuration:**
- * - projectId: Required Unlayer project ID (from NEXT_PUBLIC_UNLAYER_PROJECT_ID)
+ * - projectId: Required Unlayer project ID (from POSTCRAFT_UNLAYER_PROJECT_ID)
  * - tools: All tools enabled (text, image, button, columns, etc.)
  * - mergeTags: Support for {{VARIABLE}} syntax
  * - minHeight: 600px default container height
@@ -414,7 +414,11 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
 
         // Expose the editor ref to parent
         useEffect(() => {
+            console.log("TemplateEditor: useEffect - exposing ref to parent");
+            console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
+            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
             if (ref && editorRef.current) {
+                console.log("TemplateEditor: Setting ref");
                 if (typeof ref === "function") {
                     ref(editorRef.current);
                 } else {
@@ -424,26 +428,35 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         }, [ref, isEditorInitialized]);
 
         const handleReady = () => {
-            // Verify editor is truly ready before notifying parent
-            if (!editorRef.current?.editor) {
-                return;
-            }
-
+            console.log("TemplateEditor: handleReady callback invoked");
+            console.log("TemplateEditor: editorRef.current exists?", !!editorRef.current);
+            console.log("TemplateEditor: editorRef.current.editor exists?", !!editorRef.current?.editor);
+            // Editor is ready when this callback is invoked
+            // The editor instance should be available via the ref
             setIsEditorInitialized(true);
 
             // Load initial design if provided
             if (initialDesign && editorRef.current?.editor) {
+                console.log("TemplateEditor: Loading initial design");
                 editorRef.current.editor.loadDesign(initialDesign as any);
             }
         };
 
         // Call onReady and onLoad callbacks after editor is fully initialized
         useEffect(() => {
+            console.log("TemplateEditor: useEffect - callbacks effect");
+            console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
+            console.log("TemplateEditor: editor exists?", !!editorRef.current?.editor);
+            console.log("TemplateEditor: onReady callback exists?", !!onReady);
+            console.log("TemplateEditor: onLoad callback exists?", !!onLoad);
+
             if (isEditorInitialized && editorRef.current?.editor) {
+                console.log("TemplateEditor: Calling onReady callback");
                 if (onReady) {
                     onReady();
                 }
 
+                console.log("TemplateEditor: Calling onLoad callback");
                 if (onLoad) {
                     onLoad();
                 }
@@ -451,7 +464,7 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
         }, [isEditorInitialized, onReady, onLoad]);
 
         const editorOptions: EmailEditorProps["options"] = {
-            projectId: Number(process.env.NEXT_PUBLIC_UNLAYER_PROJECT_ID),
+            projectId: Number(process.env.POSTCRAFT_UNLAYER_PROJECT_ID),
             tools: {
                 // Enable all tools per FR-006a
             },
@@ -461,13 +474,17 @@ export const TemplateEditor = React.forwardRef<EditorRef, TemplateEditorProps>(
             },
         };
 
+        console.log("TemplateEditor: Rendering component");
+        console.log("TemplateEditor: POSTCRAFT_UNLAYER_PROJECT_ID?", !!process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
+        console.log("TemplateEditor: projectId value:", process.env.POSTCRAFT_UNLAYER_PROJECT_ID);
+        console.log("TemplateEditor: isEditorInitialized?", isEditorInitialized);
+
         return (
             <div className="h-full w-full">
                 <EmailEditor
                     ref={editorRef}
                     onReady={handleReady}
                     options={editorOptions}
-                    minHeight="600px"
                 />
             </div>
         );
