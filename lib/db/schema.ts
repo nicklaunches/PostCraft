@@ -6,8 +6,8 @@
  * and query building.
  *
  * Tables:
- * - `templates`: Core email template data with design JSON and metadata
- * - `template_variables`: Merge tag metadata (type, fallback, required status)
+ * - `postcraft_templates`: Core email template data with design JSON and metadata
+ * - `postcraft_template_variables`: Merge tag metadata (type, fallback, required status)
  *
  * Relationships:
  * - One template has many variables (one-to-many)
@@ -15,8 +15,8 @@
  * - Cascade delete: Deleting a template removes all its variables
  *
  * Indexes:
- * - `templates_updated_at_idx`: Optimizes pagination queries (ORDER BY updated_at DESC)
- * - `template_variables_template_id_key_idx`: Prevents duplicate merge tags per template
+ * - `postcraft_templates_updated_at_idx`: Optimizes pagination queries (ORDER BY updated_at DESC)
+ * - `postcraft_template_variables_template_id_key_idx`: Prevents duplicate merge tags per template
  *
  * @see {@link https://orm.drizzle.team/docs/postgresql-core} Drizzle PostgreSQL documentation
  *
@@ -51,7 +51,7 @@ import {
 import { relations } from "drizzle-orm";
 
 export const templates = pgTable(
-  "templates",
+  "postcraft_templates",
   {
     id: serial("id").primaryKey(),
     name: text("name").notNull().unique(), // SDK lookup key
@@ -62,12 +62,12 @@ export const templates = pgTable(
   },
   (table) => ({
     // Index for pagination ORDER BY updated_at DESC
-    updatedAtIdx: index("templates_updated_at_idx").on(table.updatedAt),
+    updatedAtIdx: index("postcraft_templates_updated_at_idx").on(table.updatedAt),
   })
 );
 
 export const templateVariables = pgTable(
-  "template_variables",
+  "postcraft_template_variables",
   {
     id: serial("id").primaryKey(),
     templateId: integer("template_id")
@@ -82,7 +82,7 @@ export const templateVariables = pgTable(
   (table) => ({
     // Composite unique index: prevent duplicate variables per template
     templateIdKeyIdx: uniqueIndex(
-      "template_variables_template_id_key_idx"
+      "postcraft_template_variables_template_id_key_idx"
     ).on(table.templateId, table.key),
   })
 );
