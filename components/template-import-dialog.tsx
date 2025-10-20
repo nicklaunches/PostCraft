@@ -271,7 +271,7 @@ export function TemplateImportDialog({
           <Button
             onClick={handleImport}
             disabled={isProcessing}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-indigo-600 hover:bg-indigo-700"
           >
             {isProcessing ? "Importing..." : "Import"}
           </Button>

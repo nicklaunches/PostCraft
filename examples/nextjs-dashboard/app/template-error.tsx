@@ -41,7 +41,7 @@ export function TemplateError({ error }: TemplateErrorProps) {
                                     <li>Open a terminal and run:
                                         <code className="block bg-red-100 dark:bg-red-900 p-2 rounded mt-1 font-mono text-xs">npm run postcraft</code>
                                     </li>
-                                    <li>Visit <a href="http://localhost:3579" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">localhost:3579</a> in your browser</li>
+                                    <li>Visit <a href="http://localhost:3579" target="_blank" rel="noopener noreferrer" className="text-primary-600 dark:text-primary-400 underline">localhost:3579</a> in your browser</li>
                                     <li>Click "Create New Template"</li>
                                     <li>Name the template: <code className="bg-red-100 dark:bg-red-900 px-2 py-1 rounded font-mono text-xs">welcome-email</code></li>
                                     <li>Add the following merge tags to your template:
@@ -60,7 +60,7 @@ export function TemplateError({ error }: TemplateErrorProps) {
                         <div className="pt-4">
                             <button
                                 onClick={handleRefresh}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded font-medium transition-colors"
                             >
                                 Refresh Page
                             </button>

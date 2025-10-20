@@ -63,15 +63,15 @@ export default function StudioError({
           </h2>
           <ul className="space-y-2 text-gray-700 mb-6">
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">•</span>
+              <span className="text-primary-600 font-bold mr-3">•</span>
               <span>Try refreshing the page</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">•</span>
+              <span className="text-primary-600 font-bold mr-3">•</span>
               <span>Check your database connection</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">•</span>
+              <span className="text-primary-600 font-bold mr-3">•</span>
               <span>Check the server logs for more details</span>
             </li>
           </ul>

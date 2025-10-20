@@ -27,7 +27,7 @@ import { twMerge } from "tailwind-merge"
  *
  * @example
  * // Conditional classes
- * cn('px-2', isActive && 'bg-blue-500', !isActive && 'bg-gray-500')
+ * cn('px-2', isActive && 'bg-primary-500', !isActive && 'bg-gray-500')
  *
  * @example
  * // Tailwind conflict resolution
