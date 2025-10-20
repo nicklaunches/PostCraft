@@ -8,6 +8,7 @@ UI Kit: TailwindCSS + shadcn components
 
 - **Local studio dashboard** — Install the package and launch localhost:3579 to mange templates, set props, and copy the import snippet for use in your codebase.
 - **react-email-editor** — visual drag-and-drop email builder to build templates.
+- **Template Import** — Import email templates from Unlayer JSON exports or backups via file upload or paste.
 - **Campaigns** — Create/schedule broadcasts, basic segmentation, A/B subject tests, unsub handling, and simple analytics.
 - **Pluggable ESPs** — AWS SES supported. Roadmap: Extend beyond SES (Mailgun, Postmark, etc.) via adapters.
 - **Self-host** — Run it inside your stack for privacy/compliance.
@@ -71,6 +72,7 @@ npm run postcraft
 
 Visit [localhost:3579](http://localhost:3579) to:
 - Create and edit email templates visually
+- Import Unlayer JSON templates via file upload or paste
 - Define variables and their types
 - Set fallback values for optional variables
 - Preview rendered templates

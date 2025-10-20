@@ -30,10 +30,10 @@
 
 **Purpose**: Create JSON validation utilities
 
-- [ ] T005 Create Unlayer JSON validation utility in lib/utils/unlayer-validation.ts with isValidUnlayerDesign(json) function that checks for required properties (body, counters, schemaVersion)
-- [ ] T006 Add file size validation constant MAX_JSON_SIZE = 5 MB and MAX_JSON_CHARS = 5000000 in lib/utils/unlayer-validation.ts
-- [ ] T007 Add error messages for validation failures in lib/utils/unlayer-validation.ts
-- [ ] T008 Add helper function to determine JSON source priority (file over textarea) in lib/utils/unlayer-validation.ts
+- [x] T005 Create Unlayer JSON validation utility in lib/utils/unlayer-validation.ts with isValidUnlayerDesign(json) function that checks for required properties (body, counters, schemaVersion)
+- [x] T006 Add file size validation constant MAX_JSON_SIZE = 5 MB and MAX_JSON_CHARS = 5000000 in lib/utils/unlayer-validation.ts
+- [x] T007 Add error messages for validation failures in lib/utils/unlayer-validation.ts
+- [x] T008 Add helper function to determine JSON source priority (file over textarea) in lib/utils/unlayer-validation.ts
 
 ---
 
@@ -45,14 +45,14 @@
 
 ### UI Components for User Story 1
 
-- [ ] T010 [P] [US1] Create template import dialog component in components/template-import-dialog.tsx with textarea for pasting JSON and file upload input for JSON files
-- [ ] T011 [US1] Add "Import Template" button to templates page in app/(studio)/templates/page.tsx positioned left of "+ Create Template" button
-- [ ] T012 [US1] Implement textarea paste handler in components/template-import-dialog.tsx that reads and validates pasted JSON
-- [ ] T013 [US1] Implement file upload handler in components/template-import-dialog.tsx that reads JSON file and validates it
-- [ ] T014 [US1] Add source priority logic in components/template-import-dialog.tsx to prefer file over textarea when both are provided
-- [ ] T015 [US1] Add redirect logic in components/template-import-dialog.tsx to navigate to /templates/new with JSON data (via URL params or state)
-- [ ] T016 [US1] Modify template editor page in app/(studio)/templates/new/page.tsx to accept imported JSON and load it into Unlayer editor on mount
-- [ ] T017 [US1] Ensure template editor in components/template-editor.tsx can receive and load external JSON design data
+- [x] T010 [P] [US1] Create template import dialog component in components/template-import-dialog.tsx with textarea for pasting JSON and file upload input for JSON files
+- [x] T011 [US1] Add "Import Template" button to templates page in app/(studio)/templates/page.tsx positioned left of "+ Create Template" button
+- [x] T012 [US1] Implement textarea paste handler in components/template-import-dialog.tsx that reads and validates pasted JSON
+- [x] T013 [US1] Implement file upload handler in components/template-import-dialog.tsx that reads JSON file and validates it
+- [x] T014 [US1] Add source priority logic in components/template-import-dialog.tsx to prefer file over textarea when both are provided
+- [x] T015 [US1] Add redirect logic in components/template-import-dialog.tsx to navigate to /templates/new with JSON data (via URL params or state)
+- [x] T016 [US1] Modify template editor page in app/(studio)/templates/new/page.tsx to accept imported JSON and load it into Unlayer editor on mount
+- [x] T017 [US1] Ensure template editor in components/template-editor.tsx can receive and load external JSON design data
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - users can import JSON files and see them loaded in the editor
 
@@ -66,20 +66,20 @@
 
 ### Validation Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Add file type validation in components/template-import-dialog.tsx to check file extension is .json
-- [ ] T021 [P] [US2] Add file size validation in components/template-import-dialog.tsx to reject files exceeding 5 MB
-- [ ] T022 [P] [US2] Add textarea content size validation in components/template-import-dialog.tsx to reject pasted content exceeding ~5 million characters
-- [ ] T023 [P] [US2] Add JSON parse error handling in components/template-import-dialog.tsx to catch syntax errors from both file and textarea
-- [ ] T024 [US2] Add Unlayer structure validation in components/template-import-dialog.tsx using isValidUnlayerDesign function for both input sources
-- [ ] T025 [US2] Add empty input validation in components/template-import-dialog.tsx to check if both textarea and file are empty
-- [ ] T026 [US2] Add error state handling in components/template-import-dialog.tsx to display validation error messages
+- [x] T020 [P] [US2] Add file type validation in components/template-import-dialog.tsx to check file extension is .json
+- [x] T021 [P] [US2] Add file size validation in components/template-import-dialog.tsx to reject files exceeding 5 MB
+- [x] T022 [P] [US2] Add textarea content size validation in components/template-import-dialog.tsx to reject pasted content exceeding ~5 million characters
+- [x] T023 [P] [US2] Add JSON parse error handling in components/template-import-dialog.tsx to catch syntax errors from both file and textarea
+- [x] T024 [US2] Add Unlayer structure validation in components/template-import-dialog.tsx using isValidUnlayerDesign function for both input sources
+- [x] T025 [US2] Add empty input validation in components/template-import-dialog.tsx to check if both textarea and file are empty
+- [x] T026 [US2] Add error state handling in components/template-import-dialog.tsx to display validation error messages
 
 ### UI Error Handling for User Story 2
 
-- [ ] T027 [US2] Add error message display component in components/template-import-dialog.tsx with clear, actionable text
-- [ ] T028 [US2] Add client-side file size check before reading file content
-- [ ] T029 [US2] Add client-side textarea content length check before processing
-- [ ] T030 [US2] Add user-friendly error messages for each validation failure type (including empty input, textarea vs file)
+- [x] T027 [US2] Add error message display component in components/template-import-dialog.tsx with clear, actionable text
+- [x] T028 [US2] Add client-side file size check before reading file content
+- [x] T029 [US2] Add client-side textarea content length check before processing
+- [x] T030 [US2] Add user-friendly error messages for each validation failure type (including empty input, textarea vs file)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - valid imports succeed and invalid imports show clear error messages
 
@@ -93,11 +93,11 @@
 
 ### Progress and Feedback Implementation for User Story 3
 
-- [ ] T035 [P] [US3] Add loading state to template import dialog in components/template-import-dialog.tsx with isProcessing boolean state
-- [ ] T036 [P] [US3] Add loading indicator UI in components/template-import-dialog.tsx using shadcn/ui Skeleton or spinner component
-- [ ] T037 [P] [US3] Add button disable logic in components/template-import-dialog.tsx to disable import button while isProcessing is true
-- [ ] T038 [P] [US3] Disable both textarea and file input while processing to prevent changes during validation
-- [ ] T039 [US3] Add smooth transition animation when redirecting to editor (optional enhancement)
+- [x] T035 [P] [US3] Add loading state to template import dialog in components/template-import-dialog.tsx with isProcessing boolean state
+- [x] T036 [P] [US3] Add loading indicator UI in components/template-import-dialog.tsx using shadcn/ui Skeleton or spinner component
+- [x] T037 [P] [US3] Add button disable logic in components/template-import-dialog.tsx to disable import button while isProcessing is true
+- [x] T038 [P] [US3] Disable both textarea and file input while processing to prevent changes during validation
+- [x] T039 [US3] Add smooth transition animation when redirecting to editor (optional enhancement)
 
 **Checkpoint**: All user stories should now be independently functional - imports work, errors are clear, and progress feedback is complete
 
