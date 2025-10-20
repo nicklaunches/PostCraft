@@ -275,7 +275,6 @@ export function TemplateList({ page, pageSize }: TemplateListProps) {
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent
-          className="sm:max-w-[425px]"
           onKeyDown={(e: React.KeyboardEvent) => {
             // Support Enter key to confirm delete when focus is on delete button
             if (e.key === 'Enter' && e.ctrlKey) {
