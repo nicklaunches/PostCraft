@@ -1,0 +1,47 @@
+{
+  "body": {
+    "rows": [
+      {
+        "cells": [
+          {
+            "value": {
+              "blockType": "container"
+            }
+          }
+        ]
+      }
+    ],
+    "values": {
+      "bgColor": "#FFFFFF",
+      "contentWidth": 600
+    }
+  },
+  "counters": {
+    "u_column": 1,
+    "u_row": 1,
+    "u_content": 0
+  },
+  "schemaVersion": 30,
+  "design": {
+    "colors": [
+      "#1436CB",
+      "#ECF2F9",
+      "#44B4B1"
+    ],
+    "canvases": [
+      {
+        "displayName": "Desktop",
+        "name": "desktop",
+        "width": 600,
+        "maxWidth": 600
+      }
+    ],
+    "fonts": [],
+    "categories": {}
+  },
+  "metadata": {
+    "revision": 1,
+    "created_at": 1697769600000,
+    "updated_at": 1697769600000
+  }
+}

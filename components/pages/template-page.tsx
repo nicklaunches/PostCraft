@@ -26,16 +26,17 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { TemplateEditor } from "@/components/template-editor";
 import { VariableManager } from "@/components/variable-manager";
 import { TemplateExport } from "@/components/template-export";
+import { TemplateImportDialog } from "@/components/template-import-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, Info } from "lucide-react";
+import { AlertCircle, Info, Upload } from "lucide-react";
 import Link from "next/link";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { detectVariables } from "@/lib/utils/variable-detection";
@@ -63,14 +64,16 @@ interface TemplateData {
 interface TemplatePageProps {
   mode: "create" | "edit";
   templateId?: string;
+  initialDesign?: object | null;
 }
 
-export function TemplatePage({ mode, templateId }: TemplatePageProps) {
+export function TemplatePage({ mode, templateId, initialDesign }: TemplatePageProps) {
   const [template, setTemplate] = useState<TemplateData | null>(null);
   const [isLoading, setIsLoading] = useState(mode === "edit");
   const [loadError, setLoadError] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showExport, setShowExport] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   // Use the template editor hook
   const {
@@ -172,6 +175,19 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
       setDetectedVariables(detected);
     });
   };
+
+  // Handle importing a design into the current editor
+  const handleImportDesign = useCallback((design: any) => {
+    if (!isEditorReady || !editorRef.current?.editor) {
+      return;
+    }
+
+    // Load the design into the editor
+    editorRef.current.editor.loadDesign(design);
+
+    // Mark as changed to show unsaved changes warning
+    markAsChanged();
+  }, [isEditorReady, editorRef, markAsChanged]);
 
   // Loading state (edit mode)
   if (isLoading) {
@@ -290,6 +306,14 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
                 Export
               </Button>
             )}
+            <Button
+              variant="outline"
+              onClick={() => setShowImport(true)}
+              disabled={isSaving || !isEditorReady}
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              Import Design
+            </Button>
             <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
               Cancel
             </Button>
@@ -306,7 +330,7 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
 
       {/* Template Name Input (create mode) or Template Info (edit mode) */}
       <div className="border-b bg-muted/50 p-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto">
           {mode === "create" ? (
             <div className="flex items-start gap-4">
               <div className="flex-1">
@@ -382,7 +406,11 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
             ref={editorRef}
             onReady={handleEditorReady}
             onChange={markAsChanged}
-            initialDesign={mode === "edit" && template ? template.content : undefined}
+            initialDesign={
+              mode === "edit" && template
+                ? template.content
+                : initialDesign || undefined
+            }
           />
         </div>
 
@@ -449,6 +477,13 @@ export function TemplatePage({ mode, templateId }: TemplatePageProps) {
           onClose={() => setShowExport(false)}
         />
       )}
+
+      {/* Import Dialog */}
+      <TemplateImportDialog
+        open={showImport}
+        onOpenChange={setShowImport}
+        onImportSuccess={handleImportDesign}
+      />
     </div>
   );
 }

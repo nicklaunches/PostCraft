@@ -6,7 +6,7 @@
  *
  * Features:
  * - Paginated template list (20 items per page by default)
- * - Navigation header with title and "Create Template" button
+ * - Navigation header with title, "Import Template" button, and "Create Template" button
  * - Responsive grid layout using shadcn/ui Card components
  * - Loading skeleton state using Suspense boundary
  * - Empty state with call-to-action when no templates exist
@@ -31,11 +31,9 @@
  */
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { TemplateList } from "@/components/template-list";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { TemplatesHeaderClient } from "@/components/templates-header-client";
 
 export const metadata = {
   title: "Templates - PostCraft Studio",
@@ -54,20 +52,7 @@ export default async function TemplatesPage({
 
   return (
     <div className="flex flex-1 flex-col gap-4 pt-0">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Email Templates</h1>
-          <p className="text-muted-foreground">
-            Create, edit, and manage your email templates
-          </p>
-        </div>
-        <Link href="/templates/new">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Template
-          </Button>
-        </Link>
-      </div>
+      <TemplatesHeaderClient />
 
       <Suspense
         fallback={
