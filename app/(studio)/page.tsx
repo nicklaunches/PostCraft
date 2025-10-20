@@ -60,15 +60,15 @@ export default function StudioHome() {
           </h2>
           <ul className="text-left space-y-2 text-gray-700">
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">1.</span>
+              <span className="text-primary-600 font-bold mr-3">1.</span>
               <span>Navigate to Templates to view all your email templates</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">2.</span>
+              <span className="text-primary-600 font-bold mr-3">2.</span>
               <span>Create a new template or edit existing ones</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3">3.</span>
+              <span className="text-primary-600 font-bold mr-3">3.</span>
               <span>Use the SDK to render templates</span>
             </li>
           </ul>
