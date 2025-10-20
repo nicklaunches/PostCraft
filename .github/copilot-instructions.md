@@ -25,7 +25,7 @@ Users can import pre-designed email templates from Unlayer JSON exports or backu
 
 **Key Files:**
 - `lib/utils/unlayer-validation.ts` - JSON validation utilities
-- `components/template-import-dialog.tsx` - Import dialog component  
+- `components/template-import-dialog.tsx` - Import dialog component
 - `components/templates-header-client.tsx` - Header with import button
 - `app/(studio)/templates/page.tsx` - Templates list page
 - `app/(studio)/templates/new/page.tsx` - Template editor with import support
@@ -76,7 +76,7 @@ lib/
 
 ### Type Safety First
 - Use TypeScript strict mode
-- Create interfaces for all data structures  
+- Create interfaces for all data structures
 - Use type guards for runtime validation
 - Export types from modules for reuse
 
