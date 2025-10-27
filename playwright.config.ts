@@ -35,7 +35,7 @@ export default defineConfig({
   // Parallel execution configuration
   fullyParallel: true, // All tests run in parallel
   workers: undefined, // Use default worker count (usually # of CPUs)
-  retries: 2, // Retry failed tests (2 retries = 3 total attempts)
+  retries: 0, // No retries for faster test execution
   timeout: 30 * 1000, // 30 second timeout per test
 
   // Global timeout for the entire test suite
@@ -78,7 +78,10 @@ export default defineConfig({
   },
 
   // Test projects (browsers to test against)
-  projects: [
+  // Use BROWSER=all environment variable to test all browsers: BROWSER=all npm run test:e2e
+  // Default: chromium only for fast iteration (meets <2 minute SC-002 requirement)
+  // CI/CD: all browsers for comprehensive coverage
+  projects: process.env.BROWSER === 'all' ? [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -100,6 +103,11 @@ export default defineConfig({
     {
       name: 'Mobile Safari',
       use: { ...devices['iPhone 12'] },
+    },
+  ] : [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 

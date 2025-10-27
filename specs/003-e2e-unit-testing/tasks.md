@@ -90,8 +90,8 @@
 - [x] T025 [P] [US2] Create tests/e2e/template-pagination.spec.ts testing pagination (navigate pages, verify correct items displayed)
 - [x] T026 [US2] Add UI state verification to E2E tests (loading states, error messages, success notifications, empty states)
 - [x] T027 [US2] Configure Playwright to capture screenshots on failure and save to playwright-report/
-- [ ] T028 [US2] Verify E2E tests complete in <2 minutes with npm run test:e2e
-- [ ] T029 [US2] Verify E2E tests work in headed mode with npm run test:e2e:headed
+- [x] T028 [US2] Verify E2E tests complete in <2 minutes with npm run test:e2e
+- [x] T029 [US2] Verify E2E tests work in headed mode with npm run test:e2e:headed
 
 **Checkpoint**: E2E tests complete - full user workflows validated from UI to database
 
