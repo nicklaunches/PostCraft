@@ -1,0 +1,4001 @@
+{
+  "config": {
+    "configFile": "/Users/sitemax/Projects/postcraft.dev/PostCraft/playwright.config.ts",
+    "rootDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 1800000,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/sitemax/Projects/postcraft.dev/PostCraft/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 6,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://127.0.0.1:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "template-crud.spec.ts",
+      "file": "template-crud.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Template CRUD Workflows",
+          "file": "template-crud.spec.ts",
+          "line": 34,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create a new template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-2023ec1575e2e79d2e42",
+              "file": "template-crud.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should list all templates with pagination",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-afd332a9bb21ab5309bc",
+              "file": "template-crud.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-4969de380062c431987f",
+              "file": "template-crud.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should edit an existing template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-36bd1b3af327171cc6da",
+              "file": "template-crud.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should delete a template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-b543bd4d13bcb0b836bd",
+              "file": "template-crud.spec.ts",
+              "line": 178,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-e370d738c88acc4a89d8",
+              "file": "template-crud.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-734574d005001d8c8aee",
+              "file": "template-crud.spec.ts",
+              "line": 245,
+              "column": 7
+            },
+            {
+              "title": "should preserve template data through edit cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-0e7667a7dc7b9ed9463c",
+              "file": "template-crud.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "should create a new template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-cecb37a3d871e4cab8fb",
+              "file": "template-crud.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should list all templates with pagination",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-cd9fc05b83861092ee4a",
+              "file": "template-crud.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-b6d8f06f586f18343414",
+              "file": "template-crud.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should edit an existing template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-5ab49208f5a48141155a",
+              "file": "template-crud.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should delete a template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-f09c50c0cd1b20a1d4fc",
+              "file": "template-crud.spec.ts",
+              "line": 178,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-cea2a71da680f99f5363",
+              "file": "template-crud.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-82364b1b6fe84ba5c420",
+              "file": "template-crud.spec.ts",
+              "line": 245,
+              "column": 7
+            },
+            {
+              "title": "should preserve template data through edit cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-4ae4d59a48fa5f950d93",
+              "file": "template-crud.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "should create a new template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-984f02d3133119fe4fb3",
+              "file": "template-crud.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should list all templates with pagination",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-a424131cc4b5a15eecb1",
+              "file": "template-crud.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-491cf975fb579fca3fd1",
+              "file": "template-crud.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should edit an existing template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-6f830d4f1388dd9053d9",
+              "file": "template-crud.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should delete a template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-94097c0dd60177f49034",
+              "file": "template-crud.spec.ts",
+              "line": 178,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-90097d00b32d84b14262",
+              "file": "template-crud.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-f5bf1dfec1ba0ad215e6",
+              "file": "template-crud.spec.ts",
+              "line": 245,
+              "column": 7
+            },
+            {
+              "title": "should preserve template data through edit cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-d786de6df49b41e00706",
+              "file": "template-crud.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "should create a new template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-ac7503ca4d6c6763771b",
+              "file": "template-crud.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should list all templates with pagination",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-04755f60b60fa17ffcc8",
+              "file": "template-crud.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-26ddeb80bb1c1633abeb",
+              "file": "template-crud.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should edit an existing template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-e4811fe5adaf4a9b273f",
+              "file": "template-crud.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should delete a template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-d11e3e58b58fc0b29dd9",
+              "file": "template-crud.spec.ts",
+              "line": 178,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-ccfdee3620b48aecc5e6",
+              "file": "template-crud.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-01fe181fd4af6c337852",
+              "file": "template-crud.spec.ts",
+              "line": 245,
+              "column": 7
+            },
+            {
+              "title": "should preserve template data through edit cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-d937c00b3112a92e8080",
+              "file": "template-crud.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "should create a new template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-dfa53d44af5b6826e73a",
+              "file": "template-crud.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should list all templates with pagination",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-60685a75f5bb0b57aa67",
+              "file": "template-crud.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-6041b626ea26f0ec9339",
+              "file": "template-crud.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should edit an existing template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-f34d84fb9dbd9592c936",
+              "file": "template-crud.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should delete a template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-bc200e4f2aab52a4068e",
+              "file": "template-crud.spec.ts",
+              "line": 178,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-74107315bba600d9ff58",
+              "file": "template-crud.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-8b580052adc833bef475",
+              "file": "template-crud.spec.ts",
+              "line": 245,
+              "column": 7
+            },
+            {
+              "title": "should preserve template data through edit cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "df0ef53c5ccf8c3fa900-9c510262d5342bf2f1b3",
+              "file": "template-crud.spec.ts",
+              "line": 264,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "template-import.spec.ts",
+      "file": "template-import.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Template Import Workflow",
+          "file": "template-import.spec.ts",
+          "line": 32,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should open import dialog from templates page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-daa1d530cf5b49bf5e89",
+              "file": "template-import.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should import template via file upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-ed65bd3838e08224f4e9",
+              "file": "template-import.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should import template via paste JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-71c22ea355f1728ba25d",
+              "file": "template-import.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "should handle file upload priority over paste",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-1e3b23e37c259ca201a3",
+              "file": "template-import.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "should reject invalid JSON in paste area",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-85a88fdf310df6652b01",
+              "file": "template-import.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "should show clear error for invalid JSON syntax",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-8008dbdf168855d1e244",
+              "file": "template-import.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "should save template after successful import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-861cfeb486601871a2cb",
+              "file": "template-import.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "should show validation error for empty import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-c6d0ac20a180c40adb22",
+              "file": "template-import.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "should display success notification on import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-bdcfad223783ceb8fb9e",
+              "file": "template-import.spec.ts",
+              "line": 258,
+              "column": 7
+            },
+            {
+              "title": "should open import dialog from templates page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-7dd20200d58149e3b8e4",
+              "file": "template-import.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should import template via file upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-8664e94a1a18bc4c125b",
+              "file": "template-import.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should import template via paste JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-9fa8d0c3098c941b8557",
+              "file": "template-import.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "should handle file upload priority over paste",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-606d84e9765670682ce8",
+              "file": "template-import.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "should reject invalid JSON in paste area",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-83535f4b18771d6e3269",
+              "file": "template-import.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "should show clear error for invalid JSON syntax",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-86bd392de460a2736047",
+              "file": "template-import.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "should save template after successful import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-550ce0ddb531d7b6a76e",
+              "file": "template-import.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "should show validation error for empty import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-bf16d7eebec704da97a4",
+              "file": "template-import.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "should display success notification on import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-4f6d5c117cfde7e9d0e0",
+              "file": "template-import.spec.ts",
+              "line": 258,
+              "column": 7
+            },
+            {
+              "title": "should open import dialog from templates page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-afc5d4d20ed63a830aaf",
+              "file": "template-import.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should import template via file upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-fbbd3d844ab2fbaa47e1",
+              "file": "template-import.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should import template via paste JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-4ae16a4b91126b399da8",
+              "file": "template-import.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "should handle file upload priority over paste",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-b74950bdcd1cb6097ac5",
+              "file": "template-import.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "should reject invalid JSON in paste area",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-5b1b8394ab56639549ae",
+              "file": "template-import.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "should show clear error for invalid JSON syntax",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-0f75f04b3029a75a3459",
+              "file": "template-import.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "should save template after successful import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-30eb5fd555536127be3c",
+              "file": "template-import.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "should show validation error for empty import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-4560a53e2f45f3097d23",
+              "file": "template-import.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "should display success notification on import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-5525b3296c787328eea5",
+              "file": "template-import.spec.ts",
+              "line": 258,
+              "column": 7
+            },
+            {
+              "title": "should open import dialog from templates page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-993eba1f7538483ce069",
+              "file": "template-import.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should import template via file upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-26356ba15cccac4af38a",
+              "file": "template-import.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should import template via paste JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-ccd6fb25f656f770542a",
+              "file": "template-import.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "should handle file upload priority over paste",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-bd79fdd8abd445a0e9e1",
+              "file": "template-import.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "should reject invalid JSON in paste area",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-467ed8c72c76b19b0ae0",
+              "file": "template-import.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "should show clear error for invalid JSON syntax",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-1b7a4ca0e6d69304c11b",
+              "file": "template-import.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "should save template after successful import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-a5f568f269c206e18bb1",
+              "file": "template-import.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "should show validation error for empty import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-085279b5d296135dd63b",
+              "file": "template-import.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "should display success notification on import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-f9dfa15dd3262ca8dfa3",
+              "file": "template-import.spec.ts",
+              "line": 258,
+              "column": 7
+            },
+            {
+              "title": "should open import dialog from templates page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-b5ad3f95d3ea9e5c2840",
+              "file": "template-import.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should import template via file upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-1cc274042b67199a6b08",
+              "file": "template-import.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should import template via paste JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-83a520606ab130dc2bf7",
+              "file": "template-import.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "should handle file upload priority over paste",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-5db93bf7d0fdb62e7fd0",
+              "file": "template-import.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "should reject invalid JSON in paste area",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-37b49a53980af4ca4a76",
+              "file": "template-import.spec.ts",
+              "line": 156,
+              "column": 7
+            },
+            {
+              "title": "should show clear error for invalid JSON syntax",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-e7b45fe4de64c54b2b1d",
+              "file": "template-import.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "should save template after successful import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-00623cf40328a0f134cd",
+              "file": "template-import.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "should show validation error for empty import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-aa9e4d2be3aa5c519e5d",
+              "file": "template-import.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "should display success notification on import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bba42e492b8c02498dcf-0b426341fe10391e5a7d",
+              "file": "template-import.spec.ts",
+              "line": 258,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "template-pagination.spec.ts",
+      "file": "template-pagination.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Template Pagination",
+          "file": "template-pagination.spec.ts",
+          "line": 20,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display pagination controls when templates exceed page size",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-01119ff0730ddb8e6548",
+              "file": "template-pagination.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should navigate to next page when next button clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-fd08d993bbf64112c0f3",
+              "file": "template-pagination.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "should navigate to previous page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-134966a8bb7d2e46c1bb",
+              "file": "template-pagination.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should disable previous button on first page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-56b4aa7601ec95e22398",
+              "file": "template-pagination.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should update URL when page changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-58cacc59088613cd131b",
+              "file": "template-pagination.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "should display correct number of items per page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-02d446d6e104e908e095",
+              "file": "template-pagination.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "should handle direct URL navigation to specific page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-7d2c6e37d04aa4d60f8d",
+              "file": "template-pagination.spec.ts",
+              "line": 230,
+              "column": 7
+            },
+            {
+              "title": "should show empty state on valid but empty page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-3b3aa90ff15c50c60b08",
+              "file": "template-pagination.spec.ts",
+              "line": 246,
+              "column": 7
+            },
+            {
+              "title": "should maintain pagination state on reload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-4f12ad462440af7a930f",
+              "file": "template-pagination.spec.ts",
+              "line": 261,
+              "column": 7
+            },
+            {
+              "title": "should display pagination controls when templates exceed page size",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-8fabc605e700b720f144",
+              "file": "template-pagination.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should navigate to next page when next button clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-e98b408ed7a7f7fae2df",
+              "file": "template-pagination.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "should navigate to previous page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-01574d51730bc862ba06",
+              "file": "template-pagination.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should disable previous button on first page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-57036ca8654745815ca5",
+              "file": "template-pagination.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should update URL when page changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-ce9457fd994ab822d5b5",
+              "file": "template-pagination.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "should display correct number of items per page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-03d76aa43704c945fa2b",
+              "file": "template-pagination.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "should handle direct URL navigation to specific page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-6ca956692decbe1f9c4f",
+              "file": "template-pagination.spec.ts",
+              "line": 230,
+              "column": 7
+            },
+            {
+              "title": "should show empty state on valid but empty page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-c7c0414689cde85119ec",
+              "file": "template-pagination.spec.ts",
+              "line": 246,
+              "column": 7
+            },
+            {
+              "title": "should maintain pagination state on reload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-f09363f992a7ab66129a",
+              "file": "template-pagination.spec.ts",
+              "line": 261,
+              "column": 7
+            },
+            {
+              "title": "should display pagination controls when templates exceed page size",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-a765822e71ff096f5d49",
+              "file": "template-pagination.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should navigate to next page when next button clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-f6d0eadbcae41b4c9115",
+              "file": "template-pagination.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "should navigate to previous page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-18c40a116f22ba5e9d66",
+              "file": "template-pagination.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should disable previous button on first page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-b15171bb75a4423eec2c",
+              "file": "template-pagination.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should update URL when page changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-cdc3d032e29df3876e8a",
+              "file": "template-pagination.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "should display correct number of items per page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-73502fbdaf7e4921a4c7",
+              "file": "template-pagination.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "should handle direct URL navigation to specific page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-08725881477e5f650002",
+              "file": "template-pagination.spec.ts",
+              "line": 230,
+              "column": 7
+            },
+            {
+              "title": "should show empty state on valid but empty page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-1272677c0319cc785a6d",
+              "file": "template-pagination.spec.ts",
+              "line": 246,
+              "column": 7
+            },
+            {
+              "title": "should maintain pagination state on reload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-632bd51b0dcf9016d831",
+              "file": "template-pagination.spec.ts",
+              "line": 261,
+              "column": 7
+            },
+            {
+              "title": "should display pagination controls when templates exceed page size",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-cb48b5e6d083c291bade",
+              "file": "template-pagination.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should navigate to next page when next button clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-6278fe943343061cbd18",
+              "file": "template-pagination.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "should navigate to previous page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-fb8510a0ca095709802a",
+              "file": "template-pagination.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should disable previous button on first page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-8a47e24e7dcce0692e34",
+              "file": "template-pagination.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should update URL when page changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-3a64971b3abe146d37b0",
+              "file": "template-pagination.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "should display correct number of items per page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-8314275856589417d566",
+              "file": "template-pagination.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "should handle direct URL navigation to specific page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-acdf472dccf7deeddb6b",
+              "file": "template-pagination.spec.ts",
+              "line": 230,
+              "column": 7
+            },
+            {
+              "title": "should show empty state on valid but empty page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-95cf4c657798a3450faa",
+              "file": "template-pagination.spec.ts",
+              "line": 246,
+              "column": 7
+            },
+            {
+              "title": "should maintain pagination state on reload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-96905c0a5c19f91acb6e",
+              "file": "template-pagination.spec.ts",
+              "line": 261,
+              "column": 7
+            },
+            {
+              "title": "should display pagination controls when templates exceed page size",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-7f70703af6b161d5a243",
+              "file": "template-pagination.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should navigate to next page when next button clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-b48eb62ce682f09c1473",
+              "file": "template-pagination.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "should navigate to previous page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-0caf467cbff246607549",
+              "file": "template-pagination.spec.ts",
+              "line": 105,
+              "column": 7
+            },
+            {
+              "title": "should disable previous button on first page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-0145777af1eb0106dddb",
+              "file": "template-pagination.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "should update URL when page changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-6374edcacd24bf1ba4c0",
+              "file": "template-pagination.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "should display correct number of items per page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-885d076231cffdcaf3e4",
+              "file": "template-pagination.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "should handle direct URL navigation to specific page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-6de339c051cde871960f",
+              "file": "template-pagination.spec.ts",
+              "line": 230,
+              "column": 7
+            },
+            {
+              "title": "should show empty state on valid but empty page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-7046408376478420bac5",
+              "file": "template-pagination.spec.ts",
+              "line": 246,
+              "column": 7
+            },
+            {
+              "title": "should maintain pagination state on reload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "18f888b4116b950459e3-8e16060686c242501cdf",
+              "file": "template-pagination.spec.ts",
+              "line": 261,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ui-state.spec.ts",
+      "file": "ui-state.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UI State Verification",
+          "file": "ui-state.spec.ts",
+          "line": 25,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should show loading state while creating template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-f183da548b70d26d1bab",
+              "file": "ui-state.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "should show success notification on successful save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-b9c82f1ea462e9649936",
+              "file": "ui-state.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "should show error message for validation failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-d7f986d5f463e9cbf661",
+              "file": "ui-state.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-e9ec5b1f50d9bd1224be",
+              "file": "ui-state.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "should show error for duplicate template name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-3d44eed51a62c1b3df77",
+              "file": "ui-state.spec.ts",
+              "line": 132,
+              "column": 7
+            },
+            {
+              "title": "should disable buttons during async operations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-890962e6cf720d5842fe",
+              "file": "ui-state.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "should show field-specific error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-0e2ee11ef5db463552f6",
+              "file": "ui-state.spec.ts",
+              "line": 212,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during template import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-10237559f3b5038d8d31",
+              "file": "ui-state.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "should handle missing required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-2f401a841a375d4301b2",
+              "file": "ui-state.spec.ts",
+              "line": 256,
+              "column": 7
+            },
+            {
+              "title": "should show success after template deletion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-0b5678a54260142b91e9",
+              "file": "ui-state.spec.ts",
+              "line": 271,
+              "column": 7
+            },
+            {
+              "title": "should maintain form state on validation error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-cf89ce5bafa6ea9871fb",
+              "file": "ui-state.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "should show error on import with invalid JSON structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-55cfe146479a5ff9dc00",
+              "file": "ui-state.spec.ts",
+              "line": 341,
+              "column": 7
+            },
+            {
+              "title": "should show loading state while creating template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-4f33e267881a9d6f8979",
+              "file": "ui-state.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "should show success notification on successful save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-85f6ae6cb5251f378125",
+              "file": "ui-state.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "should show error message for validation failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-dac01dd4ec8fab77e01e",
+              "file": "ui-state.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-9c6be79b4644f4dc0f79",
+              "file": "ui-state.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "should show error for duplicate template name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-75bfea8b147ba04028a3",
+              "file": "ui-state.spec.ts",
+              "line": 132,
+              "column": 7
+            },
+            {
+              "title": "should disable buttons during async operations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-7a57f5071c2488ce175a",
+              "file": "ui-state.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "should show field-specific error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-91615c20ddced3c0745d",
+              "file": "ui-state.spec.ts",
+              "line": 212,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during template import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-8f97f52a27d778927dbe",
+              "file": "ui-state.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "should handle missing required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-487521f22ba756cf3db3",
+              "file": "ui-state.spec.ts",
+              "line": 256,
+              "column": 7
+            },
+            {
+              "title": "should show success after template deletion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-b2b7044359c7bf4f0a2b",
+              "file": "ui-state.spec.ts",
+              "line": 271,
+              "column": 7
+            },
+            {
+              "title": "should maintain form state on validation error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-5b1e07e0ecf487db899f",
+              "file": "ui-state.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "should show error on import with invalid JSON structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-d5857d366f28de258b60",
+              "file": "ui-state.spec.ts",
+              "line": 341,
+              "column": 7
+            },
+            {
+              "title": "should show loading state while creating template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-09b602c1c7ad473ef5dd",
+              "file": "ui-state.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "should show success notification on successful save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-8d9780a4c68eb976b03f",
+              "file": "ui-state.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "should show error message for validation failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-1b8d13407db011da8021",
+              "file": "ui-state.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-8375bf2ec6e7446acc6e",
+              "file": "ui-state.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "should show error for duplicate template name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-e094ebfe37996d2c4561",
+              "file": "ui-state.spec.ts",
+              "line": 132,
+              "column": 7
+            },
+            {
+              "title": "should disable buttons during async operations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-57f43a5b62442eeb89a7",
+              "file": "ui-state.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "should show field-specific error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-5fcce4841a25e4983ea7",
+              "file": "ui-state.spec.ts",
+              "line": 212,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during template import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-1ccdd8bb27cc8eae72d3",
+              "file": "ui-state.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "should handle missing required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-18d856bda6979a5886c2",
+              "file": "ui-state.spec.ts",
+              "line": 256,
+              "column": 7
+            },
+            {
+              "title": "should show success after template deletion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-44b3e5ee67ddfe980dc4",
+              "file": "ui-state.spec.ts",
+              "line": 271,
+              "column": 7
+            },
+            {
+              "title": "should maintain form state on validation error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-9e297bc8360cad54cf6a",
+              "file": "ui-state.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "should show error on import with invalid JSON structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-ddcc1f48df575b21f72f",
+              "file": "ui-state.spec.ts",
+              "line": 341,
+              "column": 7
+            },
+            {
+              "title": "should show loading state while creating template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-e04ead72037b54c310f8",
+              "file": "ui-state.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "should show success notification on successful save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-eb9d66e575cd75ff8327",
+              "file": "ui-state.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "should show error message for validation failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-7a7524b7941bfda464fd",
+              "file": "ui-state.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-b7e287d49bf47c3ca2b0",
+              "file": "ui-state.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "should show error for duplicate template name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-d42e190ff25a9fdaf678",
+              "file": "ui-state.spec.ts",
+              "line": 132,
+              "column": 7
+            },
+            {
+              "title": "should disable buttons during async operations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-765fb092aef8b41fc9cd",
+              "file": "ui-state.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "should show field-specific error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-f1d38852937445d7080f",
+              "file": "ui-state.spec.ts",
+              "line": 212,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during template import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-cb699d984bec8e82087a",
+              "file": "ui-state.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "should handle missing required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-5f5039cc3fb064dc6be2",
+              "file": "ui-state.spec.ts",
+              "line": 256,
+              "column": 7
+            },
+            {
+              "title": "should show success after template deletion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-0169d81ec3a1f43599ab",
+              "file": "ui-state.spec.ts",
+              "line": 271,
+              "column": 7
+            },
+            {
+              "title": "should maintain form state on validation error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-2bcccd0c29eac4e2e753",
+              "file": "ui-state.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "should show error on import with invalid JSON structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-136cbf546fc4b5279ffb",
+              "file": "ui-state.spec.ts",
+              "line": 341,
+              "column": 7
+            },
+            {
+              "title": "should show loading state while creating template",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-d6e28ee18441633dfc05",
+              "file": "ui-state.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "should show success notification on successful save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-f514a873a05630c909bd",
+              "file": "ui-state.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "should show error message for validation failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-fe0fc7cd3311c74ffeea",
+              "file": "ui-state.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "should display empty state when no templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-85af3ede5754f65f8c6c",
+              "file": "ui-state.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "should show error for duplicate template name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-7105be82882bc96d88c4",
+              "file": "ui-state.spec.ts",
+              "line": 132,
+              "column": 7
+            },
+            {
+              "title": "should disable buttons during async operations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-22cda6f5391ba9c10e57",
+              "file": "ui-state.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "should show field-specific error messages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-d66a70f1b40ed1b85db9",
+              "file": "ui-state.spec.ts",
+              "line": 212,
+              "column": 7
+            },
+            {
+              "title": "should show loading state during template import",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-59792d5501d18f3c5492",
+              "file": "ui-state.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "should handle missing required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-8ea793409f239daa4273",
+              "file": "ui-state.spec.ts",
+              "line": 256,
+              "column": 7
+            },
+            {
+              "title": "should show success after template deletion",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-42a658f8081bdc266b8d",
+              "file": "ui-state.spec.ts",
+              "line": 271,
+              "column": 7
+            },
+            {
+              "title": "should maintain form state on validation error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-a7ceb360ac1dd8305287",
+              "file": "ui-state.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "should show error on import with invalid JSON structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4f2bf9ccd4e471dd9013-ee0f0b4b164877768929",
+              "file": "ui-state.spec.ts",
+              "line": 341,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-27T12:21:29.032Z",
+    "duration": 79.44099999999997,
+    "expected": 0,
+    "skipped": 190,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

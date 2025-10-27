@@ -82,14 +82,14 @@
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create tests/e2e/fixtures/sample-unlayer-template.json with known valid Unlayer design for E2E test uploads
-- [ ] T021 [P] [US2] Create tests/e2e/template-crud.spec.ts testing create template workflow (navigate /templates/new, enter name, save, verify in list)
-- [ ] T022 [P] [US2] Add edit template workflow test to tests/e2e/template-crud.spec.ts (open template by ID, modify, save, verify persistence)
-- [ ] T023 [P] [US2] Add delete template workflow test to tests/e2e/template-crud.spec.ts (click delete, confirm, verify removal from list and database)
-- [ ] T024 [P] [US2] Create tests/e2e/template-import.spec.ts testing import workflow (upload JSON file, verify redirect, verify design loaded in editor)
-- [ ] T025 [P] [US2] Create tests/e2e/template-pagination.spec.ts testing pagination (navigate pages, verify correct items displayed)
-- [ ] T026 [US2] Add UI state verification to E2E tests (loading states, error messages, success notifications, empty states)
-- [ ] T027 [US2] Configure Playwright to capture screenshots on failure and save to playwright-report/
+- [x] T020 [P] [US2] Create tests/e2e/fixtures/sample-unlayer-template.json with known valid Unlayer design for E2E test uploads
+- [x] T021 [P] [US2] Create tests/e2e/template-crud.spec.ts testing create template workflow (navigate /templates/new, enter name, save, verify in list)
+- [x] T022 [P] [US2] Add edit template workflow test to tests/e2e/template-crud.spec.ts (open template by ID, modify, save, verify persistence)
+- [x] T023 [P] [US2] Add delete template workflow test to tests/e2e/template-crud.spec.ts (click delete, confirm, verify removal from list and database)
+- [x] T024 [P] [US2] Create tests/e2e/template-import.spec.ts testing import workflow (upload JSON file, verify redirect, verify design loaded in editor)
+- [x] T025 [P] [US2] Create tests/e2e/template-pagination.spec.ts testing pagination (navigate pages, verify correct items displayed)
+- [x] T026 [US2] Add UI state verification to E2E tests (loading states, error messages, success notifications, empty states)
+- [x] T027 [US2] Configure Playwright to capture screenshots on failure and save to playwright-report/
 - [ ] T028 [US2] Verify E2E tests complete in <2 minutes with npm run test:e2e
 - [ ] T029 [US2] Verify E2E tests work in headed mode with npm run test:e2e:headed
 
