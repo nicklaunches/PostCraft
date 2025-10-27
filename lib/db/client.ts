@@ -37,11 +37,12 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
 
-const connectionString = process.env.POSTCRAFT_DATABASE_URL;
+// Use TEST_DATABASE_URL for tests, POSTCRAFT_DATABASE_URL for production
+const connectionString = process.env.TEST_DATABASE_URL || process.env.POSTCRAFT_DATABASE_URL;
 
 if (!connectionString) {
   throw new Error(
-    "POSTCRAFT_DATABASE_URL environment variable is not set. Please configure your database connection."
+    "Database configuration missing. Set either TEST_DATABASE_URL (for tests) or POSTCRAFT_DATABASE_URL (for production)."
   );
 }
 

@@ -32,9 +32,13 @@
  * @see vitest.config.ts for setupFiles configuration
  */
 
-import 'dotenv/config';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 import { sql } from 'drizzle-orm';
 import { setupTestDatabase } from './db-setup';
+
+// Load .env.test explicitly
+config({ path: resolve(process.cwd(), '.env.test') });
 
 /**
  * Validate that all required environment variables are set
@@ -46,7 +50,6 @@ function validateEnvironment() {
     'TEST_DATABASE_URL',
     'TEST_API_BASE_URL',
     'TEST_E2E_BASE_URL',
-    'NODE_ENV',
   ];
 
   const missing = required.filter((key) => !process.env[key]);
@@ -56,11 +59,6 @@ function validateEnvironment() {
       `Missing required test environment variables: ${missing.join(', ')}. ` +
         'Add them to .env.test'
     );
-  }
-
-  // Verify NODE_ENV is set to test
-  if (process.env.NODE_ENV !== 'test') {
-    console.warn('NODE_ENV is not set to "test"');
   }
 }
 

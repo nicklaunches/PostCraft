@@ -1,0 +1,414 @@
+{
+  "valid": {
+    "createMinimal": {
+      "name": "welcome-email",
+      "content": {
+        "body": {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "value": "Welcome",
+                  "styles": {}
+                }
+              ]
+            }
+          ]
+        },
+        "counters": {
+          "u_column": 1,
+          "u_row": 1
+        },
+        "schemaVersion": 12
+      }
+    },
+    "createWithVariables": {
+      "name": "verification-email",
+      "content": {
+        "body": {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "value": "Hello {{USER_NAME}}, verify your account with code {{VERIFICATION_CODE}}"
+                }
+              ]
+            }
+          ]
+        },
+        "counters": {
+          "u_column": 1,
+          "u_row": 1
+        },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "USER_NAME",
+          "type": "string",
+          "fallbackValue": "User",
+          "isRequired": false
+        },
+        {
+          "key": "VERIFICATION_CODE",
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": true
+        }
+      ]
+    },
+    "createWithHtml": {
+      "name": "password-reset",
+      "content": {
+        "body": {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "value": "Reset password for {{EMAIL}}"
+                }
+              ]
+            }
+          ]
+        },
+        "counters": {
+          "u_column": 1,
+          "u_row": 1
+        },
+        "schemaVersion": 12
+      },
+      "html": "<html><body><h1>Reset password for {{EMAIL}}</h1></body></html>",
+      "variables": [
+        {
+          "key": "EMAIL",
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": true
+        }
+      ]
+    },
+    "createWithMultipleTypes": {
+      "name": "order-confirmation",
+      "content": {
+        "body": {
+          "rows": []
+        },
+        "counters": {
+          "u_column": 0,
+          "u_row": 0
+        },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "ORDER_ID",
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": true
+        },
+        {
+          "key": "TOTAL_AMOUNT",
+          "type": "number",
+          "fallbackValue": "0",
+          "isRequired": true
+        },
+        {
+          "key": "ORDER_DATE",
+          "type": "date",
+          "fallbackValue": null,
+          "isRequired": false
+        },
+        {
+          "key": "IS_SHIPPED",
+          "type": "boolean",
+          "fallbackValue": "false",
+          "isRequired": false
+        }
+      ]
+    },
+    "updateMinimal": {
+      "content": {
+        "body": {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "value": "Updated content"
+                }
+              ]
+            }
+          ]
+        },
+        "counters": {
+          "u_column": 1,
+          "u_row": 1
+        },
+        "schemaVersion": 12
+      }
+    },
+    "updateWithVariables": {
+      "content": {
+        "body": {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "value": "Hello {{NEW_USER}}, enjoy {{DISCOUNT}}% off"
+                }
+              ]
+            }
+          ]
+        },
+        "counters": {
+          "u_column": 1,
+          "u_row": 1
+        },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "NEW_USER",
+          "type": "string",
+          "fallbackValue": "Customer",
+          "isRequired": false
+        },
+        {
+          "key": "DISCOUNT",
+          "type": "number",
+          "fallbackValue": "10",
+          "isRequired": false
+        }
+      ]
+    },
+    "updateWithHtml": {
+      "content": {
+        "body": {
+          "rows": []
+        },
+        "counters": {
+          "u_column": 0,
+          "u_row": 0
+        },
+        "schemaVersion": 12
+      },
+      "html": "<html><body>Updated HTML</body></html>"
+    }
+  },
+  "invalid": {
+    "createMissingName": {
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createMissingContent": {
+      "name": "test-template"
+    },
+    "createEmptyName": {
+      "name": "",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createWhitespaceOnlyName": {
+      "name": "   ",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createNameTooLong": {
+      "name": "this-is-a-very-long-template-name-that-exceeds-the-maximum-allowed-character-limit-of-one-hundred-characters-total",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createNameWithInvalidCharacters": {
+      "name": "template@name#with$invalid%chars",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createNameNotString": {
+      "name": 123,
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      }
+    },
+    "createContentNotObject": {
+      "name": "test-template",
+      "content": "not an object"
+    },
+    "createContentNull": {
+      "name": "test-template",
+      "content": null
+    },
+    "createBodyNotObject": {
+      "name": "test-template",
+      "content": "not a valid content object"
+    },
+    "createVariablesNotArray": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": "not an array"
+    },
+    "createVariablesMissingKey": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesKeyInvalidFormat": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "invalid-key-name",
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesKeyNotString": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": 123,
+          "type": "string",
+          "fallbackValue": null,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesMissingType": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "TEST_VAR",
+          "fallbackValue": null,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesInvalidType": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "TEST_VAR",
+          "type": "invalid_type",
+          "fallbackValue": null,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesInvalidFallbackValue": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "TEST_VAR",
+          "type": "string",
+          "fallbackValue": 123,
+          "isRequired": false
+        }
+      ]
+    },
+    "createVariablesRequiredWithFallback": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": [
+        {
+          "key": "TEST_VAR",
+          "type": "string",
+          "fallbackValue": "should-not-have-fallback",
+          "isRequired": true
+        }
+      ]
+    },
+    "createHtmlNotString": {
+      "name": "test-template",
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "html": 123
+    },
+    "updateMissingContent": {
+      "variables": []
+    },
+    "updateContentNotObject": {
+      "content": "not an object"
+    },
+    "updateContentNull": {
+      "content": null
+    },
+    "updateVariablesNotArray": {
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "variables": "not an array"
+    },
+    "updateHtmlNotString": {
+      "content": {
+        "body": { "rows": [] },
+        "counters": { "u_column": 0, "u_row": 0 },
+        "schemaVersion": 12
+      },
+      "html": 123
+    }
+  }
+}

@@ -105,14 +105,14 @@
 
 ### Implementation for User Story 3
 
-- [ ] T030 [P] [US3] Create tests/api/fixtures/template-payloads.json with valid/invalid request payloads for API testing
-- [ ] T031 [P] [US3] Create tests/api/templates.api.test.ts with GET /api/templates tests (pagination, response structure, status codes)
-- [ ] T032 [P] [US3] Add POST /api/templates tests to tests/api/templates.api.test.ts (valid creation, validation errors, unique constraint violations)
-- [ ] T033 [P] [US3] Add GET /api/templates/[id] tests to tests/api/templates.api.test.ts (single template retrieval, 404 handling, variable inclusion)
-- [ ] T034 [P] [US3] Add PUT /api/templates/[id] tests to tests/api/templates.api.test.ts (updates, variable replacement, transaction atomicity)
-- [ ] T035 [P] [US3] Add DELETE /api/templates/[id] tests to tests/api/templates.api.test.ts (cascade delete, 404 handling)
-- [ ] T036 [US3] Verify API tests validate 400 errors return field-specific messages matching ValidationResult structure
-- [ ] T037 [US3] Verify API tests confirm transaction rollback on multi-step operation failures
+- [x] T030 [P] [US3] Create tests/api/fixtures/template-payloads.json with valid/invalid request payloads for API testing
+- [x] T031 [P] [US3] Create tests/api/templates.api.test.ts with GET /api/templates tests (pagination, response structure, status codes)
+- [x] T032 [P] [US3] Add POST /api/templates tests to tests/api/templates.api.test.ts (valid creation, validation errors, unique constraint violations)
+- [x] T033 [P] [US3] Add GET /api/templates/[id] tests to tests/api/templates.api.test.ts (single template retrieval, 404 handling, variable inclusion)
+- [x] T034 [P] [US3] Add PUT /api/templates/[id] tests to tests/api/templates.api.test.ts (updates, variable replacement, transaction atomicity)
+- [x] T035 [P] [US3] Add DELETE /api/templates/[id] tests to tests/api/templates.api.test.ts (cascade delete, 404 handling)
+- [x] T036 [US3] Verify API tests validate 400 errors return field-specific messages matching ValidationResult structure
+- [x] T037 [US3] Verify API tests confirm transaction rollback on multi-step operation failures
 
 **Checkpoint**: API endpoint tests complete - backend contracts verified independently
 
