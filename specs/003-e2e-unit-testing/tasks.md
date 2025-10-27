@@ -27,10 +27,10 @@
 
 **Purpose**: Install testing frameworks and create basic configuration
 
-- [ ] T001 Install Vitest and related dependencies (vitest@^2.0.0, @vitest/ui@^2.0.0, @vitest/coverage-v8@^2.0.0) in package.json
-- [ ] T002 Install Playwright and testing libraries (@playwright/test@^1.50.0, @testing-library/react@^16.0.0, @testing-library/jest-dom@^6.0.0) in package.json
-- [ ] T003 [P] Create .env.test file with TEST_DATABASE_URL, TEST_API_BASE_URL, TEST_E2E_BASE_URL
-- [ ] T004 [P] Create tests/ directory structure (setup.ts, db-setup.ts, mocks/, unit/, integration/, e2e/, api/)
+- [x] T001 Install Vitest and related dependencies (vitest@^2.0.0, @vitest/ui@^2.0.0, @vitest/coverage-v8@^2.0.0) in package.json
+- [x] T002 Install Playwright and testing libraries (@playwright/test@^1.50.0, @testing-library/react@^16.0.0, @testing-library/jest-dom@^6.0.0) in package.json
+- [x] T003 [P] Create .env.test file with TEST_DATABASE_URL, TEST_API_BASE_URL, TEST_E2E_BASE_URL
+- [x] T004 [P] Create tests/ directory structure (setup.ts, db-setup.ts, mocks/, unit/, integration/, e2e/, api/)
 
 ---
 
@@ -40,15 +40,15 @@
 
 **⚠️ CRITICAL**: No test writing can begin until this phase is complete
 
-- [ ] T005 Create vitest.config.ts with TypeScript, ESM, Node environment, 4 workers, 10s timeout, coverage configuration
-- [ ] T006 Create playwright.config.ts with TypeScript, parallel execution, retries (exactly 2 retries per test = 3 total attempts), 30s timeout, trace on retry, webServer configuration
-- [ ] T007 Implement tests/db-setup.ts with setupTestDatabase(), resetDatabase() using transaction rollback strategy for parallel execution, seedFixtures(), cleanup() functions
-- [ ] T008 Implement tests/setup.ts with global test setup, Vitest globals import, database migration runner, environment validation
-- [ ] T008a Implement schema drift detection in tests/setup.ts verifying applied migrations match migration files, failing fast with clear error if mismatch detected
-- [ ] T009 [P] Create tests/mocks/unlayer.ts with createUnlayerMock() factory implementing MockUnlayerAPI interface
-- [ ] T010 [P] Create tests/mocks/fixtures/sample-template.json with valid Unlayer design JSON
-- [ ] T011 [P] Create tests/mocks/fixtures/variables.json with sample TemplateVariable fixtures
-- [ ] T012 Add npm scripts to package.json: test, test:watch, test:unit, test:unit:watch, test:integration, test:e2e, test:e2e:headed, test:e2e:debug, test:coverage, test:ci
+- [x] T005 Create vitest.config.ts with TypeScript, ESM, Node environment, 4 workers, 10s timeout, coverage configuration
+- [x] T006 Create playwright.config.ts with TypeScript, parallel execution, retries (exactly 2 retries per test = 3 total attempts), 30s timeout, trace on retry, webServer configuration
+- [x] T007 Implement tests/db-setup.ts with setupTestDatabase(), resetDatabase() using transaction rollback strategy for parallel execution, seedFixtures(), cleanup() functions
+- [x] T008 Implement tests/setup.ts with global test setup, Vitest globals import, database migration runner, environment validation
+- [x] T008a Implement schema drift detection in tests/setup.ts verifying applied migrations match migration files, failing fast with clear error if mismatch detected
+- [x] T009 [P] Create tests/mocks/unlayer.ts with createUnlayerMock() factory implementing MockUnlayerAPI interface
+- [x] T010 [P] Create tests/mocks/fixtures/sample-template.json with valid Unlayer design JSON
+- [x] T011 [P] Create tests/mocks/fixtures/variables.json with sample TemplateVariable fixtures
+- [x] T012 Add npm scripts to package.json: test, test:watch, test:unit, test:unit:watch, test:integration, test:e2e, test:e2e:headed, test:e2e:debug, test:coverage, test:ci
 
 **Checkpoint**: Foundation ready - test implementation can now begin in parallel
 
