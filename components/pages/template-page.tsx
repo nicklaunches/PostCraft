@@ -36,7 +36,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, Info, Upload } from "lucide-react";
+import { AlertCircle, Download, Info, Upload } from "lucide-react";
 import Link from "next/link";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { detectVariables } from "@/lib/utils/variable-detection";
@@ -303,6 +303,7 @@ export function TemplatePage({ mode, templateId, initialDesign }: TemplatePagePr
                 onClick={() => setShowExport(true)}
                 disabled={isSaving || !isEditorReady}
               >
+                <Download className="mr-2 h-4 w-4" />
                 Export
               </Button>
             )}
