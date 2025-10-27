@@ -62,13 +62,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Create tests/unit/validation.test.ts testing validation utilities with valid/invalid/edge cases
-- [ ] T014 [P] [US1] Create tests/unit/variable-detection.test.ts testing detectVariables() and deduplicateVariables() with various HTML inputs
-- [ ] T015 [P] [US1] Create tests/unit/unlayer-validation.test.ts testing isValidUnlayerDesign(), parseAndValidateJSON(), validateFile(), validateTextareaContent()
-- [ ] T016 [P] [US1] Create tests/unit/api-validation.test.ts testing API request validation utilities
-- [ ] T017 [US1] Verify all unit tests execute in <5 seconds via npm run test:unit
-- [ ] T018 [US1] Verify unit tests provide clear error messages with expected vs actual values
-- [ ] T019 [US1] Verify validation error messages match VALIDATION_ERRORS constants from source files
+- [x] T013 [P] [US1] Create tests/unit/validation.test.ts testing validation utilities with valid/invalid/edge cases
+- [x] T014 [P] [US1] Create tests/unit/variable-detection.test.ts testing detectVariables() and deduplicateVariables() with various HTML inputs
+- [x] T015 [P] [US1] Create tests/unit/unlayer-validation.test.ts testing isValidUnlayerDesign(), parseAndValidateJSON(), validateFile(), validateTextareaContent()
+- [x] T016 [P] [US1] Create tests/unit/api-validation.test.ts testing API request validation utilities
+- [x] T017 [US1] Verify all unit tests execute in <5 seconds via npm run test:unit
+- [x] T018 [US1] Verify unit tests provide clear error messages with expected vs actual values
+- [x] T019 [US1] Verify validation error messages match VALIDATION_ERRORS constants from source files
 
 **Checkpoint**: Unit tests for utilities complete - developers can now run `npm run test:unit` for instant feedback
 

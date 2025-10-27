@@ -32,7 +32,7 @@ export default defineConfig({
     // Global test environment configuration
     globals: true, // Use global test functions (describe, it, beforeEach, etc.)
     environment: 'node', // Node.js environment (not jsdom/happy-dom)
-    
+
     // Test execution - parallel workers for fast execution
     pool: 'threads', // Use worker threads
     poolOptions: {
@@ -42,9 +42,10 @@ export default defineConfig({
       },
     },
     maxWorkers: 4, // Parallel execution with 4 workers
+    minWorkers: 1, // Minimum workers
     testTimeout: 10000, // 10 second timeout per test
     hookTimeout: 10000, // 10 second timeout for hooks (beforeEach, afterEach, etc.)
-    
+
     // Test file discovery
     include: [
       'tests/unit/**/*.test.ts',
@@ -59,27 +60,27 @@ export default defineConfig({
       '.idea',
       '.vscode',
     ],
-    
+
     // Global setup and teardown
     setupFiles: ['./tests/setup.ts'],
-    
+
     // Coverage configuration
     coverage: {
       // Use v8 backend for coverage (faster, more accurate)
       provider: 'v8',
-      
+
       // Report formats
       reporter: ['text', 'html', 'json'],
-      
+
       // Coverage output directory
       reportsDirectory: './coverage',
-      
+
       // Files to include in coverage (utilities and API routes)
       include: [
         'lib/**/*.ts',
         'app/api/**/*.ts',
       ],
-      
+
       // Files to exclude from coverage (tests, node_modules, etc.)
       exclude: [
         'node_modules/**',
@@ -91,7 +92,7 @@ export default defineConfig({
         '**/node_modules/**',
         '**/.next/**',
       ],
-      
+
       // Coverage thresholds - fail if below these percentages
       thresholds: {
         lines: 70,
@@ -101,7 +102,7 @@ export default defineConfig({
       },
     },
   },
-  
+
   // Path alias resolution (match tsconfig.json)
   resolve: {
     alias: {
