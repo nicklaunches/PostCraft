@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "templateId": 1,
+    "key": "NAME",
+    "type": "string",
+    "fallbackValue": "Friend",
+    "isRequired": true,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "templateId": 1,
+    "key": "EMAIL",
+    "type": "string",
+    "fallbackValue": null,
+    "isRequired": true,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "templateId": 1,
+    "key": "AGE",
+    "type": "number",
+    "fallbackValue": "18",
+    "isRequired": false,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "templateId": 1,
+    "key": "SIGNUP_DATE",
+    "type": "date",
+    "fallbackValue": "2025-01-01",
+    "isRequired": false,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  }
+]

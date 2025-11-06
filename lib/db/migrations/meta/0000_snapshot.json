@@ -1,11 +1,11 @@
 {
-  "id": "8520a8cb-21f1-44f4-9b48-9a31e2b259c2",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "febd70eb-2ce0-43f9-a611-b2971bc491cc",
+  "prevId": "8520a8cb-21f1-44f4-9b48-9a31e2b259c2",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "template_variables": {
-      "name": "template_variables",
+    "postcraft_template_variables": {
+      "name": "postcraft_template_variables",
       "schema": "",
       "columns": {
         "id": {
@@ -54,8 +54,8 @@
         }
       },
       "indexes": {
-        "template_variables_template_id_key_idx": {
-          "name": "template_variables_template_id_key_idx",
+        "postcraft_template_variables_template_id_key_idx": {
+          "name": "postcraft_template_variables_template_id_key_idx",
           "columns": [
             "template_id",
             "key"
@@ -64,10 +64,10 @@
         }
       },
       "foreignKeys": {
-        "template_variables_template_id_templates_id_fk": {
-          "name": "template_variables_template_id_templates_id_fk",
-          "tableFrom": "template_variables",
-          "tableTo": "templates",
+        "postcraft_template_variables_template_id_postcraft_templates_id_fk": {
+          "name": "postcraft_template_variables_template_id_postcraft_templates_id_fk",
+          "tableFrom": "postcraft_template_variables",
+          "tableTo": "postcraft_templates",
           "columnsFrom": [
             "template_id"
           ],
@@ -81,8 +81,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "templates": {
-      "name": "templates",
+    "postcraft_templates": {
+      "name": "postcraft_templates",
       "schema": "",
       "columns": {
         "id": {
@@ -125,8 +125,8 @@
         }
       },
       "indexes": {
-        "templates_updated_at_idx": {
-          "name": "templates_updated_at_idx",
+        "postcraft_templates_updated_at_idx": {
+          "name": "postcraft_templates_updated_at_idx",
           "columns": [
             "updated_at"
           ],
@@ -136,8 +136,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "templates_name_unique": {
-          "name": "templates_name_unique",
+        "postcraft_templates_name_unique": {
+          "name": "postcraft_templates_name_unique",
           "nullsNotDistinct": false,
           "columns": [
             "name"
