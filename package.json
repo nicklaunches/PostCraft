@@ -1,6 +1,6 @@
 {
   "name": "postcraft",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "description": "Email Studio for Developers - Local studio dashboard, visual email builder, and SDK for rendering templates",
   "main": "./dist/index.js",
