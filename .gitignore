@@ -44,6 +44,9 @@ coverage/
 .nyc_output/
 .jest/
 *.lcov
+playwright-report/
+test-results/
+tests/
 
 # Logs
 logs/
